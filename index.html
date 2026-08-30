@@ -52,7 +52,7 @@
                 </span>
             </div>
 
-            <!-- Categories Scroll Bar (Naye Categories Ke Saath) -->
+            <!-- Categories Scroll Bar -->
             <div class="flex gap-2 overflow-x-auto pb-1 text-xs no-scrollbar" id="categoryBar">
                 <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">All</button>
                 <button onclick="selectCategory('Islamic', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🕌 Islamic</button>
@@ -128,7 +128,6 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Category</label>
-                    <!-- Modal Select Options Ke Saath -->
                     <select id="gCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
                         <option value="Islamic">🕌 Islamic</option>
                         <option value="Poetry">✍️ Poetry</option>
@@ -171,7 +170,6 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let allApprovedGroups = [];
 let currentCategory = 'All';
 
-// Automatic Visitor Count Function
 async function trackVisitor() {
     try {
         await db.from('visitors').insert([{}]);
@@ -211,23 +209,19 @@ function renderGroups() {
     grid.innerHTML = filtered.map(item => `
         <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl relative">
             <div>
-                <!-- Category Tag -->
                 <div class="flex items-center justify-between gap-2 mb-2">
                     <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${item.platform} • ${item.category}</span>
                     ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
                 </div>
 
-                <!-- Joins Tracker -->
                 <div class="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-lg my-1">
                     <i class="fa-solid fa-eye text-emerald-400"></i>
                     <span><b>${item.clicks || 0}</b> Joins</span>
                 </div>
 
-                <!-- Group Name -->
                 <h3 class="font-bold text-white text-lg mt-2 mb-1 leading-snug line-clamp-2">${item.name}</h3>
             </div>
 
-            <!-- Join Group Button -->
             <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-base py-3.5 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
                 <i class="fa-brands fa-whatsapp text-xl"></i> Join Group
             </a>
@@ -237,14 +231,21 @@ function renderGroups() {
 
 async function trackClick(id) {
     try {
-        const item = allApprovedGroups.find(g => g.id === id);
+        const item = allApprovedGroups.find(g => g.id == id);
         if (item) {
-            const newClicks = (item.clicks || 0) + 1;
+            const newClicks = (parseInt(item.clicks) || 0) + 1;
             item.clicks = newClicks;
+            
             renderGroups();
-            await db.from('groups').update({ clicks: newClicks }).eq('id', id);
+            
+            const { error } = await db.from('groups').update({ clicks: newClicks }).eq('id', id);
+            if (error) {
+                console.error("Supabase Update Error:", error.message);
+            }
         }
-    } catch(e){}
+    } catch(e) {
+        console.error("Click Tracking Error:", e);
+    }
 }
 
 function selectCategory(cat, btn) {
@@ -325,7 +326,9 @@ async function loadChatMessages() {
         </div>
     `).join('');
     box.scrollTop = box.scrollHeight;
-}function sendUserMessage(e) {
+}
+
+function sendUserMessage(e) {
     e.preventDefault();
     const name = document.getElementById('chatSenderName').value;
     const msg = document.getElementById('chatMsgInput').value;
