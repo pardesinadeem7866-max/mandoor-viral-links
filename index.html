@@ -32,10 +32,11 @@
     </header>
 
     <main class="max-w-4xl mx-auto px-4 pt-6 space-y-6">
-        <!-- Search Card -->
+        <!-- Search & App Download Section -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-            <a href="#" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold text-xs py-3 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all">
-                <i class="fa-solid fa-mobile-screen-button text-base"></i>
+            <!-- Working App Download Button -->
+            <a href="https://www.appcreator24.com/app4171828-c1m7a2" target="_blank" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-sm py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md">
+                <i class="fa-solid fa-mobile-screen-button text-lg"></i>
                 <span>📱 Download Official Android App</span>
             </a>
 
@@ -190,16 +191,27 @@ function renderGroups() {
     }
 
     grid.innerHTML = filtered.map(item => `
-        <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-lg relative">
+        <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl relative">
             <div>
+                <!-- Choti Category Tag -->
                 <div class="flex items-center justify-between gap-2 mb-2">
                     <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${item.platform} • ${item.category}</span>
                     ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
                 </div>
-                <h3 class="font-bold text-white text-sm line-clamp-1">${item.name}</h3>
+
+                <!-- Ankh (Eye) Visit Tracker -->
+                <div class="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-lg my-1">
+                    <i class="fa-solid fa-eye text-emerald-400"></i>
+                    <span><b>${item.clicks || 0}</b> Joins</span>
+                </div>
+
+                <!-- Bada Group Name Title -->
+                <h3 class="font-bold text-white text-lg mt-2 mb-1 leading-snug line-clamp-2">${item.name}</h3>
             </div>
-            <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs py-2.5 rounded-xl text-center flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-sm"></i> Join Group
+
+            <!-- Bada Join Group Button -->
+            <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-base py-3.5 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Join Group
             </a>
         </div>
     `).join('');
@@ -208,7 +220,12 @@ function renderGroups() {
 async function trackClick(id) {
     try {
         const item = allApprovedGroups.find(g => g.id === id);
-        if (item) await db.from('groups').update({ clicks: (item.clicks || 0) + 1 }).eq('id', id);
+        if (item) {
+            const newClicks = (item.clicks || 0) + 1;
+            item.clicks = newClicks;
+            renderGroups();
+            await db.from('groups').update({ clicks: newClicks }).eq('id', id);
+        }
     } catch(e){}
 }
 
@@ -302,11 +319,15 @@ async function sendUserMessage(e) {
     const btn = document.getElementById('chatSendBtn');
     btn.disabled = true;
 
-    await db.from('messages').insert([{ sender_name: name, message: msg }]);
+    const { error } = await db.from('messages').insert([{ sender_name: name, message: msg }]);
 
-    document.getElementById('chatMsgInput').value = '';
+    if(error) {
+        alert("Message error: " + error.message);
+    } else {
+        document.getElementById('chatMsgInput').value = '';
+        loadChatMessages();
+    }
     btn.disabled = false;
-    loadChatMessages();
 }
 
 fetchGroups();
