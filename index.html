@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandoor Viral Group Links</title>
-    <!-- Tailwind CSS -->
+    <title>Mandoor Viral Links</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -17,7 +14,7 @@
 </head>
 <body class="bg-gray-950 text-gray-100 font-sans min-h-screen pb-12">
 
-    <!-- Header / Navbar -->
+    <!-- Header -->
     <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-40 shadow-xl">
         <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
@@ -29,293 +26,195 @@
                 </h1>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="openModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-semibold text-xs md:text-sm px-3 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-900/30 flex items-center">
-                    <i class="fa-solid fa-plus mr-1.5"></i> Add Group
+                <button onclick="openAddModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-plus text-xs"></i> Add Group
                 </button>
-                <button onclick="showAdminAuthModal()" class="bg-gray-800 hover:bg-gray-700 text-emerald-400 p-2.5 rounded-xl border border-gray-700 text-sm active:scale-95 transition-all">
-                    <i class="fa-solid fa-user-shield text-base"></i>
-                </button>
+                <a href="admin.html" class="bg-gray-800 hover:bg-gray-700 text-emerald-400 p-2 rounded-xl border border-gray-700 text-xs font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-user-shield text-sm"></i> Admin
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
+    <!-- Main Content -->
     <main class="max-w-5xl mx-auto px-4 pt-5">
-
-        <!-- Search & Control Panel -->
         <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 mb-6 shadow-md">
             <div class="flex flex-col md:flex-row gap-3 justify-between items-center">
-                <!-- Search Bar -->
                 <div class="relative w-full md:w-2/3">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
-                    <input type="text" id="searchInput" onkeyup="filterAndRender()" placeholder="Search groups by title or keyword..." class="w-full bg-gray-950 text-white pl-10 pr-4 py-2.5 rounded-xl border border-gray-800 focus:outline-none focus:border-emerald-500 text-xs md:text-sm transition-all">
+                    <input type="text" id="searchInput" onkeyup="filterGroups()" placeholder="Search groups by name..." class="w-full bg-gray-950 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500">
                 </div>
-                
-                <!-- Counter & Sort Options -->
                 <div class="flex items-center justify-between w-full md:w-auto gap-3">
-                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-2.5 rounded-xl font-medium whitespace-nowrap">
-                        Total Groups: <b id="groupCount">0</b>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-2 rounded-xl">
+                        Total: <b id="groupCount">0</b>
                     </span>
-                    <select id="sortSelect" onchange="filterAndRender()" class="bg-gray-950 text-gray-300 text-xs md:text-sm px-3 py-2.5 rounded-xl border border-gray-800 focus:outline-none focus:border-emerald-500">
-                        <option value="newest">Newest First</option>
-                        <option value="popular">Most Popular</option>
-                    </select>
                 </div>
             </div>
 
-            <!-- Categories Scroll Bar -->
+            <!-- Categories -->
             <div class="flex gap-2 overflow-x-auto mt-4 pb-1 text-xs no-scrollbar" id="categoryBar">
-                <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-1.5 rounded-xl transition-all whitespace-nowrap shadow-md shadow-emerald-900/20">All</button>
-                <button onclick="selectCategory('Gaming', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Gaming</button>
-                <button onclick="selectCategory('Entertainment', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Entertainment</button>
-                <button onclick="selectCategory('Earning', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Earning</button>
-                <button onclick="selectCategory('Education', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Education</button>
-                <button onclick="selectCategory('Jobs', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Jobs</button>
-                <button onclick="selectCategory('Others', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Others</button>
+                <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">All</button>
+                <button onclick="selectCategory('Gaming', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Gaming</button>
+                <button onclick="selectCategory('Entertainment', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Entertainment</button>
+                <button onclick="selectCategory('Earning', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Earning</button>
+                <button onclick="selectCategory('Education', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Education</button>
+                <button onclick="selectCategory('Others', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Others</button>
             </div>
         </div>
 
-        <!-- Group Listings Grid -->
+        <!-- Group Grid -->
         <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="col-span-full text-center py-12 text-gray-500">
-                <i class="fa-solid fa-circle-notch fa-spin text-2xl text-emerald-400 mb-2"></i>
-                <p class="text-xs">Loading approved groups...</p>
-            </div>
+            <p class="text-center text-xs text-gray-500 col-span-2 py-8">Loading approved groups...</p>
         </div>
     </main>
 
-    <!-- User Group Submission Modal -->
-    <div id="submitModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-gray-900 rounded-3xl border border-gray-800 w-full max-w-md p-6 relative shadow-2xl">
-            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+    <!-- Add Group Modal -->
+    <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-emerald-400"></i> Add New Group
+                </h3>
+                <button onclick="closeAddModal()" class="text-gray-400 hover:text-white text-lg font-bold">&times;</button>
+            </div>
             
-            <h2 class="text-base font-bold text-white mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-paper-plane text-emerald-400"></i> Submit Group / Channel
-            </h2>
-            <p class="text-xs text-gray-400 mb-4">Link admin approval ke baad live hoga.</p>
+            <form id="groupForm" onsubmit="submitGroup(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Group Name</label>
+                    <input type="text" id="gName" required placeholder="e.g. Free Fire Pakistan" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                </div>
 
-            <form id="groupForm" onsubmit="handleUserSubmit(event)" class="space-y-3">
                 <div>
-                    <label class="block text-xs text-gray-300 mb-1 font-medium">Group Name *</label>
-                    <input type="text" id="gName" required placeholder="e.g. Daily Earning Tricks" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Platform</label>
+                    <select id="gPlatform" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Telegram">Telegram</option>
+                    </select>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs text-gray-300 mb-1 font-medium">Platform *</label>
-                        <select id="gPlatform" required class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
-                            <option value="WhatsApp">WhatsApp</option>
-                            <option value="Telegram">Telegram</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-300 mb-1 font-medium">Category *</label>
-                        <select id="gCategory" required class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
-                            <option value="Gaming">Gaming</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Earning">Earning</option>
-                            <option value="Education">Education</option>
-                            <option value="Jobs">Jobs</option>
-                            <option value="Others">Others</option>
-                        </select>
-                    </div>
-                </div>
+
                 <div>
-                    <label class="block text-xs text-gray-300 mb-1 font-medium">Invite Link *</label>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Category</label>
+                    <select id="gCategory" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <option value="Gaming">Gaming</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Earning">Earning</option>
+                        <option value="Education">Education</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Group Link</label>
                     <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                 </div>
-                <div>
-                    <label class="block text-xs text-gray-300 mb-1 font-medium">Group Image URL (Optional)</label>
-                    <input type="url" id="gImage" placeholder="https://example.com/logo.jpg" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeAddModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 py-2.5 rounded-xl text-xs font-bold">Cancel</button>
+                    <button type="submit" id="submitBtn" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold">Submit Group</button>
                 </div>
-                <div>
-                    <label class="block text-xs text-gray-300 mb-1 font-medium">Short Description</label>
-                    <textarea id="gDesc" rows="2" placeholder="Tell users what this group is about..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
-                </div>
-                
-                <button type="submit" id="submitBtn" class="w-full bg-emerald-500 hover:bg-emerald-600 font-semibold py-3 rounded-xl text-white transition-all text-xs mt-2 shadow-lg shadow-emerald-900/30">
-                    Submit Link For Approval
-                </button>
             </form>
         </div>
     </div>
 
-    <!-- Admin Password Prompt Modal -->
-    <div id="adminAuthModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-gray-900 rounded-3xl border border-gray-800 w-full max-w-xs p-5 relative shadow-2xl text-center">
-            <button onclick="closeAdminAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="bg-emerald-500/20 text-emerald-400 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-emerald-500/30">
-                <i class="fa-solid fa-lock text-xl"></i>
-            </div>
-            <h3 class="text-sm font-bold text-white mb-1">Admin Password</h3>
-            <p class="text-[11px] text-gray-400 mb-3">Admin panel open karne ke liye PIN enter karein.</p>
-            <input type="password" id="adminPinInput" placeholder="Enter PIN" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-center text-sm text-white focus:outline-none focus:border-emerald-500 mb-3">
-            <button onclick="verifyAdminPin()" class="w-full bg-emerald-500 hover:bg-emerald-600 font-semibold py-2.5 rounded-xl text-white text-xs shadow-lg shadow-emerald-900/30">
-                Login Admin
-            </button>
-        </div>
-    </div>
-
-    <!-- Admin Panel Modal -->
-    <div id="adminModal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-gray-900 rounded-3xl border border-gray-800 w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col relative shadow-2xl">
-            <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-950">
-                <h3 class="font-bold text-white text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-user-shield text-emerald-400"></i> Admin Panel
-                </h3>
-                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex border-b border-gray-800 bg-gray-900 text-xs">
-                <button onclick="switchAdminTab('pending')" id="tabPending" class="flex-1 py-3 text-center border-b-2 border-emerald-500 text-emerald-400 font-bold">Pending Approval</button>
-                <button onclick="switchAdminTab('approved')" id="tabApproved" class="flex-1 py-3 text-center text-gray-400 font-bold">Approved Groups</button>
-            </div>
-
-            <!-- Admin Tab Content -->
-            <div class="p-4 overflow-y-auto flex-1 space-y-3" id="adminListContent">
-            </div>
-        </div>
-    </div>
-
-    <!-- App Logic JavaScript -->
     <script>
         const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
         const SUPABASE_KEY = "Sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let activeCategory = 'All';
-        let rawGroups = [];
-        let ADMIN_PIN = "1234";
+        let allApprovedGroups = [];
+        let currentCategory = 'All';
 
-        async function loadGroups() {
-            const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
-            if (error) {
-                console.error(error);
-                document.getElementById('listingsGrid').innerHTML = `<p class="col-span-full text-center text-red-400 py-6 text-xs">Connection failed. Check API details.</p>`;
-                return;
-            }
-            rawGroups = data || [];
-            filterAndRender();
+        function openAddModal() {
+            document.getElementById('addModal').classList.remove('hidden');
         }
 
-        function filterAndRender() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const sort = document.getElementById('sortSelect').value;
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
+            document.getElementById('groupForm').reset();
+        }
 
-            let filtered = rawGroups.filter(g => g.status === 'approved');
+        async function submitGroup(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Submitting...';
 
-            if (activeCategory !== 'All') {
-                filtered = filtered.filter(g => g.category.toLowerCase() === activeCategory.toLowerCase());
-            }
+            const name = document.getElementById('gName').value.trim();
+            const platform = document.getElementById('gPlatform').value;
+            const category = document.getElementById('gCategory').value;
+            const link = document.getElementById('gLink').value.trim();
 
-            if (query) {
-                filtered = filtered.filter(g => g.name.toLowerCase().includes(query) || (g.description && g.description.toLowerCase().includes(query)));
-            }
+            const { error } = await db.from('groups').insert([
+                { name, platform, category, link, status: 'pending' }
+            ]);
 
-            if (sort === 'popular') {
-                filtered.sort((a, b) => (b.clicks || 0) - (a.clicks || 0));
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Submit Group';
+
+            if (error) {
+                alert('Error submitting group: ' + error.message);
             } else {
-                filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                alert('Success! Your group link has been submitted and is waiting for admin approval.');
+                closeAddModal();
             }
+        }
+
+        async function fetchGroups() {
+            const { data, error } = await db.from('groups').select('*').eq('status', 'approved').order('created_at', { ascending: false });
+            
+            if (error || !data) {
+                document.getElementById('listingsGrid').innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No approved groups found.</p>';
+                return;
+            }
+
+            allApprovedGroups = data;
+            renderGroups();
+        }
+
+        function renderGroups() {
+            const grid = document.getElementById('listingsGrid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = allApprovedGroups.filter(g => {
+                const matchCategory = currentCategory === 'All' || g.category === currentCategory;
+                const matchSearch = g.name.toLowerCase().includes(search);
+                return matchCategory && matchSearch;
+            });
 
             document.getElementById('groupCount').innerText = filtered.length;
 
-            const grid = document.getElementById('listingsGrid');
-            grid.innerHTML = '';
-
             if (filtered.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12 text-xs">No approved groups found in this section.</p>`;
+                grid.innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No approved groups found.</p>';
                 return;
             }
 
-            filtered.forEach(item => {
-                const isWA = item.platform === 'WhatsApp';
-                const defaultIcon = isWA ? 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png' : 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png';
-                
-                grid.innerHTML += `
-                    <div class="bg-gray-900 border border-gray-800/80 p-3.5 rounded-2xl flex gap-3 items-center shadow-lg hover:border-gray-700 transition-all">
-                        <img src="${item.image || defaultIcon}" class="w-12 h-12 rounded-xl object-cover border border-gray-800 flex-shrink-0" onerror="this.src='${defaultIcon}'" alt="Icon">
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-0.5">
-                                <h3 class="font-bold text-white text-xs md:text-sm truncate">${item.name}</h3>
-                                <span class="text-[10px] px-2 py-0.5 rounded-md font-medium ${isWA ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-sky-500/10 text-sky-400 border border-sky-500/20'}">${item.platform}</span>
-                            </div>
-                            <p class="text-[11px] text-emerald-400 font-medium">${item.category}</p>
-                            <p class="text-[11px] text-gray-400 line-clamp-1 mt-0.5">${item.description || 'Join this link to get regular updates.'}</p>
-                        </div>
-                        <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
-                            <button onclick="handleJoin('${item.id}', '${item.link}')" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-semibold text-xs px-3 py-2 rounded-xl transition-all shadow-md shadow-emerald-900/20 flex items-center gap-1">
-                                Join Now <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                            </button>
-                            <span class="text-[10px] text-gray-500"><i class="fa-solid fa-eye text-[9px] mr-1"></i>${item.clicks || 0}</span>
-                        </div>
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 flex justify-between items-center gap-3 shadow-md">
+                    <div class="min-w-0 flex-1">
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20">${item.platform} • ${item.category}</span>
+                        <h3 class="font-bold text-white text-sm mt-1 truncate">${item.name}</h3>
                     </div>
-                `;
-            });
+                    <a href="${item.link}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-xl shrink-0 shadow-md">
+                        Join <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                    </a>
+                </div>
+            `).join('');
         }
 
-        async function handleJoin(id, link) {
-            await db.rpc('increment_clicks', { row_id: id }).catch(async () => {
-                const group = rawGroups.find(g => g.id == id);
-                if (group) {
-                    await db.from('groups').update({ clicks: (group.clicks || 0) + 1 }).eq('id', id);
-                }
-            });
-            window.open(link, '_blank');
+        function filterGroups() {
+            renderGroups();
         }
 
-        async function handleUserSubmit(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.innerText = "Submitting...";
-            btn.disabled = true;
-
-            const linkVal = document.getElementById('gLink').value.trim();
-
-            const newGroup = {
-                name: document.getElementById('gName').value.trim(),
-                platform: document.getElementById('gPlatform').value,
-                category: document.getElementById('gCategory').value,
-                link: linkVal,
-                image: document.getElementById('gImage').value.trim() || null,
-                description: document.getElementById('gDesc').value.trim() || null,
-                status: 'pending'
-            };
-
-            const { error } = await db.from('groups').insert([newGroup]);
-
-            if (error) {
-                if(error.code === '23505') {
-                    alert('Yeh group link pehle se Submit ho chuka hai!');
-                } else {
-                    alert('Error submitting group: ' + error.message);
-                }
-            } else {
-                alert('Success! Aapka link admin approval ke baad live kar diya jayega.');
-                document.getElementById('groupForm').reset();
-                closeModal();
-            }
-            btn.innerText = "Submit Link For Approval";
-            btn.disabled = false;
-        }
-
-        function selectCategory(categoryName, btnEl) {
-            activeCategory = categoryName;
+        function selectCategory(cat, btn) {
+            currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(b => {
-                b.className = "cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap";
+                b.className = 'cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800';
             });
-            btnEl.className = "cat-btn active bg-emerald-500 text-white font-medium px-4 py-1.5 rounded-xl transition-all whitespace-nowrap shadow-md shadow-emerald-900/20";
-            filterAndRender();
+            btn.className = 'cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0';
+            renderGroups();
         }
 
-        function openModal() { document.getElementById('submitModal').classList.remove('hidden'); }
-        function closeModal() { document.getElementById('submitModal').classList.add('hidden'); }
-
-        // Custom Admin Auth Modals
-        function showAdminAuthModal() {
-            document.getElementById('adminAuthModal').classList.remove('hidden');
-            document.getElementById('admi
+        fetchGroups();
+    </script>
+</body>
+</html>
