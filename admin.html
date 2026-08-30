@@ -51,6 +51,43 @@
         </header>
 
         <main class="max-w-5xl mx-auto px-4 pt-6 space-y-6">
+            
+            <!-- Live Overview Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Website Visitors Card -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
+                    <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Total Visitors</p>
+                        <h3 class="text-2xl font-bold text-white" id="totalVisitors">0</h3>
+                    </div>
+                </div>
+
+                <!-- Total Groups Card -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
+                    <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">Total Groups</p>
+                        <h3 class="text-2xl font-bold text-white" id="totalGroupsCount">0</h3>
+                    </div>
+                </div>
+
+                <!-- Total Messages Card -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
+                    <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium">User Messages</p>
+                        <h3 class="text-2xl font-bold text-white" id="totalMessagesCount">0</h3>
+                    </div>
+                </div>
+            </div>
+
             <!-- Tabs -->
             <div class="flex gap-2 border-b border-slate-800 pb-2">
                 <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white">
@@ -65,7 +102,9 @@
             <div id="sectionGroups" class="space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="text-sm font-bold text-white">All Groups</h3>
-                    <button onclick="fetchAdminGroups()" class="text-xs text-emerald-400 hover:underline"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                    <button onclick="refreshDashboard()" class="text-xs text-emerald-400 hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-right"></i> Refresh Stats
+                    </button>
                 </div>
                 <div id="groupsList" class="space-y-3">
                     <p class="text-center text-xs text-gray-500 py-8">Loading groups...</p>
@@ -76,7 +115,9 @@
             <div id="sectionMessages" class="hidden space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="text-sm font-bold text-white">User Support Messages</h3>
-                    <button onclick="fetchAdminMessages()" class="text-xs text-emerald-400 hover:underline"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                    <button onclick="refreshDashboard()" class="text-xs text-emerald-400 hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-right"></i> Refresh Stats
+                    </button>
                 </div>
                 <div id="messagesList" class="space-y-3">
                     <p class="text-center text-xs text-gray-500 py-8">Loading messages...</p>
@@ -110,8 +151,7 @@ function handleLogin(e) {
     if(pass === '1234') { // Apney mutabiq password change kar lein
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('adminPanel').classList.remove('hidden');
-        fetchAdminGroups();
-        fetchAdminMessages();
+        refreshDashboard();
     } else {
         alert('Wrong Password!');
     }
@@ -136,11 +176,31 @@ function switchTab(tab) {
     }
 }
 
+// Refresh All Data & Visitor Stats
+async function refreshDashboard() {
+    fetchVisitorStats();
+    fetchAdminGroups();
+    fetchAdminMessages();
+}
+
+// Live Visitor Count Fetching
+async function fetchVisitorStats() {
+    try {
+        const { count, error } = await db.from('visitors').select('*', { count: 'exact', head: true });
+        if (!error && count !== null) {
+            document.getElementById('totalVisitors').innerText = count;
+        }
+    } catch(e){}
+}
+
 async function fetchAdminGroups() {
     const box = document.getElementById('groupsList');
     const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
     if(error || !data) { box.innerHTML = '<p class="text-xs text-red-400 text-center">Error loading groups</p>'; return; }
     
+    // Total groups count update
+    document.getElementById('totalGroupsCount').innerText = data.length;
+
     box.innerHTML = data.map(g => `
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex justify-between items-center gap-4">
             <div>
@@ -175,8 +235,16 @@ async function deleteGroup(id) {
 async function fetchAdminMessages() {
     const box = document.getElementById('messagesList');
     const { data } = await db.from('messages').select('*').order('created_at', { ascending: false });
-    if(!data || data.length === 0) { box.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">No messages found.</p>'; return; }
     
+    if(!data || data.length === 0) { 
+        document.getElementById('totalMessagesCount').innerText = "0";
+        box.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">No messages found.</p>'; 
+        return; 
+    }
+    
+    // Total messages count update
+    document.getElementById('totalMessagesCount').innerText = data.length;
+
     box.innerHTML = data.map(m => `
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
             <div class="flex justify-between items-start">
