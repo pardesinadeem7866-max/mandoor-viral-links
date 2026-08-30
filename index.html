@@ -489,12 +489,9 @@ async function fetchGroups() {
         await db
             .from('groups')
             .select('*')
-            .order(
-                'created_at',
-                {
-                    ascending: false
-                }
-            );
+            ..order('is_pinned', { ascending: false })
+.order('created_at', { ascending: false });
+    
 
     if (error || !data) {
 
