@@ -3,121 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mandoor Links - Admin Panel</title>
+    <title>Admin Dashboard - Mandoor Links</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-gray-950 text-white min-h-screen p-4 font-sans">
-    <div class="max-w-xl mx-auto pt-6">
-        <h1 class="text-xl font-bold text-emerald-400 mb-4 text-center">Mandoor Admin Panel</h1>
-        
-        <!-- Login Box -->
-        <div id="loginBox" class="bg-gray-900 p-6 rounded-2xl border border-gray-800 text-center space-y-4 shadow-xl">
-            <p class="text-xs text-gray-300">Enter Admin Password to access:</p>
-            <input type="password" id="passInput" placeholder="Password (1234)" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-center text-sm focus:outline-none focus:border-emerald-500">
-            <button onclick="checkPass()" class="w-full bg-emerald-500 hover:bg-emerald-600 font-bold py-3 rounded-xl text-xs">Login Admin</button>
+<body class="bg-gray-950 text-gray-100 font-sans min-h-screen p-4 md:p-8">
+
+<div class="max-w-4xl mx-auto">
+
+    <div class="flex justify-between items-center mb-6 bg-gray-900 p-4 rounded-2xl border border-gray-800">
+        <div>
+            <h1 class="text-xl font-bold text-emerald-400">Admin Dashboard</h1>
+            <p class="text-xs text-gray-400">Manage & Pin VIP Groups</p>
         </div>
-
-        <!-- Admin Content -->
-        <div id="adminContent" class="hidden space-y-4">
-            
-            <!-- Visits & Joins Tracker Cards -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl text-center">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">👁️ Website Visits</p>
-                    <p id="statVisits" class="text-lg font-extrabold text-emerald-400">0</p>
-                </div>
-                <div class="bg-gray-900 border border-gray-800 p-3 rounded-xl text-center">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">👥 Total Group Joins</p>
-                    <p id="statJoins" class="text-lg font-extrabold text-emerald-400">0</p>
-                </div>
-            </div>
-
-            <!-- Links Header -->
-            <div class="flex justify-between items-center border-b border-gray-800 pb-2 pt-2">
-                <h3 class="text-xs font-bold text-gray-300">All Live Links</h3>
-                <button onclick="loadLinks()" class="text-[10px] bg-gray-900 border border-gray-800 text-emerald-400 px-2.5 py-1 rounded-lg">🔄 Refresh</button>
-            </div>
-
-            <!-- Links List -->
-            <div id="list" class="space-y-3"></div>
-        </div>
+        <button onclick="fetchGroups()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-all shadow-md">
+            <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
+        </button>
     </div>
 
-    <script>
-        const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <div id="adminGroupList" class="space-y-3">
+        <p class="text-center text-xs text-gray-500 py-8">Loading groups...</p>
+    </div>
 
-        function checkPass() {
-            const p = document.getElementById('passInput').value;
-            if(p === '1234') {
-                document.getElementById('loginBox').classList.add('hidden');
-                document.getElementById('adminContent').classList.remove('hidden');
-                loadLinks();
-            } else {
-                alert('Wrong Password!');
-            }
-        }
+</div>
 
-        async function loadLinks() {
-            const list = document.getElementById('list');
-            list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">Loading links...</p>';
+<script>
+const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
+const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            // Fetch All Links from Supabase Database
-            const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
+// Fetch All Groups
+async function fetchGroups() {
+    const { data, error } = await db
+        .from('groups')
+        .select('*')
+        .order('is_pinned', { ascending: false })
+        .order('created_at', { ascending: false });
 
-            if(error || !data || data.length === 0) {
-                list.innerHTML = `<p class="text-center text-xs text-gray-500 py-6">No links found.</p>`;
-                document.getElementById('statJoins').innerText = "0";
-                return;
-            }
+    if (error || !data) {
+        document.getElementById('adminGroupList').innerHTML = '<p class="text-center text-xs text-red-400 py-8">Error loading groups from database.</p>';
+        return;
+    }
 
-            // Calculate Analytics (Visits & Clicks/Joins)
-            let totalJoins = 0;
-            let siteVisits = localStorage.getItem('mandoor_site_visits') || 1;
-            document.getElementById('statVisits').innerText = siteVisits;
+    renderAdminGroups(data);
+}
 
-            list.innerHTML = '';
-            data.forEach(item => {
-                const clicks = item.clicks || item.views || 0;
-                totalJoins += clicks;
+// Render Admin Groups List
+function renderAdminGroups(groups) {
+    const container = document.getElementById('adminGroupList');
+    
+    if (groups.length === 0) {
+        container.innerHTML = '<p class="text-center text-xs text-gray-500 py-8">No groups found.</p>';
+        return;
+    }
 
-                list.innerHTML += `
-                    <div class="bg-gray-900 p-3.5 rounded-xl border border-gray-800 flex justify-between items-center gap-2">
-                        <div class="min-w-0 flex-1">
-                            <h4 class="font-bold text-white text-xs truncate">${item.name}</h4>
-                            <p class="text-[10px] text-gray-400">${item.platform || 'Group'} • ${item.category || 'General'}</p>
-                            
-                            <div class="flex items-center gap-2 mt-1.5">
-                                <a href="${item.link}" target="_blank" class="text-[10px] text-emerald-400 underline truncate block">${item.link}</a>
-                                <span class="text-[10px] bg-gray-800 text-gray-300 px-2 py-0.5 rounded-md flex items-center gap-1 font-semibold">
-                                    👁️ ${clicks} Joins
-                                </span>
-                            </div>
-                        </div>
+    container.innerHTML = groups.map(item => `
+        <div class="bg-gray-900 p-4 rounded-2xl border ${item.is_pinned ? 'border-yellow-500/50 bg-yellow-500/5' : 'border-gray-800'} flex flex-col md:flex-row justify-between items-start md:items-center gap-3 shadow-md">
+            
+            <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20 font-medium">
+                        ${item.platform} • ${item.category}
+                    </span>
+                    ${item.is_pinned ? '<span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-md border border-yellow-500/30 font-bold">📌 VIP PINNED</span>' : ''}
+                </div>
+                <h3 class="font-bold text-white text-sm truncate">${item.name}</h3>
+                <a href="${item.link}" target="_blank" class="text-xs text-gray-400 hover:text-emerald-400 truncate block mt-0.5">${item.link}</a>
+            </div>
 
-                        <div>
-                            <button onclick="deleteGroup('${item.id}')" class="bg-red-500/20 text-red-400 border border-red-500/30 text-[10px] px-3 py-1.5 rounded-lg font-bold hover:bg-red-500/30 transition">Delete</button>
-                        </div>
-                    </div>
-                `;
-            });
+            <div class="flex items-center gap-2 w-full md:w-auto justify-end pt-2 md:pt-0 border-t md:border-t-0 border-gray-800">
+                <!-- PIN / UNPIN BUTTON -->
+                <button onclick="togglePin('${item.id}', ${item.is_pinned || false})" 
+                    class="${item.is_pinned ? 'bg-yellow-500 hover:bg-yellow-600 text-black' : 'bg-gray-800 hover:bg-gray-700 text-yellow-400 border border-yellow-500/30'} font-bold text-xs px-3 py-1.5 rounded-xl transition-all flex items-center gap-1">
+                    📌 ${item.is_pinned ? 'Unpin' : 'Pin to Top'}
+                </button>
 
-            document.getElementById('statJoins').innerText = totalJoins;
-        }
+                <!-- DELETE BUTTON -->
+                <button onclick="deleteGroup('${item.id}')" 
+                    class="bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 font-bold text-xs px-3 py-1.5 rounded-xl transition-all">
+                    🗑️ Delete
+                </button>
+            </div>
 
-        // Direct Delete Function
-        async function deleteGroup(id) {
-            if(confirm('Is link ko delete karna chahte hain?')) {
-                const { error } = await db.from('groups').delete().eq('id', id);
-                if(error) {
-                    alert('Error deleting link: ' + error.message);
-                } else {
-                    loadLinks();
-                }
-            }
-        }
-    </script>
+        </div>
+    `).join('');
+}
+
+// Toggle Pin Status
+async function togglePin(id, currentPinnedState) {
+    const { error } = await db
+        .from('groups')
+        .update({ is_pinned: !currentPinnedState })
+        .eq('id', id);
+
+    if (error) {
+        alert('Error updating pin status: ' + error.message);
+    } else {
+        fetchGroups();
+    }
+}
+
+// Delete Group
+async function deleteGroup(id) {
+    if (!confirm('Are you sure you want to delete this group?')) return;
+
+    const { error } = await db
+        .from('groups')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        alert('Error deleting group: ' + error.message);
+    } else {
+        fetchGroups();
+    }
+}
+
+// Initial Fetch
+fetchGroups();
+</script>
+
 </body>
 </html>
