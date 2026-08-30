@@ -21,10 +21,12 @@
                 <button onclick="shareWebsite()" title="Share Website" class="bg-emerald-500/20 hover:bg-emerald-500/30 p-2 rounded-xl border border-emerald-500/30 active:scale-95 transition-all">
                     <i class="fa-solid fa-share-nodes text-emerald-400 text-xl"></i>
                 </button>
+
                 <h1 class="font-bold text-base md:text-xl text-white tracking-wide">
                     Mandoor <span class="text-emerald-400">Viral Links</span>
                 </h1>
             </div>
+
             <div class="flex items-center gap-2">
                 <button onclick="openAddModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
                     <i class="fa-solid fa-plus text-xs"></i> Add Group
@@ -35,239 +37,585 @@
 
     <!-- Main Content -->
     <main class="max-w-5xl mx-auto px-4 pt-5">
+
         <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 mb-6 shadow-md">
+
             <div class="flex flex-col md:flex-row gap-3 justify-between items-center">
+
                 <div class="relative w-full md:w-2/3">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
-                    <input type="text" id="searchInput" onkeyup="filterGroups()" placeholder="Search groups by name..." class="w-full bg-gray-950 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500">
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        onkeyup="filterGroups()"
+                        placeholder="Search groups by name..."
+                        class="w-full bg-gray-950 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
+                    >
                 </div>
+
                 <div class="flex items-center justify-between w-full md:w-auto gap-3">
                     <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-2 rounded-xl font-medium">
                         Total Groups: <b id="groupCount">0</b>
                     </span>
                 </div>
+
             </div>
 
             <!-- Categories -->
             <div class="flex gap-2 overflow-x-auto mt-4 pb-1 text-xs no-scrollbar" id="categoryBar">
-                <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">All</button>
-                <button onclick="selectCategory('Gaming', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Gaming</button>
-                <button onclick="selectCategory('Entertainment', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Entertainment</button>
-                <button onclick="selectCategory('Earning', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Earning</button>
-                <button onclick="selectCategory('Education', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Education</button>
-                <button onclick="selectCategory('Voting / Matches', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Voting / Matches</button>
-                <button onclick="selectCategory('Poetry / Shayari', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Poetry / Shayari</button>
-                <button onclick="selectCategory('Crypto / Trading', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Crypto / Trading</button>
-                <button onclick="selectCategory('Tech / Software', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Tech / Software</button>
-                <button onclick="selectCategory('News / Updates', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">News / Updates</button>
-                <button onclick="selectCategory('Deals / Shopping', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Deals / Shopping</button>
-                <button onclick="selectCategory('18+', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">18+</button>
-                <button onclick="selectCategory('Others', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">Others</button>
+
+                <button onclick="selectCategory('All', this)"
+                    class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">
+                    All
+                </button>
+
+                <button onclick="selectCategory('Viral Groups', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🔥 Viral Groups
+                </button>
+
+                <button onclick="selectCategory('Friendship Groups', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    👥 Friendship Groups
+                </button>
+
+                <button onclick="selectCategory('Chatting Groups', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    💬 Chatting Groups
+                </button>
+
+                <button onclick="selectCategory('Love & Relationship', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    ❤️ Love & Relationship
+                </button>
+
+                <button onclick="selectCategory('Movies', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🎬 Movies
+                </button>
+
+                <button onclick="selectCategory('Dramas / TV Shows', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    📺 Dramas / TV Shows
+                </button>
+
+                <button onclick="selectCategory('Gaming', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🎮 Gaming
+                </button>
+
+                <button onclick="selectCategory('Cricket', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🏏 Cricket
+                </button>
+
+                <button onclick="selectCategory('Sports', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    ⚽ Sports
+                </button>
+
+                <button onclick="selectCategory('Jobs & Careers', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    💼 Jobs & Careers
+                </button>
+
+                <button onclick="selectCategory('Technology', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    💻 Technology
+                </button>
+
+                <button onclick="selectCategory('AI Groups', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🤖 AI Groups
+                </button>
+
+                <button onclick="selectCategory('Shopping / Buy & Sell', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🛒 Shopping / Buy & Sell
+                </button>
+
+                <button onclick="selectCategory('News', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    📰 News
+                </button>
+
+                <button onclick="selectCategory('Poetry / Quotes', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    📝 Poetry / Quotes
+                </button>
+
+                <button onclick="selectCategory('Pakistan Groups', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🇵🇰 Pakistan Groups
+                </button>
+
+                <button onclick="selectCategory('Students Groups', this)"
+                    class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800">
+                    🎓 Students Groups
+                </button>
+
             </div>
         </div>
 
         <!-- Group Grid -->
         <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <p class="text-center text-xs text-gray-500 col-span-2 py-8">Loading groups...</p>
+            <p class="text-center text-xs text-gray-500 col-span-2 py-8">
+                Loading groups...
+            </p>
         </div>
+
     </main>
 
     <!-- Add Group Modal -->
     <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+
         <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+
             <div class="flex justify-between items-center mb-4">
+
                 <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-emerald-400"></i> Add New Group
+                    <i class="fa-solid fa-plus-circle text-emerald-400"></i>
+                    Add New Group
                 </h3>
-                <button onclick="closeAddModal()" class="text-gray-400 hover:text-white text-lg font-bold">&times;</button>
+
+                <button onclick="closeAddModal()" class="text-gray-400 hover:text-white text-lg font-bold">
+                    &times;
+                </button>
+
             </div>
-            
+
             <form id="groupForm" onsubmit="submitGroup(event)" class="space-y-4">
+
                 <div>
-                    <label class="block text-xs font-medium text-gray-300 mb-1">Group Name</label>
-                    <input type="text" id="gName" required placeholder="e.g. Free Fire Pakistan" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-medium text-gray-300 mb-1">
+                        Group Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="gName"
+                        required
+                        placeholder="e.g. Free Fire Pakistan"
+                        class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    >
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-300 mb-1">Platform</label>
-                    <select id="gPlatform" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-medium text-gray-300 mb-1">
+                        Platform
+                    </label>
+
+                    <select
+                        id="gPlatform"
+                        class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    >
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="Telegram">Telegram</option>
                     </select>
                 </div>
 
+                <!-- New Categories -->
                 <div>
-                    <label class="block text-xs font-medium text-gray-300 mb-1">Category</label>
-                    <select id="gCategory" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
-                        <option value="Gaming">Gaming</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Earning">Earning</option>
-                        <option value="Education">Education</option>
-                        <option value="Voting / Matches">Voting / Matches</option>
-                        <option value="Poetry / Shayari">Poetry / Shayari</option>
-                        <option value="Crypto / Trading">Crypto / Trading</option>
-                        <option value="Tech / Software">Tech / Software</option>
-                        <option value="News / Updates">News / Updates</option>
-                        <option value="Deals / Shopping">Deals / Shopping</option>
-                        <option value="18+">18+</option>
-                        <option value="Others">Others</option>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">
+                        Category
+                    </label>
+
+                    <select
+                        id="gCategory"
+                        class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    >
+
+                        <option value="Viral Groups">🔥 Viral Groups</option>
+                        <option value="Friendship Groups">👥 Friendship Groups</option>
+                        <option value="Chatting Groups">💬 Chatting Groups</option>
+                        <option value="Love & Relationship">❤️ Love & Relationship</option>
+                        <option value="Movies">🎬 Movies</option>
+                        <option value="Dramas / TV Shows">📺 Dramas / TV Shows</option>
+                        <option value="Gaming">🎮 Gaming</option>
+                        <option value="Cricket">🏏 Cricket</option>
+                        <option value="Sports">⚽ Sports</option>
+                        <option value="Jobs & Careers">💼 Jobs & Careers</option>
+                        <option value="Technology">💻 Technology</option>
+                        <option value="AI Groups">🤖 AI Groups</option>
+                        <option value="Shopping / Buy & Sell">🛒 Shopping / Buy & Sell</option>
+                        <option value="News">📰 News</option>
+                        <option value="Poetry / Quotes">📝 Poetry / Quotes</option>
+                        <option value="Pakistan Groups">🇵🇰 Pakistan Groups</option>
+                        <option value="Students Groups">🎓 Students Groups</option>
+
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-gray-300 mb-1">Group Link</label>
-                    <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-medium text-gray-300 mb-1">
+                        Group Link
+                    </label>
+
+                    <input
+                        type="url"
+                        id="gLink"
+                        required
+                        placeholder="https://chat.whatsapp.com/..."
+                        class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    >
                 </div>
 
                 <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="closeAddModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 py-2.5 rounded-xl text-xs font-bold">Cancel</button>
-                    <button type="submit" id="submitBtn" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold">Submit Group</button>
+
+                    <button
+                        type="button"
+                        onclick="closeAddModal()"
+                        class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 py-2.5 rounded-xl text-xs font-bold"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        id="submitBtn"
+                        class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold"
+                    >
+                        Submit Group
+                    </button>
+
                 </div>
+
             </form>
         </div>
     </div>
 
     <script>
+
         const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
         const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const db = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
         let allApprovedGroups = [];
         let currentCategory = 'All';
 
-        // 1. Website Visit Tracker
+        // Website Visit Tracker
         (function trackVisit() {
-            let visits = parseInt(localStorage.getItem('mandoor_site_visits') || "0");
+
+            let visits = parseInt(
+                localStorage.getItem('mandoor_site_visits') || "0"
+            );
+
             visits++;
-            localStorage.setItem('mandoor_site_visits', visits);
+
+            localStorage.setItem(
+                'mandoor_site_visits',
+                visits
+            );
+
         })();
 
+        // Share Website
         function shareWebsite() {
+
             if (navigator.share) {
+
                 navigator.share({
                     title: 'Mandoor Viral Links',
                     text: 'Join best WhatsApp & Telegram groups here!',
                     url: window.location.href
                 }).catch(() => {});
+
             } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('Website link copied to clipboard!');
+
+                navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                alert(
+                    'Website link copied to clipboard!'
+                );
             }
         }
 
+        // Open Add Modal
         function openAddModal() {
-            document.getElementById('addModal').classList.remove('hidden');
+
+            document
+                .getElementById('addModal')
+                .classList.remove('hidden');
+
         }
 
+        // Close Add Modal
         function closeAddModal() {
-            document.getElementById('addModal').classList.add('hidden');
-            document.getElementById('groupForm').reset();
+
+            document
+                .getElementById('addModal')
+                .classList.add('hidden');
+
+            document
+                .getElementById('groupForm')
+                .reset();
+
         }
 
-        // 2. Direct Submit (No Approval Required)
+        // Submit Group
         async function submitGroup(e) {
+
             e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
+
+            const submitBtn =
+                document.getElementById('submitBtn');
+
             submitBtn.disabled = true;
             submitBtn.innerText = 'Submitting...';
 
-            const name = document.getElementById('gName').value.trim();
-            const platform = document.getElementById('gPlatform').value;
-            const category = document.getElementById('gCategory').value;
-            const link = document.getElementById('gLink').value.trim();
+            const name =
+                document.getElementById('gName')
+                .value
+                .trim();
 
-            const { error } = await db.from('groups').insert([
-                { name, platform, category, link, status: 'approved', clicks: 0 }
-            ]);
+            const platform =
+                document.getElementById('gPlatform')
+                .value;
+
+            const category =
+                document.getElementById('gCategory')
+                .value;
+
+            const link =
+                document.getElementById('gLink')
+                .value
+                .trim();
+
+            const { error } =
+                await db
+                    .from('groups')
+                    .insert([
+                        {
+                            name,
+                            platform,
+                            category,
+                            link,
+                            status: 'approved',
+                            clicks: 0
+                        }
+                    ]);
 
             submitBtn.disabled = false;
             submitBtn.innerText = 'Submit Group';
 
             if (error) {
-                alert('Error submitting group: ' + error.message);
+
+                alert(
+                    'Error submitting group: ' +
+                    error.message
+                );
+
             } else {
-                alert('Success! Your group link is now live.');
+
+                alert(
+                    'Success! Your group link is now live.'
+                );
+
                 closeAddModal();
-                fetchGroups(); // Refresh list immediately
+
+                fetchGroups();
             }
         }
 
-        // 3. Fetch All Live Groups
+        // Fetch Groups
         async function fetchGroups() {
-            const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
-            
+
+            const { data, error } =
+                await db
+                    .from('groups')
+                    .select('*')
+                    .order(
+                        'created_at',
+                        {
+                            ascending: false
+                        }
+                    );
+
             if (error || !data) {
-                document.getElementById('listingsGrid').innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
+
+                document
+                    .getElementById('listingsGrid')
+                    .innerHTML =
+                    '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
+
                 return;
             }
 
             allApprovedGroups = data;
+
             renderGroups();
         }
 
-        // 4. Render Groups with Eye Icon & Click Counter
+        // Render Groups
         function renderGroups() {
-            const grid = document.getElementById('listingsGrid');
-            const searchInput = document.getElementById('searchInput');
-            const search = searchInput ? searchInput.value.toLowerCase() : '';
 
-            const filtered = allApprovedGroups.filter(g => {
-                const matchCategory = currentCategory === 'All' || g.category === currentCategory;
-                const matchSearch = g.name.toLowerCase().includes(search);
-                return matchCategory && matchSearch;
-            });
+            const grid =
+                document.getElementById(
+                    'listingsGrid'
+                );
 
-            const countElem = document.getElementById('groupCount');
-            if (countElem) countElem.innerText = filtered.length;
+            const searchInput =
+                document.getElementById(
+                    'searchInput'
+                );
+
+            const search =
+                searchInput
+                    ? searchInput.value.toLowerCase()
+                    : '';
+
+            const filtered =
+                allApprovedGroups.filter(g => {
+
+                    const matchCategory =
+                        currentCategory === 'All' ||
+                        g.category === currentCategory;
+
+                    const matchSearch =
+                        g.name
+                            .toLowerCase()
+                            .includes(search);
+
+                    return (
+                        matchCategory &&
+                        matchSearch
+                    );
+
+                });
+
+            const countElem =
+                document.getElementById(
+                    'groupCount'
+                );
+
+            if (countElem) {
+
+                countElem.innerText =
+                    filtered.length;
+
+            }
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
+
+                grid.innerHTML =
+                    '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
+
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => {
-                const clicks = item.clicks || item.views || 0;
-                return `
-                    <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 flex justify-between items-center gap-3 shadow-md">
-                        <div class="min-w-0 flex-1">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20 font-medium">
-                                    ${item.platform} • ${item.category}
-                                </span>
-                                <span class="text-[10px] bg-gray-950 text-gray-400 px-2 py-0.5 rounded-md border border-gray-800 flex items-center gap-1 font-medium">
-                                    👁️ ${clicks} Joins
-                                </span>
+            grid.innerHTML =
+                filtered
+                    .map(item => {
+
+                        const clicks =
+                            item.clicks ||
+                            item.views ||
+                            0;
+
+                        return `
+
+                            <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 flex justify-between items-center gap-3 shadow-md">
+
+                                <div class="min-w-0 flex-1">
+
+                                    <div class="flex items-center gap-2 flex-wrap">
+
+                                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20 font-medium">
+                                            ${item.platform} • ${item.category}
+                                        </span>
+
+                                        <span class="text-[10px] bg-gray-950 text-gray-400 px-2 py-0.5 rounded-md border border-gray-800 flex items-center gap-1 font-medium">
+                                            👁️ ${clicks} Joins
+                                        </span>
+
+                                    </div>
+
+                                    <h3 class="font-bold text-white text-sm mt-1.5 truncate">
+                                        ${item.name}
+                                    </h3>
+
+                                </div>
+
+                                <a
+                                    href="${item.link}"
+                                    target="_blank"
+                                    onclick="trackClick('${item.id}', ${clicks})"
+                                    class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-xl shrink-0 shadow-md transition-all"
+                                >
+                                    Join
+                                    <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                                </a>
+
                             </div>
-                            <h3 class="font-bold text-white text-sm mt-1.5 truncate">${item.name}</h3>
-                        </div>
-                        <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}', ${clicks})" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-xl shrink-0 shadow-md transition-all">
-                            Join <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
-                        </a>
-                    </div>
-                `;
-            }).join('');
+
+                        `;
+
+                    })
+                    .join('');
+
         }
 
-        // 5. Track Join Clicks in Supabase
-        async function trackClick(id, currentClicks) {
-            const updatedClicks = (currentClicks || 0) + 1;
-            await db.from('groups').update({ clicks: updatedClicks }).eq('id', id);
+        // Track Clicks
+        async function trackClick(
+            id,
+            currentClicks
+        ) {
+
+            const updatedClicks =
+                (currentClicks || 0) + 1;
+
+            await db
+                .from('groups')
+                .update({
+                    clicks: updatedClicks
+                })
+                .eq(
+                    'id',
+                    id
+                );
         }
 
+        // Search
         function filterGroups() {
+
             renderGroups();
+
         }
 
-        function selectCategory(cat, btn) {
+        // Category Selection
+        function selectCategory(
+            cat,
+            btn
+        ) {
+
             currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => {
-                b.className = 'cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800';
-            });
-            btn.className = 'cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0';
+
+            document
+                .querySelectorAll('.cat-btn')
+                .forEach(b => {
+
+                    b.className =
+                        'cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-gray-800';
+
+                });
+
+            btn.className =
+                'cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0';
+
             renderGroups();
         }
 
+        // Start
         fetchGroups();
+
     </script>
+
 </body>
 </html>
