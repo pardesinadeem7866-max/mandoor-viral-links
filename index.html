@@ -18,7 +18,6 @@
     <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-40 shadow-xl">
         <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <!-- Clickable Share Icon -->
                 <button onclick="shareWebsite()" title="Share Website" class="bg-emerald-500/20 hover:bg-emerald-500/30 p-2 rounded-xl border border-emerald-500/30 active:scale-95 transition-all">
                     <i class="fa-solid fa-share-nodes text-emerald-400 text-xl"></i>
                 </button>
@@ -43,8 +42,8 @@
                     <input type="text" id="searchInput" onkeyup="filterGroups()" placeholder="Search groups by name..." class="w-full bg-gray-950 border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500">
                 </div>
                 <div class="flex items-center justify-between w-full md:w-auto gap-3">
-                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-2 rounded-xl">
-                        Total: <b id="groupCount">0</b>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-2 rounded-xl font-medium">
+                        Total Groups: <b id="groupCount">0</b>
                     </span>
                 </div>
             </div>
@@ -69,7 +68,7 @@
 
         <!-- Group Grid -->
         <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <p class="text-center text-xs text-gray-500 col-span-2 py-8">Loading approved groups...</p>
+            <p class="text-center text-xs text-gray-500 col-span-2 py-8">Loading groups...</p>
         </div>
     </main>
 
@@ -136,6 +135,13 @@
         let allApprovedGroups = [];
         let currentCategory = 'All';
 
+        // 1. Website Visit Tracker
+        (function trackVisit() {
+            let visits = parseInt(localStorage.getItem('mandoor_site_visits') || "0");
+            visits++;
+            localStorage.setItem('mandoor_site_visits', visits);
+        })();
+
         function shareWebsite() {
             if (navigator.share) {
                 navigator.share({
@@ -158,6 +164,7 @@
             document.getElementById('groupForm').reset();
         }
 
+        // 2. Direct Submit (No Approval Required)
         async function submitGroup(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
@@ -170,7 +177,7 @@
             const link = document.getElementById('gLink').value.trim();
 
             const { error } = await db.from('groups').insert([
-                { name, platform, category, link, status: 'pending' }
+                { name, platform, category, link, status: 'approved', clicks: 0 }
             ]);
 
             submitBtn.disabled = false;
@@ -179,16 +186,18 @@
             if (error) {
                 alert('Error submitting group: ' + error.message);
             } else {
-                alert('Success! Your group link has been submitted and is waiting for admin approval.');
+                alert('Success! Your group link is now live.');
                 closeAddModal();
+                fetchGroups(); // Refresh list immediately
             }
         }
 
+        // 3. Fetch All Live Groups
         async function fetchGroups() {
-            const { data, error } = await db.from('groups').select('*').eq('status', 'approved').order('created_at', { ascending: false });
+            const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
             
             if (error || !data) {
-                document.getElementById('listingsGrid').innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No approved groups found.</p>';
+                document.getElementById('listingsGrid').innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
                 return;
             }
 
@@ -196,9 +205,11 @@
             renderGroups();
         }
 
+        // 4. Render Groups with Eye Icon & Click Counter
         function renderGroups() {
             const grid = document.getElementById('listingsGrid');
-            const search = document.getElementById('searchInput').value.toLowerCase();
+            const searchInput = document.getElementById('searchInput');
+            const search = searchInput ? searchInput.value.toLowerCase() : '';
 
             const filtered = allApprovedGroups.filter(g => {
                 const matchCategory = currentCategory === 'All' || g.category === currentCategory;
@@ -206,24 +217,41 @@
                 return matchCategory && matchSearch;
             });
 
-            document.getElementById('groupCount').innerText = filtered.length;
+            const countElem = document.getElementById('groupCount');
+            if (countElem) countElem.innerText = filtered.length;
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No approved groups found.</p>';
+                grid.innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => `
-                <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 flex justify-between items-center gap-3 shadow-md">
-                    <div class="min-w-0 flex-1">
-                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20">${item.platform} • ${item.category}</span>
-                        <h3 class="font-bold text-white text-sm mt-1 truncate">${item.name}</h3>
+            grid.innerHTML = filtered.map(item => {
+                const clicks = item.clicks || item.views || 0;
+                return `
+                    <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 flex justify-between items-center gap-3 shadow-md">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-md border border-emerald-500/20 font-medium">
+                                    ${item.platform} • ${item.category}
+                                </span>
+                                <span class="text-[10px] bg-gray-950 text-gray-400 px-2 py-0.5 rounded-md border border-gray-800 flex items-center gap-1 font-medium">
+                                    👁️ ${clicks} Joins
+                                </span>
+                            </div>
+                            <h3 class="font-bold text-white text-sm mt-1.5 truncate">${item.name}</h3>
+                        </div>
+                        <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}', ${clicks})" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-xl shrink-0 shadow-md transition-all">
+                            Join <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </a>
                     </div>
-                    <a href="${item.link}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-xl shrink-0 shadow-md">
-                        Join <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
-                    </a>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        // 5. Track Join Clicks in Supabase
+        async function trackClick(id, currentClicks) {
+            const updatedClicks = (currentClicks || 0) + 1;
+            await db.from('groups').update({ clicks: updatedClicks }).eq('id', id);
         }
 
         function filterGroups() {
