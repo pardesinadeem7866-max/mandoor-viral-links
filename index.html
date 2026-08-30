@@ -34,7 +34,7 @@
     <main class="max-w-4xl mx-auto px-4 pt-6 space-y-6">
         <!-- Search & App Download Section -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-            <!-- Working App Download Button -->
+            <!-- App Download Button -->
             <a href="https://www.appcreator24.com/app4171828-c1m7a2" target="_blank" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-sm py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md">
                 <i class="fa-solid fa-mobile-screen-button text-lg"></i>
                 <span>📱 Download Official Android App</span>
@@ -52,8 +52,13 @@
                 </span>
             </div>
 
+            <!-- Categories Scroll Bar (Naye Categories Ke Saath) -->
             <div class="flex gap-2 overflow-x-auto pb-1 text-xs no-scrollbar" id="categoryBar">
                 <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">All</button>
+                <button onclick="selectCategory('Islamic', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🕌 Islamic</button>
+                <button onclick="selectCategory('Poetry', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">✍️ Poetry</button>
+                <button onclick="selectCategory('Pakistani Viral', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🇵🇰 Pakistani Viral</button>
+                <button onclick="selectCategory('Online Shopping', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🛍️ Online Shopping</button>
                 <button onclick="selectCategory('18+ Viral Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🔞 18+ Viral Groups</button>
                 <button onclick="selectCategory('Viral Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🔥 Viral Groups</button>
                 <button onclick="selectCategory('Friendship Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">👥 Friendship Groups</button>
@@ -67,8 +72,8 @@
                 <button onclick="selectCategory('Jobs & Careers', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">💼 Jobs & Careers</button>
                 <button onclick="selectCategory('Technology', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">💻 Technology</button>
                 <button onclick="selectCategory('AI Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🤖 AI Groups</button>
-                <button onclick="selectCategory('Shopping / Buy & Sell', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🛒 Shopping / Buy & Sell</button>
                 <button onclick="selectCategory('Students Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🎓 Students Groups</button>
+                <button onclick="selectCategory('Other', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">📂 Other</button>
             </div>
         </div>
 
@@ -123,7 +128,12 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Category</label>
+                    <!-- Modal Select Options Ke Saath -->
                     <select id="gCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                        <option value="Islamic">🕌 Islamic</option>
+                        <option value="Poetry">✍️ Poetry</option>
+                        <option value="Pakistani Viral">🇵🇰 Pakistani Viral</option>
+                        <option value="Online Shopping">🛍️ Online Shopping</option>
                         <option value="18+ Viral Groups">🔞 18+ Viral Groups</option>
                         <option value="Viral Groups">🔥 Viral Groups</option>
                         <option value="Friendship Groups">👥 Friendship Groups</option>
@@ -137,8 +147,8 @@
                         <option value="Jobs & Careers">💼 Jobs & Careers</option>
                         <option value="Technology">💻 Technology</option>
                         <option value="AI Groups">🤖 AI Groups</option>
-                        <option value="Shopping / Buy & Sell">🛒 Shopping / Buy & Sell</option>
                         <option value="Students Groups">🎓 Students Groups</option>
+                        <option value="Other">📂 Other</option>
                     </select>
                 </div>
                 <div>
@@ -160,6 +170,14 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allApprovedGroups = [];
 let currentCategory = 'All';
+
+// Automatic Visitor Count Function
+async function trackVisitor() {
+    try {
+        await db.from('visitors').insert([{}]);
+    } catch(e){}
+}
+trackVisitor();
 
 async function fetchGroups() {
     const { data, error } = await db.from('groups').select('*').order('is_pinned', { ascending: false }).order('created_at', { ascending: false });
@@ -186,30 +204,30 @@ function renderGroups() {
     if (countElem) countElem.innerText = filtered.length;
 
     if (filtered.length === 0) {
-        grid.innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found.</p>';
+        grid.innerHTML = '<p class="text-center text-xs text-gray-500 col-span-2 py-8">No groups found in this category.</p>';
         return;
     }
 
     grid.innerHTML = filtered.map(item => `
         <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl relative">
             <div>
-                <!-- Choti Category Tag -->
+                <!-- Category Tag -->
                 <div class="flex items-center justify-between gap-2 mb-2">
                     <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${item.platform} • ${item.category}</span>
                     ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
                 </div>
 
-                <!-- Ankh (Eye) Visit Tracker -->
+                <!-- Joins Tracker -->
                 <div class="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-lg my-1">
                     <i class="fa-solid fa-eye text-emerald-400"></i>
                     <span><b>${item.clicks || 0}</b> Joins</span>
                 </div>
 
-                <!-- Bada Group Name Title -->
+                <!-- Group Name -->
                 <h3 class="font-bold text-white text-lg mt-2 mb-1 leading-snug line-clamp-2">${item.name}</h3>
             </div>
 
-            <!-- Bada Join Group Button -->
+            <!-- Join Group Button -->
             <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-base py-3.5 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
                 <i class="fa-brands fa-whatsapp text-xl"></i> Join Group
             </a>
@@ -307,9 +325,7 @@ async function loadChatMessages() {
         </div>
     `).join('');
     box.scrollTop = box.scrollHeight;
-}
-
-async function sendUserMessage(e) {
+}function sendUserMessage(e) {
     e.preventDefault();
     const name = document.getElementById('chatSenderName').value;
     const msg = document.getElementById('chatMsgInput').value;
@@ -319,15 +335,15 @@ async function sendUserMessage(e) {
     const btn = document.getElementById('chatSendBtn');
     btn.disabled = true;
 
-    const { error } = await db.from('messages').insert([{ sender_name: name, message: msg }]);
-
-    if(error) {
-        alert("Message error: " + error.message);
-    } else {
-        document.getElementById('chatMsgInput').value = '';
-        loadChatMessages();
-    }
-    btn.disabled = false;
+    db.from('messages').insert([{ sender_name: name, message: msg }]).then(({ error }) => {
+        if(error) {
+            alert("Message error: " + error.message);
+        } else {
+            document.getElementById('chatMsgInput').value = '';
+            loadChatMessages();
+        }
+        btn.disabled = false;
+    });
 }
 
 fetchGroups();
