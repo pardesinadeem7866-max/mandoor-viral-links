@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mandoor Viral Group Links</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -14,6 +17,7 @@
 </head>
 <body class="bg-gray-950 text-gray-100 font-sans min-h-screen pb-12">
 
+    <!-- Header / Navbar -->
     <header class="bg-gray-900 border-b border-gray-800 sticky top-0 z-40 shadow-xl">
         <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
@@ -25,25 +29,29 @@
                 </h1>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="openModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-semibold text-xs md:text-sm px-3 py-2 rounded-xl transition-all shadow-lg shadow-emerald-900/30 flex items-center">
+                <button onclick="openModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-semibold text-xs md:text-sm px-3 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-900/30 flex items-center">
                     <i class="fa-solid fa-plus mr-1.5"></i> Add Group
                 </button>
-                <button onclick="openAdminAuth()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 p-2 rounded-xl border border-gray-700 text-xs">
-                    <i class="fa-solid fa-user-shield"></i>
+                <button onclick="showAdminAuthModal()" class="bg-gray-800 hover:bg-gray-700 text-emerald-400 p-2.5 rounded-xl border border-gray-700 text-sm active:scale-95 transition-all">
+                    <i class="fa-solid fa-user-shield text-base"></i>
                 </button>
             </div>
         </div>
     </header>
 
+    <!-- Main Content Container -->
     <main class="max-w-5xl mx-auto px-4 pt-5">
 
+        <!-- Search & Control Panel -->
         <div class="bg-gray-900 p-4 rounded-2xl border border-gray-800 mb-6 shadow-md">
             <div class="flex flex-col md:flex-row gap-3 justify-between items-center">
+                <!-- Search Bar -->
                 <div class="relative w-full md:w-2/3">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
                     <input type="text" id="searchInput" onkeyup="filterAndRender()" placeholder="Search groups by title or keyword..." class="w-full bg-gray-950 text-white pl-10 pr-4 py-2.5 rounded-xl border border-gray-800 focus:outline-none focus:border-emerald-500 text-xs md:text-sm transition-all">
                 </div>
                 
+                <!-- Counter & Sort Options -->
                 <div class="flex items-center justify-between w-full md:w-auto gap-3">
                     <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-2.5 rounded-xl font-medium whitespace-nowrap">
                         Total Groups: <b id="groupCount">0</b>
@@ -55,6 +63,7 @@
                 </div>
             </div>
 
+            <!-- Categories Scroll Bar -->
             <div class="flex gap-2 overflow-x-auto mt-4 pb-1 text-xs no-scrollbar" id="categoryBar">
                 <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-1.5 rounded-xl transition-all whitespace-nowrap shadow-md shadow-emerald-900/20">All</button>
                 <button onclick="selectCategory('Gaming', this)" class="cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap">Gaming</button>
@@ -66,6 +75,7 @@
             </div>
         </div>
 
+        <!-- Group Listings Grid -->
         <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="col-span-full text-center py-12 text-gray-500">
                 <i class="fa-solid fa-circle-notch fa-spin text-2xl text-emerald-400 mb-2"></i>
@@ -74,6 +84,7 @@
         </div>
     </main>
 
+    <!-- User Group Submission Modal -->
     <div id="submitModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-gray-900 rounded-3xl border border-gray-800 w-full max-w-md p-6 relative shadow-2xl">
             <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white">
@@ -130,11 +141,181 @@
         </div>
     </div>
 
+    <!-- Admin Password Prompt Modal -->
+    <div id="adminAuthModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-gray-900 rounded-3xl border border-gray-800 w-full max-w-xs p-5 relative shadow-2xl text-center">
+            <button onclick="closeAdminAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="bg-emerald-500/20 text-emerald-400 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-emerald-500/30">
+                <i class="fa-solid fa-lock text-xl"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white mb-1">Admin Password</h3>
+            <p class="text-[11px] text-gray-400 mb-3">Admin panel open karne ke liye PIN enter karein.</p>
+            <input type="password" id="adminPinInput" placeholder="Enter PIN" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-2.5 text-center text-sm text-white focus:outline-none focus:border-emerald-500 mb-3">
+            <button onclick="verifyAdminPin()" class="w-full bg-emerald-500 hover:bg-emerald-600 font-semibold py-2.5 rounded-xl text-white text-xs shadow-lg shadow-emerald-900/30">
+                Login Admin
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-gray-900 rounded-3xl border border-gray-800 w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col relative shadow-2xl">
             <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-950">
                 <h3 class="font-bold text-white text-sm flex items-center gap-2">
                     <i class="fa-solid fa-user-shield text-emerald-400"></i> Admin Panel
                 </h3>
-                <button onclick="closeAdmin
-                  
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-800 bg-gray-900 text-xs">
+                <button onclick="switchAdminTab('pending')" id="tabPending" class="flex-1 py-3 text-center border-b-2 border-emerald-500 text-emerald-400 font-bold">Pending Approval</button>
+                <button onclick="switchAdminTab('approved')" id="tabApproved" class="flex-1 py-3 text-center text-gray-400 font-bold">Approved Groups</button>
+            </div>
+
+            <!-- Admin Tab Content -->
+            <div class="p-4 overflow-y-auto flex-1 space-y-3" id="adminListContent">
+            </div>
+        </div>
+    </div>
+
+    <!-- App Logic JavaScript -->
+    <script>
+        const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
+        const SUPABASE_KEY = "Sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let activeCategory = 'All';
+        let rawGroups = [];
+        let ADMIN_PIN = "1234";
+
+        async function loadGroups() {
+            const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
+            if (error) {
+                console.error(error);
+                document.getElementById('listingsGrid').innerHTML = `<p class="col-span-full text-center text-red-400 py-6 text-xs">Connection failed. Check API details.</p>`;
+                return;
+            }
+            rawGroups = data || [];
+            filterAndRender();
+        }
+
+        function filterAndRender() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const sort = document.getElementById('sortSelect').value;
+
+            let filtered = rawGroups.filter(g => g.status === 'approved');
+
+            if (activeCategory !== 'All') {
+                filtered = filtered.filter(g => g.category.toLowerCase() === activeCategory.toLowerCase());
+            }
+
+            if (query) {
+                filtered = filtered.filter(g => g.name.toLowerCase().includes(query) || (g.description && g.description.toLowerCase().includes(query)));
+            }
+
+            if (sort === 'popular') {
+                filtered.sort((a, b) => (b.clicks || 0) - (a.clicks || 0));
+            } else {
+                filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            }
+
+            document.getElementById('groupCount').innerText = filtered.length;
+
+            const grid = document.getElementById('listingsGrid');
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12 text-xs">No approved groups found in this section.</p>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isWA = item.platform === 'WhatsApp';
+                const defaultIcon = isWA ? 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png' : 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png';
+                
+                grid.innerHTML += `
+                    <div class="bg-gray-900 border border-gray-800/80 p-3.5 rounded-2xl flex gap-3 items-center shadow-lg hover:border-gray-700 transition-all">
+                        <img src="${item.image || defaultIcon}" class="w-12 h-12 rounded-xl object-cover border border-gray-800 flex-shrink-0" onerror="this.src='${defaultIcon}'" alt="Icon">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <h3 class="font-bold text-white text-xs md:text-sm truncate">${item.name}</h3>
+                                <span class="text-[10px] px-2 py-0.5 rounded-md font-medium ${isWA ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-sky-500/10 text-sky-400 border border-sky-500/20'}">${item.platform}</span>
+                            </div>
+                            <p class="text-[11px] text-emerald-400 font-medium">${item.category}</p>
+                            <p class="text-[11px] text-gray-400 line-clamp-1 mt-0.5">${item.description || 'Join this link to get regular updates.'}</p>
+                        </div>
+                        <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
+                            <button onclick="handleJoin('${item.id}', '${item.link}')" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-semibold text-xs px-3 py-2 rounded-xl transition-all shadow-md shadow-emerald-900/20 flex items-center gap-1">
+                                Join Now <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                            <span class="text-[10px] text-gray-500"><i class="fa-solid fa-eye text-[9px] mr-1"></i>${item.clicks || 0}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function handleJoin(id, link) {
+            await db.rpc('increment_clicks', { row_id: id }).catch(async () => {
+                const group = rawGroups.find(g => g.id == id);
+                if (group) {
+                    await db.from('groups').update({ clicks: (group.clicks || 0) + 1 }).eq('id', id);
+                }
+            });
+            window.open(link, '_blank');
+        }
+
+        async function handleUserSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Submitting...";
+            btn.disabled = true;
+
+            const linkVal = document.getElementById('gLink').value.trim();
+
+            const newGroup = {
+                name: document.getElementById('gName').value.trim(),
+                platform: document.getElementById('gPlatform').value,
+                category: document.getElementById('gCategory').value,
+                link: linkVal,
+                image: document.getElementById('gImage').value.trim() || null,
+                description: document.getElementById('gDesc').value.trim() || null,
+                status: 'pending'
+            };
+
+            const { error } = await db.from('groups').insert([newGroup]);
+
+            if (error) {
+                if(error.code === '23505') {
+                    alert('Yeh group link pehle se Submit ho chuka hai!');
+                } else {
+                    alert('Error submitting group: ' + error.message);
+                }
+            } else {
+                alert('Success! Aapka link admin approval ke baad live kar diya jayega.');
+                document.getElementById('groupForm').reset();
+                closeModal();
+            }
+            btn.innerText = "Submit Link For Approval";
+            btn.disabled = false;
+        }
+
+        function selectCategory(categoryName, btnEl) {
+            activeCategory = categoryName;
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.className = "cat-btn bg-gray-950 hover:bg-gray-800 text-gray-400 border border-gray-800 px-4 py-1.5 rounded-xl transition-all whitespace-nowrap";
+            });
+            btnEl.className = "cat-btn active bg-emerald-500 text-white font-medium px-4 py-1.5 rounded-xl transition-all whitespace-nowrap shadow-md shadow-emerald-900/20";
+            filterAndRender();
+        }
+
+        function openModal() { document.getElementById('submitModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('submitModal').classList.add('hidden'); }
+
+        // Custom Admin Auth Modals
+        function showAdminAuthModal() {
+            document.getElementById('adminAuthModal').classList.remove('hidden');
+            document.getElementById('admi
