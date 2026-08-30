@@ -12,7 +12,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-gray-100 font-sans min-h-screen pb-12">
+<body class="bg-slate-950 text-gray-100 font-sans min-h-screen pb-20">
 
     <!-- Header -->
     <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
@@ -32,117 +32,97 @@
     </header>
 
     <main class="max-w-4xl mx-auto px-4 pt-6 space-y-6">
-
-        <!-- Banner & Search Card -->
+        <!-- Search Card -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-            <!-- App Download Button -->
             <a href="#" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold text-xs py-3 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all">
                 <i class="fa-solid fa-mobile-screen-button text-base"></i>
                 <span>📱 Download Official Android App</span>
             </a>
 
-            <!-- Search Bar -->
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                 <input type="text" id="searchInput" oninput="renderGroups()" placeholder="Search groups by name..." 
                     class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-11 pr-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
             </div>
 
-            <!-- Counter -->
             <div class="flex justify-center">
                 <span class="text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full font-medium">
                     Total Groups: <b id="groupCount">0</b>
                 </span>
             </div>
 
-            <!-- Category Filter Bar -->
             <div class="flex gap-2 overflow-x-auto pb-1 text-xs no-scrollbar" id="categoryBar">
-                <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0 transition-all">
-                    All
-                </button>
-                <button onclick="selectCategory('18+ Viral Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🔞 18+ Viral Groups
-                </button>
-                <button onclick="selectCategory('Viral Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🔥 Viral Groups
-                </button>
-                <button onclick="selectCategory('Friendship Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    👥 Friendship Groups
-                </button>
-                <button onclick="selectCategory('Chatting Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    💬 Chatting Groups
-                </button>
-                <button onclick="selectCategory('Love & Relationship', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    ❤️ Love & Relationship
-                </button>
-                <button onclick="selectCategory('Movies', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🎬 Movies
-                </button>
-                <button onclick="selectCategory('Dramas / TV Shows', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    📺 Dramas / TV Shows
-                </button>
-                <button onclick="selectCategory('Gaming', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🎮 Gaming
-                </button>
-                <button onclick="selectCategory('Cricket', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🏏 Cricket
-                </button>
-                <button onclick="selectCategory('Sports', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    ⚽ Sports
-                </button>
-                <button onclick="selectCategory('Jobs & Careers', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    💼 Jobs & Careers
-                </button>
-                <button onclick="selectCategory('Technology', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    💻 Technology
-                </button>
-                <button onclick="selectCategory('AI Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🤖 AI Groups
-                </button>
-                <button onclick="selectCategory('Shopping / Buy & Sell', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🛒 Shopping / Buy & Sell
-                </button>
-                <button onclick="selectCategory('Students Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800 transition-all">
-                    🎓 Students Groups
-                </button>
+                <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">All</button>
+                <button onclick="selectCategory('18+ Viral Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🔞 18+ Viral Groups</button>
+                <button onclick="selectCategory('Viral Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🔥 Viral Groups</button>
+                <button onclick="selectCategory('Friendship Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">👥 Friendship Groups</button>
+                <button onclick="selectCategory('Chatting Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">💬 Chatting Groups</button>
+                <button onclick="selectCategory('Love & Relationship', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">❤️ Love & Relationship</button>
+                <button onclick="selectCategory('Movies', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🎬 Movies</button>
+                <button onclick="selectCategory('Dramas / TV Shows', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">📺 Dramas / TV Shows</button>
+                <button onclick="selectCategory('Gaming', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🎮 Gaming</button>
+                <button onclick="selectCategory('Cricket', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🏏 Cricket</button>
+                <button onclick="selectCategory('Sports', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">⚽ Sports</button>
+                <button onclick="selectCategory('Jobs & Careers', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">💼 Jobs & Careers</button>
+                <button onclick="selectCategory('Technology', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">💻 Technology</button>
+                <button onclick="selectCategory('AI Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🤖 AI Groups</button>
+                <button onclick="selectCategory('Shopping / Buy & Sell', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🛒 Shopping / Buy & Sell</button>
+                <button onclick="selectCategory('Students Groups', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🎓 Students Groups</button>
             </div>
         </div>
 
-        <!-- Group Listings Grid -->
+        <!-- Group Grid -->
         <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <p class="text-center text-xs text-gray-500 col-span-2 py-8">Loading groups...</p>
         </div>
-
     </main>
+
+    <!-- Floating Help Button -->
+    <button onclick="toggleSupportChat()" class="fixed bottom-5 right-5 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl z-40 flex items-center gap-2 border border-emerald-400">
+        <i class="fa-solid fa-headset text-lg"></i>
+        <span class="text-xs font-bold">Help website owner</span>
+    </button>
+
+    <!-- Support Chat Widget Window -->
+    <div id="supportWidget" class="fixed bottom-20 right-5 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-50 hidden flex flex-col overflow-hidden">
+        <div class="bg-emerald-500 text-white p-3 flex justify-between items-center">
+            <h4 class="text-xs font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> Chat with Owner</h4>
+            <button onclick="toggleSupportChat()" class="text-white hover:text-gray-200 font-bold">&times;</button>
+        </div>
+        <div id="chatMessages" class="p-3 h-64 overflow-y-auto space-y-3 bg-slate-950 text-xs">
+            <p class="text-center text-gray-500 text-[11px]">Loading chat history...</p>
+        </div>
+        <form onsubmit="sendUserMessage(event)" class="p-2 border-t border-slate-800 bg-slate-900 space-y-2">
+            <input type="text" id="chatSenderName" placeholder="Your Name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white">
+            <div class="flex gap-2">
+                <input type="text" id="chatMsgInput" placeholder="Write message..." required class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white">
+                <button type="submit" id="chatSendBtn" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 rounded-lg font-bold">Send</button>
+            </div>
+        </form>
+    </div>
 
     <!-- Add Group Modal -->
     <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 w-full max-w-md shadow-2xl relative">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-emerald-400"></i> Add New Group
-                </h3>
+                <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-plus-circle text-emerald-400"></i> Add New Group</h3>
                 <button onclick="closeAddModal()" class="text-gray-400 hover:text-white text-lg font-bold">&times;</button>
             </div>
-
             <form id="groupForm" onsubmit="submitGroup(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Group Name</label>
-                    <input type="text" id="gName" required placeholder="e.g. Free Fire Pakistan" 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="gName" required placeholder="e.g. Free Fire Pakistan" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
                 </div>
-
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Platform</label>
-                    <select id="gPlatform" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <select id="gPlatform" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="Telegram">Telegram</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Category</label>
-                    <select id="gCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <select id="gCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
                         <option value="18+ Viral Groups">🔞 18+ Viral Groups</option>
                         <option value="Viral Groups">🔥 Viral Groups</option>
                         <option value="Friendship Groups">👥 Friendship Groups</option>
@@ -160,16 +140,13 @@
                         <option value="Students Groups">🎓 Students Groups</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Group Link</label>
-                    <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
                 </div>
-
                 <div class="pt-2 flex gap-3">
-                    <button type="button" onclick="closeAddModal()" class="w-1/2 bg-slate-800 text-gray-300 text-xs font-medium py-2.5 rounded-xl hover:bg-slate-700 transition-all">Cancel</button>
-                    <button type="submit" id="submitBtn" class="w-1/2 bg-emerald-500 text-white text-xs font-semibold py-2.5 rounded-xl hover:bg-emerald-600 transition-all">Submit Group</button>
+                    <button type="button" onclick="closeAddModal()" class="w-1/2 bg-slate-800 text-gray-300 text-xs font-medium py-2.5 rounded-xl">Cancel</button>
+                    <button type="submit" id="submitBtn" class="w-1/2 bg-emerald-500 text-white text-xs font-semibold py-2.5 rounded-xl">Submit Group</button>
                 </div>
             </form>
         </div>
@@ -183,24 +160,16 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let allApprovedGroups = [];
 let currentCategory = 'All';
 
-// Fetch Groups
 async function fetchGroups() {
-    const { data, error } = await db
-        .from('groups')
-        .select('*')
-        .order('is_pinned', { ascending: false })
-        .order('created_at', { ascending: false });
-
+    const { data, error } = await db.from('groups').select('*').order('is_pinned', { ascending: false }).order('created_at', { ascending: false });
     if (error || !data) {
         document.getElementById('listingsGrid').innerHTML = '<p class="text-center text-xs text-red-400 py-8">Error loading groups.</p>';
         return;
     }
-
     allApprovedGroups = data;
     renderGroups();
 }
 
-// Render Groups
 function renderGroups() {
     const grid = document.getElementById('listingsGrid');
     const searchInput = document.getElementById('searchInput');
@@ -224,33 +193,25 @@ function renderGroups() {
         <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-4 flex flex-col justify-between gap-3 shadow-lg relative">
             <div>
                 <div class="flex items-center justify-between gap-2 mb-2">
-                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">
-                        ${item.platform} • ${item.category}
-                    </span>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${item.platform} • ${item.category}</span>
                     ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
                 </div>
                 <h3 class="font-bold text-white text-sm line-clamp-1">${item.name}</h3>
             </div>
-            
-            <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" 
-                class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs py-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-2 shadow-md">
+            <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs py-2.5 rounded-xl text-center flex items-center justify-center gap-2">
                 <i class="fa-brands fa-whatsapp text-sm"></i> Join Group
             </a>
         </div>
     `).join('');
 }
 
-// Track Clicks
 async function trackClick(id) {
     try {
         const item = allApprovedGroups.find(g => g.id === id);
-        if (item) {
-            await db.from('groups').update({ clicks: (item.clicks || 0) + 1 }).eq('id', id);
-        }
+        if (item) await db.from('groups').update({ clicks: (item.clicks || 0) + 1 }).eq('id', id);
     } catch(e){}
 }
 
-// Category Selection
 function selectCategory(cat, btn) {
     currentCategory = cat;
     document.querySelectorAll('.cat-btn').forEach(b => {
@@ -262,31 +223,20 @@ function selectCategory(cat, btn) {
     renderGroups();
 }
 
-// Modal Controls
-function openAddModal() {
-    document.getElementById('addModal').classList.remove('hidden');
-}
-function closeAddModal() {
-    document.getElementById('addModal').classList.add('hidden');
-}
+function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
+function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
 
-// Submit Group Form
 async function submitGroup(e) {
     e.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
     submitBtn.innerText = 'Submitting...';
 
-    const name = document.getElementById('gName').value;
-    const platform = document.getElementById('gPlatform').value;
-    const category = document.getElementById('gCategory').value;
-    const link = document.getElementById('gLink').value;
-
     const { error } = await db.from('groups').insert([{
-        name,
-        platform,
-        category,
-        link,
+        name: document.getElementById('gName').value,
+        platform: document.getElementById('gPlatform').value,
+        category: document.getElementById('gCategory').value,
+        link: document.getElementById('gLink').value,
         status: 'approved',
         clicks: 0,
         is_pinned: false
@@ -295,16 +245,70 @@ async function submitGroup(e) {
     submitBtn.disabled = false;
     submitBtn.innerText = 'Submit Group';
 
-    if (error) {
-        alert('Error submitting group: ' + error.message);
-    } else {
-        alert('Success! Your group link is now live.');
-        closeAddModal();
-        fetchGroups();
+    if (error) { alert('Error: ' + error.message); } 
+    else { alert('Group submitted successfully!'); closeAddModal(); fetchGroups(); }
+}
+
+function toggleSupportChat() {
+    const widget = document.getElementById('supportWidget');
+    widget.classList.toggle('hidden');
+    if (!widget.classList.contains('hidden')) {
+        const savedName = localStorage.getItem('chatSenderName');
+        if(savedName) document.getElementById('chatSenderName').value = savedName;
+        loadChatMessages();
     }
 }
 
-// Initial Fetch
+async function loadChatMessages() {
+    const box = document.getElementById('chatMessages');
+    const savedName = localStorage.getItem('chatSenderName') || document.getElementById('chatSenderName').value;
+    
+    if(!savedName) {
+        box.innerHTML = '<p class="text-center text-gray-500 text-[11px]">Type your name & message below to chat with owner.</p>';
+        return;
+    }
+
+    const { data } = await db.from('messages').select('*').eq('sender_name', savedName).order('created_at', { ascending: true });
+    
+    if(!data || data.length === 0) {
+        box.innerHTML = '<p class="text-center text-gray-500 text-[11px]">No previous messages.</p>';
+        return;
+    }
+
+    box.innerHTML = data.map(m => `
+        <div class="space-y-1">
+            <div class="bg-slate-900 border border-slate-800 p-2 rounded-lg text-gray-200">
+                <b class="text-emerald-400 text-[10px] block">${m.sender_name}</b>
+                <p>${m.message}</p>
+            </div>
+            ${m.reply ? `
+                <div class="bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-lg text-emerald-300 ml-4">
+                    <b class="text-emerald-400 text-[10px] block">👑 Owner Reply</b>
+                    <p>${m.reply}</p>
+                </div>
+            ` : '<span class="text-[9px] text-gray-500 block text-right">Waiting for reply...</span>'}
+        </div>
+    `).join('');
+    box.scrollTop = box.scrollHeight;
+}
+
+async function sendUserMessage(e) {
+    e.preventDefault();
+    const name = document.getElementById('chatSenderName').value;
+    const msg = document.getElementById('chatMsgInput').value;
+    
+    localStorage.setItem('chatSenderName', name);
+
+    const btn = document.getElementById('chatSendBtn');
+    btn.disabled = true;
+
+    await db.from('messages').insert([{ sender_name: name, message: msg }]);
+
+    document.getElementById('chatMsgInput').value = '';
+    btn.disabled = false;
+    loadChatMessages();
+}
+
 fetchGroups();
 </script>
 </body>
