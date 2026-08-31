@@ -129,18 +129,18 @@
             <form id="groupForm" onsubmit="submitGroup(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Group Name</label>
-                    <input type="text" id="gName" required placeholder="e.g. Free Fire Pakistan" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                    <input type="text" id="gName" required placeholder="e.g. Free Fire Pakistan" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Platform</label>
-                    <select id="gPlatform" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                    <select id="gPlatform" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="Telegram">Telegram</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Category</label>
-                    <select id="gCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                    <select id="gCategory" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                         <option value="Islamic">🕌 Islamic</option>
                         <option value="Poetry">✍️ Poetry</option>
                         <option value="Pakistani Viral">🇵🇰 Pakistani Viral</option>
@@ -164,7 +164,12 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Group Link</label>
-                    <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white">
+                    <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <!-- Group Description (Optional) -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 mb-1">Group Description <span class="text-gray-500 text-[10px]">(Optional)</span></label>
+                    <textarea id="gDescription" rows="3" placeholder="Group ki detail ya description likhein..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 resize-none"></textarea>
                 </div>
                 <div class="pt-2 flex gap-3">
                     <button type="button" onclick="closeAddModal()" class="w-1/2 bg-slate-800 text-gray-300 text-xs font-medium py-2.5 rounded-xl">Cancel</button>
@@ -288,11 +293,12 @@ function renderGroups() {
                     ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
                 </div>
 
-                <div class="flex items-center gap-3 mb-2">
-                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='${defaultImg}';" class="w-12 h-12 rounded-full object-cover border border-slate-700 shrink-0 bg-slate-950 p-0.5" alt="Group DP">
-                    <div>
+                <div class="flex items-start gap-3 mb-2">
+                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='${defaultImg}';" class="w-12 h-12 rounded-full object-cover border border-slate-700 shrink-0 bg-slate-950 p-0.5 mt-0.5" alt="Group DP">
+                    <div class="flex-1 min-w-0">
                         <h3 class="font-bold text-white text-base leading-snug line-clamp-2">${item.name}</h3>
-                        <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg mt-1">
+                        ${item.description ? `<p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${item.description}</p>` : ''}
+                        <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg mt-2">
                             <i class="fa-solid fa-eye text-emerald-400"></i>
                             <span><b>${item.clicks || 0}</b> Joins</span>
                         </div>
@@ -348,6 +354,7 @@ async function submitGroup(e) {
     submitBtn.innerText = 'Fetching DP & Submitting...';
 
     const link = document.getElementById('gLink').value;
+    const description = document.getElementById('gDescription').value.trim();
     let imageUrl = null;
 
     try {
@@ -367,6 +374,7 @@ async function submitGroup(e) {
         platform: document.getElementById('gPlatform').value,
         category: document.getElementById('gCategory').value,
         link: link,
+        description: description || null,
         image_url: imageUrl,
         status: 'approved',
         clicks: 0,
