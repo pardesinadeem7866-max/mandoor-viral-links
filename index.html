@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -229,27 +229,37 @@ function renderGroups() {
         return;
     }
 
-    grid.innerHTML = filtered.map(item => `
+    const defaultImg = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg";
+
+    grid.innerHTML = filtered.map(item => {
+        const imgUrl = item.image_url ? item.image_url : defaultImg;
+
+        return `
         <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl relative">
             <div>
-                <div class="flex items-center justify-between gap-2 mb-2">
+                <div class="flex items-center justify-between gap-2 mb-3">
                     <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${item.platform} • ${item.category}</span>
                     ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
                 </div>
 
-                <div class="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-950 border border-slate-800 px-2.5 py-1 rounded-lg my-1">
-                    <i class="fa-solid fa-eye text-emerald-400"></i>
-                    <span><b>${item.clicks || 0}</b> Joins</span>
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='${defaultImg}';" class="w-12 h-12 rounded-full object-cover border border-slate-700 shrink-0 bg-slate-950 p-0.5" alt="Group DP">
+                    <div>
+                        <h3 class="font-bold text-white text-base leading-snug line-clamp-2">${item.name}</h3>
+                        <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg mt-1">
+                            <i class="fa-solid fa-eye text-emerald-400"></i>
+                            <span><b>${item.clicks || 0}</b> Joins</span>
+                        </div>
+                    </div>
                 </div>
-
-                <h3 class="font-bold text-white text-lg mt-2 mb-1 leading-snug line-clamp-2">${item.name}</h3>
             </div>
 
             <a href="${item.link}" target="_blank" onclick="trackClick('${item.id}')" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-base py-3.5 rounded-xl text-center flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
                 <i class="fa-brands fa-whatsapp text-xl"></i> Join Group
             </a>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 async function trackClick(id) {
@@ -289,13 +299,29 @@ async function submitGroup(e) {
     e.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
-    submitBtn.innerText = 'Submitting...';
+    submitBtn.innerText = 'Fetching DP & Submitting...';
+
+    const link = document.getElementById('gLink').value;
+    let imageUrl = null;
+
+    try {
+        if (link.includes('whatsapp.com')) {
+            const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(link)}`);
+            const data = await res.json();
+            if (data && data.data && data.data.image && data.data.image.url) {
+                imageUrl = data.data.image.url;
+            }
+        }
+    } catch (err) {
+        console.log("DP Fetch Error:", err);
+    }
 
     const { error } = await db.from('groups').insert([{
         name: document.getElementById('gName').value,
         platform: document.getElementById('gPlatform').value,
         category: document.getElementById('gCategory').value,
-        link: document.getElementById('gLink').value,
+        link: link,
+        image_url: imageUrl,
         status: 'approved',
         clicks: 0,
         is_pinned: false
@@ -304,8 +330,14 @@ async function submitGroup(e) {
     submitBtn.disabled = false;
     submitBtn.innerText = 'Submit Group';
 
-    if (error) { alert('Error: ' + error.message); } 
-    else { alert('Group submitted successfully!'); closeAddModal(); fetchGroups(); }
+    if (error) { 
+        alert('Error: ' + error.message); 
+    } else { 
+        alert('Group submitted successfully!'); 
+        document.getElementById('groupForm').reset();
+        closeAddModal(); 
+        fetchGroups(); 
+    }
 }
 
 function toggleSupportChat() {
