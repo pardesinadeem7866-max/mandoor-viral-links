@@ -44,7 +44,7 @@
             <p id="mainSubtext" class="text-xs text-slate-400"></p>
         </div>
 
-        <!-- Search & App Download Section -->
+        <!-- Search, Sort & App Download Section -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
             <!-- App Download Button -->
             <a href="https://www.appcreator24.com/app4171828-c1m7a2" target="_blank" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-sm py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md">
@@ -52,10 +52,19 @@
                 <span>📱 Download Official Android App</span>
             </a>
 
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" id="searchInput" oninput="renderGroups()" placeholder="Search groups by name..." 
-                    class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-11 pr-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
+            <!-- Search Bar & Sorting Dropdown -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" oninput="renderGroups()" placeholder="Search groups by name..." 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-11 pr-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
+                </div>
+
+                <!-- Latest / Popular Filter Dropdown -->
+                <select id="sortSelect" onchange="renderGroups()" class="bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
+                    <option value="latest">🆕 Latest First</option>
+                    <option value="popular">🔥 Most Popular</option>
+                </select>
             </div>
 
             <div class="flex justify-center">
@@ -166,7 +175,6 @@
                     <label class="block text-xs font-medium text-gray-300 mb-1">Group Link</label>
                     <input type="url" id="gLink" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
                 </div>
-                <!-- Group Description (Optional) -->
                 <div>
                     <label class="block text-xs font-medium text-gray-300 mb-1">Group Description <span class="text-gray-500 text-[10px]">(Optional)</span></label>
                     <textarea id="gDescription" rows="3" placeholder="Group ki detail ya description likhein..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 resize-none"></textarea>
@@ -193,14 +201,12 @@ async function fetchSiteSettings() {
         const { data, error } = await db.from('settings').select('*').limit(1).single();
         if (error || !data) return;
 
-        // Title update
         if (data.website_title) {
             document.title = data.website_title;
             const siteTitleElem = document.getElementById('siteTitle');
             if (siteTitleElem) siteTitleElem.innerText = data.website_title;
         }
 
-        // Hero Main Heading & Subtext
         if (data.main_heading || data.main_subtext) {
             const heroElem = document.getElementById('heroSection');
             if (data.main_heading) document.getElementById('mainHeading').innerText = data.main_heading;
@@ -208,7 +214,6 @@ async function fetchSiteSettings() {
             heroElem.classList.remove('hidden');
         }
 
-        // Announcement Banner logic
         const bannerElem = document.getElementById('announcementBanner');
         const bannerTextElem = document.getElementById('announcementText');
         if (data.announcement_status === 'ON' && data.announcement_text) {
@@ -252,7 +257,7 @@ async function trackVisitor() {
 trackVisitor();
 
 async function fetchGroups() {
-    const { data, error } = await db.from('groups').select('*').order('is_pinned', { ascending: false }).order('created_at', { ascending: false });
+    const { data, error } = await db.from('groups').select('*');
     if (error || !data) {
         document.getElementById('listingsGrid').innerHTML = '<p class="text-center text-xs text-red-400 py-8">Error loading groups.</p>';
         return;
@@ -264,12 +269,30 @@ async function fetchGroups() {
 function renderGroups() {
     const grid = document.getElementById('listingsGrid');
     const searchInput = document.getElementById('searchInput');
-    const search = searchInput ? searchInput.value.toLowerCase() : '';
+    const sortSelect = document.getElementById('sortSelect');
 
-    const filtered = allApprovedGroups.filter(g => {
+    const search = searchInput ? searchInput.value.toLowerCase() : '';
+    const sortBy = sortSelect ? sortSelect.value : 'latest';
+
+    // Search and Category Filter
+    let filtered = allApprovedGroups.filter(g => {
         const matchCategory = currentCategory === 'All' || g.category === currentCategory;
         const matchSearch = g.name.toLowerCase().includes(search);
         return matchCategory && matchSearch;
+    });
+
+    // Sorting Logic (VIP Pinned groups automatically stay at the top)
+    filtered.sort((a, b) => {
+        if (a.is_pinned !== b.is_pinned) {
+            return b.is_pinned ? 1 : -1;
+        }
+
+        if (sortBy === 'popular') {
+            return (b.clicks || 0) - (a.clicks || 0);
+        } else {
+            // Latest First
+            return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        }
     });
 
     const countElem = document.getElementById('groupCount');
@@ -285,6 +308,13 @@ function renderGroups() {
     grid.innerHTML = filtered.map(item => {
         const imgUrl = item.image_url ? item.image_url : defaultImg;
 
+        // Date Formatting
+        let formattedDate = "N/A";
+        if (item.created_at) {
+            const dateObj = new Date(item.created_at);
+            formattedDate = dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
         return `
         <div class="bg-slate-900 border ${item.is_pinned ? 'border-amber-500/50 bg-amber-500/5 shadow-amber-500/10' : 'border-slate-800'} rounded-2xl p-5 flex flex-col justify-between gap-4 shadow-xl relative">
             <div>
@@ -298,9 +328,17 @@ function renderGroups() {
                     <div class="flex-1 min-w-0">
                         <h3 class="font-bold text-white text-base leading-snug line-clamp-2">${item.name}</h3>
                         ${item.description ? `<p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${item.description}</p>` : ''}
-                        <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg mt-2">
-                            <i class="fa-solid fa-eye text-emerald-400"></i>
-                            <span><b>${item.clicks || 0}</b> Joins</span>
+                        
+                        <!-- Joins Count & Added Date -->
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg">
+                                <i class="fa-solid fa-eye text-emerald-400"></i>
+                                <span><b>${item.clicks || 0}</b> Joins</span>
+                            </div>
+                            <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-400 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg">
+                                <i class="fa-regular fa-calendar-days text-slate-400"></i>
+                                <span>${formattedDate}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -463,4 +501,4 @@ fetchSiteSettings();
 fetchGroups();
 </script>
 </body>
-</html>
+</h
