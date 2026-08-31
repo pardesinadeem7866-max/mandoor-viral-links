@@ -22,14 +22,12 @@
             </div>
             
             <form onsubmit="handleLogin(event)" class="space-y-3">
-                <!-- Gmail Input -->
                 <div>
                     <label class="block text-xs font-medium text-slate-300 mb-1">Gmail Address</label>
                     <input type="email" id="adminEmail" placeholder="pardesinadeem7866@gmail.com" required 
                         class="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
                 </div>
 
-                <!-- Password Input -->
                 <div>
                     <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
                     <div class="relative">
@@ -48,17 +46,38 @@
         </div>
     </div>
 
-    <!-- Admin Panel (Hidden by default) -->
+    <!-- Admin Panel -->
     <div id="adminPanel" class="hidden min-h-screen pb-12">
         <!-- Header -->
         <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
-            <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center relative">
                 <h1 class="font-bold text-base text-white flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved text-emerald-400"></i> Admin Panel
                 </h1>
-                <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold px-3 py-1.5 rounded-xl">
-                    Logout
-                </button>
+                
+                <div class="flex items-center gap-2">
+                    <!-- 3-Line Mobile Hamburger Menu Button -->
+                    <button onclick="toggleNavMenu()" class="sm:hidden text-gray-300 hover:text-white p-2 text-xl focus:outline-none">
+                        <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
+                    </button>
+                    
+                    <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold px-3 py-1.5 rounded-xl">
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Dropdown Menu for Mobile (3-Line Click) -->
+                <div id="mobileNavDropdown" class="hidden absolute top-full right-4 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 sm:hidden">
+                    <button onclick="switchTab('groups'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-emerald-400"></i> Manage Groups
+                    </button>
+                    <button onclick="switchTab('messages'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-purple-400"></i> User Messages
+                    </button>
+                    <button onclick="switchTab('settings'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-gear text-blue-400"></i> Site Settings
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -66,7 +85,6 @@
             
             <!-- Live Overview Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <!-- Website Visitors Card -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
                     <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center justify-center text-xl shrink-0">
                         <i class="fa-solid fa-eye"></i>
@@ -77,7 +95,6 @@
                     </div>
                 </div>
 
-                <!-- Total Groups Card -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
                     <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-xl flex items-center justify-center text-xl shrink-0">
                         <i class="fa-solid fa-layer-group"></i>
@@ -88,7 +105,6 @@
                     </div>
                 </div>
 
-                <!-- Total Messages Card -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
                     <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-xl flex items-center justify-center text-xl shrink-0">
                         <i class="fa-solid fa-comments"></i>
@@ -100,8 +116,8 @@
                 </div>
             </div>
 
-            <!-- Tabs -->
-            <div class="flex gap-2 border-b border-slate-800 pb-2 overflow-x-auto">
+            <!-- Tabs Navigation (Desktop Hidden on Mobile if using Hamburger) -->
+            <div class="hidden sm:flex gap-2 border-b border-slate-800 pb-2">
                 <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0">
                     <i class="fa-solid fa-layer-group"></i> Manage Groups
                 </button>
@@ -261,6 +277,11 @@ if (!localStorage.getItem('admin_pass')) {
     localStorage.setItem('admin_pass', DEFAULT_PASS);
 }
 
+function toggleNavMenu() {
+    const dropdown = document.getElementById('mobileNavDropdown');
+    dropdown.classList.toggle('hidden');
+}
+
 function togglePassword() {
     const input = document.getElementById('adminPassword');
     const icon = document.getElementById('eyeIcon');
@@ -330,24 +351,23 @@ function switchTab(tab) {
     sectionMessages.classList.add('hidden');
     sectionSettings.classList.add('hidden');
 
-    tabGroups.className = inactiveClass;
-    tabMessages.className = inactiveClass;
-    tabSettings.className = inactiveClass;
+    if(tabGroups) tabGroups.className = inactiveClass;
+    if(tabMessages) tabMessages.className = inactiveClass;
+    if(tabSettings) tabSettings.className = inactiveClass;
 
     if(tab === 'groups') {
         sectionGroups.classList.remove('hidden');
-        tabGroups.className = activeClass;
+        if(tabGroups) tabGroups.className = activeClass;
     } else if(tab === 'messages') {
         sectionMessages.classList.remove('hidden');
-        tabMessages.className = activeClass;
+        if(tabMessages) tabMessages.className = activeClass;
     } else if(tab === 'settings') {
         sectionSettings.classList.remove('hidden');
-        tabSettings.className = activeClass;
+        if(tabSettings) tabSettings.className = activeClass;
         fetchSiteSettings();
     }
 }
 
-// Refresh All Data & Visitor Stats
 async function refreshDashboard() {
     fetchVisitorStats();
     fetchAdminGroups();
@@ -355,7 +375,6 @@ async function refreshDashboard() {
     fetchSiteSettings();
 }
 
-// Fetch Site Settings from Supabase
 async function fetchSiteSettings() {
     try {
         const { data, error } = await db.from('site_settings').select('*');
@@ -370,7 +389,6 @@ async function fetchSiteSettings() {
     } catch(e){}
 }
 
-// Save Site Settings to Supabase
 async function saveSiteSettings(e) {
     e.preventDefault();
     const btn = document.getElementById('saveBtn');
@@ -411,7 +429,6 @@ async function saveSiteSettings(e) {
     }
 }
 
-// Live Visitor Count Fetching
 async function fetchVisitorStats() {
     try {
         const { count, error } = await db.from('visitors').select('*', { count: 'exact', head: true });
@@ -421,6 +438,7 @@ async function fetchVisitorStats() {
     } catch(e){}
 }
 
+// UPDATED: Dynamic Group DP + Join Group Button + Action Buttons
 async function fetchAdminGroups() {
     const box = document.getElementById('groupsList');
     const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
@@ -428,17 +446,36 @@ async function fetchAdminGroups() {
     
     document.getElementById('totalGroupsCount').innerText = data.length;
 
+    const defaultDp = "https://cdn-icons-png.flaticon.com/512/3670/3670051.png";
+
     box.innerHTML = data.map(g => `
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex justify-between items-center gap-4">
-            <div>
-                <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-medium">${g.category}</span>
-                <h4 class="font-bold text-white text-sm mt-1">${g.name}</h4>
-                <a href="${g.link}" target="_blank" class="text-xs text-gray-400 hover:underline line-clamp-1">${g.link}</a>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <!-- Group DP -->
+                <img src="${g.icon_url || g.dp || defaultDp}" 
+                     alt="Group DP" 
+                     onerror="this.onerror=null;this.src='${defaultDp}';" 
+                     class="w-12 h-12 rounded-full object-cover border border-slate-700 shrink-0 bg-slate-800">
+                
+                <div class="overflow-hidden">
+                    <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-medium inline-block">${g.category || 'General'}</span>
+                    <h4 class="font-bold text-white text-sm mt-0.5 truncate">${g.name}</h4>
+                    <a href="${g.link}" target="_blank" class="text-xs text-gray-400 hover:underline truncate block">${g.link}</a>
+                </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="togglePin('${g.id}', ${g.is_pinned})" class="text-xs ${g.is_pinned ? 'bg-amber-500 text-black' : 'bg-slate-800 text-amber-400'} px-3 py-1.5 rounded-xl font-bold">
+
+            <div class="flex items-center gap-2 justify-end border-t border-slate-800/80 pt-3 sm:pt-0 sm:border-0">
+                <!-- Join Group Button -->
+                <a href="${g.link}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Join
+                </a>
+                
+                <!-- Pin Button -->
+                <button onclick="togglePin('${g.id}', ${g.is_pinned})" class="text-xs ${g.is_pinned ? 'bg-amber-500 text-black' : 'bg-slate-800 text-amber-400'} px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
                     <i class="fa-solid fa-thumbtack"></i> ${g.is_pinned ? 'Pinned' : 'Pin'}
                 </button>
+                
+                <!-- Delete Button -->
                 <button onclick="deleteGroup('${g.id}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-2 rounded-xl text-xs">
                     <i class="fa-solid fa-trash"></i>
                 </button>
