@@ -89,12 +89,15 @@
             </div>
 
             <!-- Tabs -->
-            <div class="flex gap-2 border-b border-slate-800 pb-2">
-                <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white">
+            <div class="flex gap-2 border-b border-slate-800 pb-2 overflow-x-auto">
+                <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0">
                     <i class="fa-solid fa-layer-group"></i> Manage Groups
                 </button>
-                <button onclick="switchTab('messages')" id="tabMessages" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800">
+                <button onclick="switchTab('messages')" id="tabMessages" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
                     <i class="fa-solid fa-comments"></i> User Messages
+                </button>
+                <button onclick="switchTab('settings')" id="tabSettings" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
+                    <i class="fa-solid fa-gear"></i> Site Settings
                 </button>
             </div>
 
@@ -123,6 +126,86 @@
                     <p class="text-center text-xs text-gray-500 py-8">Loading messages...</p>
                 </div>
             </div>
+
+            <!-- Settings Section -->
+            <div id="sectionSettings" class="hidden space-y-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-emerald-400"></i> Website Control & Settings
+                        </h3>
+                        <button type="button" onclick="fetchSiteSettings()" class="text-xs text-emerald-400 hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-right"></i> Reload Settings
+                        </button>
+                    </div>
+                    
+                    <form onsubmit="saveSiteSettings(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Website Name / Title</label>
+                                <input type="text" id="setting_site_title" placeholder="Mandoor Viral Links" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Announcement Status</label>
+                                <select id="setting_announcement_status" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                    <option value="1">Show Banner (ON)</option>
+                                    <option value="0">Hide Banner (OFF)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Main Heading</label>
+                                <input type="text" id="setting_main_heading" placeholder="Welcome to..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Main Subtext</label>
+                                <input type="text" id="setting_main_text" placeholder="Find the best viral links..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Announcement Banner Text</label>
+                            <input type="text" id="setting_announcement_text" placeholder="Join our official groups..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">WhatsApp Group Link</label>
+                                <input type="text" id="setting_whatsapp_group_link" placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Telegram Group Link</label>
+                                <input type="text" id="setting_telegram_group_link" placeholder="https://t.me/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">About Text</label>
+                                <textarea id="setting_about_text" rows="2" placeholder="About details..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Contact Details / Text</label>
+                                <textarea id="setting_contact_text" rows="2" placeholder="Contact info..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Footer Copyright Text</label>
+                            <input type="text" id="setting_footer_text" placeholder="© 2026 Mandoor Viral Links..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div class="pt-2 flex items-center justify-between">
+                            <button type="submit" id="saveBtn" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-lg flex items-center gap-2">
+                                <i class="fa-solid fa-floppy-disk"></i> Save All Settings
+                            </button>
+                            <span id="saveStatus" class="text-xs text-emerald-400 font-medium hidden">Saved successfully!</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -148,7 +231,7 @@ function togglePassword() {
 function handleLogin(e) {
     e.preventDefault();
     const pass = document.getElementById('adminPassword').value;
-    if(pass === '1234') { // Apney mutabiq password change kar lein
+    if(pass === '1234') { 
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('adminPanel').classList.remove('hidden');
         refreshDashboard();
@@ -163,16 +246,35 @@ function logout() {
 }
 
 function switchTab(tab) {
+    const sectionGroups = document.getElementById('sectionGroups');
+    const sectionMessages = document.getElementById('sectionMessages');
+    const sectionSettings = document.getElementById('sectionSettings');
+
+    const tabGroups = document.getElementById('tabGroups');
+    const tabMessages = document.getElementById('tabMessages');
+    const tabSettings = document.getElementById('tabSettings');
+
+    const activeClass = "text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0";
+    const inactiveClass = "text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0";
+
+    sectionGroups.classList.add('hidden');
+    sectionMessages.classList.add('hidden');
+    sectionSettings.classList.add('hidden');
+
+    tabGroups.className = inactiveClass;
+    tabMessages.className = inactiveClass;
+    tabSettings.className = inactiveClass;
+
     if(tab === 'groups') {
-        document.getElementById('sectionGroups').classList.remove('hidden');
-        document.getElementById('sectionMessages').classList.add('hidden');
-        document.getElementById('tabGroups').className = "text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white";
-        document.getElementById('tabMessages').className = "text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800";
-    } else {
-        document.getElementById('sectionGroups').classList.add('hidden');
-        document.getElementById('sectionMessages').classList.remove('hidden');
-        document.getElementById('tabMessages').className = "text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white";
-        document.getElementById('tabGroups').className = "text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800";
+        sectionGroups.classList.remove('hidden');
+        tabGroups.className = activeClass;
+    } else if(tab === 'messages') {
+        sectionMessages.classList.remove('hidden');
+        tabMessages.className = activeClass;
+    } else if(tab === 'settings') {
+        sectionSettings.classList.remove('hidden');
+        tabSettings.className = activeClass;
+        fetchSiteSettings();
     }
 }
 
@@ -181,6 +283,63 @@ async function refreshDashboard() {
     fetchVisitorStats();
     fetchAdminGroups();
     fetchAdminMessages();
+    fetchSiteSettings();
+}
+
+// Fetch Site Settings from Supabase
+async function fetchSiteSettings() {
+    try {
+        const { data, error } = await db.from('site_settings').select('*');
+        if (!error && data) {
+            data.forEach(item => {
+                const el = document.getElementById(`setting_${item.setting_key}`);
+                if (el) {
+                    el.value = item.setting_value || '';
+                }
+            });
+        }
+    } catch(e){}
+}
+
+// Save Site Settings to Supabase
+async function saveSiteSettings(e) {
+    e.preventDefault();
+    const btn = document.getElementById('saveBtn');
+    const status = document.getElementById('saveStatus');
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+    const keys = [
+        'site_title',
+        'announcement_status',
+        'main_heading',
+        'main_text',
+        'announcement_text',
+        'whatsapp_group_link',
+        'telegram_group_link',
+        'about_text',
+        'contact_text',
+        'footer_text'
+    ];
+
+    try {
+        const promises = keys.map(key => {
+            const el = document.getElementById(`setting_${key}`);
+            const val = el ? el.value : '';
+            return db.from('site_settings').upsert({ setting_key: key, setting_value: val }, { onConflict: 'setting_key' });
+        });
+
+        await Promise.all(promises);
+
+        status.classList.remove('hidden');
+        setTimeout(() => status.classList.add('hidden'), 3000);
+    } catch(err) {
+        alert('Error saving settings');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All Settings';
+    }
 }
 
 // Live Visitor Count Fetching
@@ -198,7 +357,6 @@ async function fetchAdminGroups() {
     const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
     if(error || !data) { box.innerHTML = '<p class="text-xs text-red-400 text-center">Error loading groups</p>'; return; }
     
-    // Total groups count update
     document.getElementById('totalGroupsCount').innerText = data.length;
 
     box.innerHTML = data.map(g => `
@@ -242,7 +400,6 @@ async function fetchAdminMessages() {
         return; 
     }
     
-    // Total messages count update
     document.getElementById('totalMessagesCount').innerText = data.length;
 
     box.innerHTML = data.map(m => `
