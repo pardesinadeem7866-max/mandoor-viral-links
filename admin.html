@@ -18,18 +18,30 @@
                     <i class="fa-solid fa-user-shield text-xl"></i>
                 </div>
                 <h2 class="text-lg font-bold text-white">Admin Login</h2>
-                <p class="text-xs text-gray-400">Enter password to access dashboard</p>
+                <p class="text-xs text-gray-400">Enter Gmail & Password to access dashboard</p>
             </div>
             
             <form onsubmit="handleLogin(event)" class="space-y-3">
-                <div class="relative">
-                    <input type="password" id="adminPassword" placeholder="Enter Password" required 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
-                    <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm">
-                        <i id="eyeIcon" class="fa-solid fa-eye"></i>
-                    </button>
+                <!-- Gmail Input -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Gmail Address</label>
+                    <input type="email" id="adminEmail" placeholder="pardesinadeem7866@gmail.com" required 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
                 </div>
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-lg">
+
+                <!-- Password Input -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="adminPassword" placeholder="Enter Password" required 
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 pl-4 pr-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm">
+                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-lg mt-2">
                     Login
                 </button>
             </form>
@@ -128,7 +140,31 @@
             </div>
 
             <!-- Settings Section -->
-            <div id="sectionSettings" class="hidden space-y-4">
+            <div id="sectionSettings" class="hidden space-y-6">
+
+                <!-- CHANGE ADMIN PASSWORD CARD -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
+                    <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-key"></i> Change Admin Password
+                    </h3>
+                    <form onsubmit="changeAdminPassword(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Current Password</label>
+                                <input type="password" id="currPassword" placeholder="Purana password daalein" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">New Password</label>
+                                <input type="password" id="newPassword" placeholder="Naya password daalein" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+                        <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md">
+                            Update Password
+                        </button>
+                    </form>
+                </div>
+
+                <!-- WEBSITE CONTROL SETTINGS -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
                     <div class="flex justify-between items-center">
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -214,6 +250,17 @@ const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// Default Credentials setup
+const DEFAULT_EMAIL = "pardesinadeem7866@gmail.com";
+const DEFAULT_PASS = "03017573729n";
+
+if (!localStorage.getItem('admin_email')) {
+    localStorage.setItem('admin_email', DEFAULT_EMAIL);
+}
+if (!localStorage.getItem('admin_pass')) {
+    localStorage.setItem('admin_pass', DEFAULT_PASS);
+}
+
 function togglePassword() {
     const input = document.getElementById('adminPassword');
     const icon = document.getElementById('eyeIcon');
@@ -230,14 +277,36 @@ function togglePassword() {
 
 function handleLogin(e) {
     e.preventDefault();
-    const pass = document.getElementById('adminPassword').value;
-    if(pass === '1234') { 
+    const email = document.getElementById('adminEmail').value.trim();
+    const pass = document.getElementById('adminPassword').value.trim();
+    
+    const savedEmail = localStorage.getItem('admin_email');
+    const savedPass = localStorage.getItem('admin_pass');
+
+    if (email === savedEmail && pass === savedPass) { 
         document.getElementById('loginSection').classList.add('hidden');
         document.getElementById('adminPanel').classList.remove('hidden');
         refreshDashboard();
     } else {
-        alert('Wrong Password!');
+        alert('Ghalat Email ya Password!');
     }
+}
+
+function changeAdminPassword(e) {
+    e.preventDefault();
+    const currPass = document.getElementById('currPassword').value.trim();
+    const newPass = document.getElementById('newPassword').value.trim();
+    const savedPass = localStorage.getItem('admin_pass');
+
+    if (currPass !== savedPass) {
+        alert('Purana password sahi nahi hai!');
+        return;
+    }
+
+    localStorage.setItem('admin_pass', newPass);
+    alert('Password kamyabi se badal gaya hai!');
+    document.getElementById('currPassword').value = '';
+    document.getElementById('newPassword').value = '';
 }
 
 function logout() {
