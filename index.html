@@ -14,14 +14,12 @@
 </head>
 <body class="bg-slate-950 text-gray-100 font-sans min-h-screen pb-20">
 
-    <!-- Announcement Banner -->
     <div id="announcementBanner" class="hidden bg-emerald-500/10 border-b border-emerald-500/30 text-emerald-400 text-xs text-center py-2.5 px-4 font-medium">
         <span id="announcementText"></span>
     </div>
 
-    <!-- Header -->
     <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center relative">
             <div class="flex items-center gap-3">
                 <button onclick="shareWebsite()" title="Share Website" class="w-10 h-10 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-400 hover:bg-emerald-500/20 active:scale-95 transition-all">
                     <i class="fa-solid fa-share-nodes text-lg"></i>
@@ -30,29 +28,45 @@
                     <h1 id="siteTitle" class="font-bold text-base text-white">Mandoor <span class="text-emerald-400">Viral Links</span></h1>
                 </div>
             </div>
-            <button onclick="openAddModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all shadow-lg flex items-center gap-1.5">
-                <i class="fa-solid fa-plus text-xs"></i> Add Group
-            </button>
+
+            <div class="relative">
+                <button id="menuBtn" onclick="toggleUserMenu()" class="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center text-gray-300 hover:text-white active:scale-95 transition-all">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+
+                <div id="userDropdownMenu" class="hidden absolute top-full right-0 mt-2 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50">
+                    <a href="https://whatsapp.com/channel/0029VbCBDNEHrDZZgvbtLD2z" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                        <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> WhatsApp Channel
+                    </a>
+                    <a href="https://youtube.com/@multaniff-b2k?si=Tk1Dc8cpWp3_VS3_" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                        <i class="fa-brands fa-youtube text-red-500 text-base"></i> YouTube Channel
+                    </a>
+                    <a href="https://www.tiktok.com/@multaniffgaming" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                        <i class="fa-brands fa-tiktok text-pink-400 text-base"></i> TikTok Profile
+                    </a>
+                </div>
+            </div>
         </div>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 pt-6 space-y-6">
 
-        <!-- Dynamic Main Heading & Subtext Section -->
         <div id="heroSection" class="hidden text-center space-y-1 py-2">
             <h2 id="mainHeading" class="text-xl font-extrabold text-white tracking-wide"></h2>
             <p id="mainSubtext" class="text-xs text-slate-400"></p>
         </div>
 
-        <!-- Search, Sort & App Download Section -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-            <!-- App Download Button -->
+            
+            <button onclick="openAddModal()" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-98 text-white font-bold text-sm py-3.5 px-4 rounded-2xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all">
+                <i class="fa-solid fa-plus text-base"></i> Add Group
+            </button>
+
             <a href="https://www.appcreator24.com/app4171828-c1m7a2" target="_blank" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-sm py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md">
                 <i class="fa-solid fa-mobile-screen-button text-lg"></i>
                 <span>📱 Download Official Android App</span>
             </a>
 
-            <!-- Search Bar & Sorting Dropdown -->
             <div class="flex flex-col sm:flex-row gap-3">
                 <div class="relative flex-1">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
@@ -60,7 +74,6 @@
                         class="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-11 pr-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
                 </div>
 
-                <!-- Latest / Popular Filter Dropdown -->
                 <select id="sortSelect" onchange="renderGroups()" class="bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
                     <option value="latest">🆕 Latest First</option>
                     <option value="popular">🔥 Most Popular</option>
@@ -73,7 +86,6 @@
                 </span>
             </div>
 
-            <!-- Categories Scroll Bar -->
             <div class="flex gap-2 overflow-x-auto pb-1 text-xs no-scrollbar" id="categoryBar">
                 <button onclick="selectCategory('All', this)" class="cat-btn active bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl shrink-0">All</button>
                 <button onclick="selectCategory('Islamic', this)" class="cat-btn bg-slate-950 hover:bg-slate-800 text-gray-400 px-4 py-2 rounded-xl shrink-0 border border-slate-800">🕌 Islamic</button>
@@ -98,19 +110,16 @@
             </div>
         </div>
 
-        <!-- Group Grid -->
         <div id="listingsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <p class="text-center text-xs text-gray-500 col-span-2 py-8">Loading groups...</p>
         </div>
     </main>
 
-    <!-- Floating Help Button -->
     <button onclick="toggleSupportChat()" class="fixed bottom-5 right-5 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-2xl z-40 flex items-center gap-2 border border-emerald-400">
         <i class="fa-solid fa-headset text-lg"></i>
         <span class="text-xs font-bold">Help website owner</span>
     </button>
 
-    <!-- Support Chat Widget Window -->
     <div id="supportWidget" class="fixed bottom-20 right-5 w-80 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-50 hidden flex flex-col overflow-hidden">
         <div class="bg-emerald-500 text-white p-3 flex justify-between items-center">
             <h4 class="text-xs font-bold flex items-center gap-2"><i class="fa-solid fa-comments"></i> Chat with Owner</h4>
@@ -128,7 +137,6 @@
         </form>
     </div>
 
-    <!-- Add Group Modal -->
     <div id="addModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 w-full max-w-md shadow-2xl relative">
             <div class="flex justify-between items-center mb-4">
@@ -194,6 +202,21 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allApprovedGroups = [];
 let currentCategory = 'All';
+
+// Toggle Top Menu
+function toggleUserMenu() {
+    const menu = document.getElementById('userDropdownMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Close menu when clicking outside
+window.addEventListener('click', function(e) {
+    const menu = document.getElementById('userDropdownMenu');
+    const btn = document.getElementById('menuBtn');
+    if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.add('hidden');
+    }
+});
 
 // Fetch Live Site Settings from Supabase
 async function fetchSiteSettings() {
@@ -329,7 +352,6 @@ function renderGroups() {
                         <h3 class="font-bold text-white text-base leading-snug line-clamp-2">${item.name}</h3>
                         ${item.description ? `<p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${item.description}</p>` : ''}
                         
-                        <!-- Joins Count & Added Date -->
                         <div class="flex flex-wrap items-center gap-2 mt-2">
                             <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg">
                                 <i class="fa-solid fa-eye text-emerald-400"></i>
@@ -501,4 +523,4 @@ fetchSiteSettings();
 fetchGroups();
 </script>
 </body>
-</h
+</html>
