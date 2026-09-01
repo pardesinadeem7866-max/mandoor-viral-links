@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="pageTitle">Mandoor Viral Links</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -12,7 +17,11 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-gray-100 font-sans min-h-screen pb-20">
+<body class="bg-slate-950 dark:bg-slate-950 text-gray-100 font-sans min-h-screen pb-20 transition-colors duration-300" id="appBody">
+
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-emerald-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-2xl z-50 hidden transition-all duration-300 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check"></i> <span id="toastMsg">Link Copied!</span>
+    </div>
 
     <div id="announcementBanner" class="hidden bg-emerald-500/10 border-b border-emerald-500/30 text-emerald-400 text-xs text-center py-2.5 px-4 font-medium">
         <span id="announcementText"></span>
@@ -29,21 +38,27 @@
                 </div>
             </div>
 
-            <div class="relative">
-                <button id="menuBtn" onclick="toggleUserMenu()" class="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center text-gray-300 hover:text-white active:scale-95 transition-all">
-                    <i class="fa-solid fa-bars text-lg"></i>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTheme()" id="themeBtn" title="Toggle Theme" class="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center text-amber-400 hover:text-amber-300 active:scale-95 transition-all">
+                    <i class="fa-solid fa-sun text-lg"></i>
                 </button>
 
-                <div id="userDropdownMenu" class="hidden absolute top-full right-0 mt-2 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50">
-                    <a href="https://whatsapp.com/channel/0029VbCBDNEHrDZZgvbtLD2z" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
-                        <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> WhatsApp Channel
-                    </a>
-                    <a href="https://youtube.com/@multaniff-b2k?si=Tk1Dc8cpWp3_VS3_" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
-                        <i class="fa-brands fa-youtube text-red-500 text-base"></i> YouTube Channel
-                    </a>
-                    <a href="https://www.tiktok.com/@multaniffgaming" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
-                        <i class="fa-brands fa-tiktok text-pink-400 text-base"></i> TikTok Profile
-                    </a>
+                <div class="relative">
+                    <button id="menuBtn" onclick="toggleUserMenu()" class="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center text-gray-300 hover:text-white active:scale-95 transition-all">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+
+                    <div id="userDropdownMenu" class="hidden absolute top-full right-0 mt-2 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50">
+                        <a href="https://whatsapp.com/channel/0029VbCBDNEHrDZZgvbtLD2z" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> WhatsApp Channel
+                        </a>
+                        <a href="https://youtube.com/@multaniff-b2k?si=Tk1Dc8cpWp3_VS3_" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                            <i class="fa-brands fa-youtube text-red-500 text-base"></i> YouTube Channel
+                        </a>
+                        <a href="https://www.tiktok.com/@multaniffgaming" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                            <i class="fa-brands fa-tiktok text-pink-400 text-base"></i> TikTok Profile
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -217,6 +232,26 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let allApprovedGroups = [];
 let currentCategory = 'All';
 let favorites = JSON.parse(localStorage.getItem('favGroups') || '[]');
+let likedGroups = JSON.parse(localStorage.getItem('likedGroups') || '[]');
+
+// Toast Notification Function
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').innerText = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+}
+
+// Dark / Light Theme Toggle Function
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark');
+    const icon = document.querySelector('#themeBtn i');
+    if (isDark) {
+        icon.className = 'fa-solid fa-sun text-lg';
+    } else {
+        icon.className = 'fa-solid fa-moon text-lg text-slate-700';
+    }
+}
 
 // Toggle Top Menu
 function toggleUserMenu() {
@@ -274,20 +309,16 @@ async function shareWebsite() {
                 text: 'Join latest WhatsApp & Telegram groups!',
                 url: window.location.href
             });
-        } catch (err) {
-            console.log('Share canceled:', err);
-        }
+        } catch (err) {}
     } else {
         try {
             await navigator.clipboard.writeText(window.location.href);
-            alert('Website link copied to clipboard!');
-        } catch (err) {
-            alert('Link copy karne ke liye URL copy karein: ' + window.location.href);
-        }
+            showToast('Website link copied to clipboard!');
+        } catch (err) {}
     }
 }
 
-// Single Group Share Function (Group Link + Website Link Together)
+// Single Group Share Function
 async function shareSingleGroup(groupName, groupLink) {
     const shareText = `Join "${groupName}" group on Mandoor Viral Links:\nGroup: ${groupLink}\n\nMore Groups: ${window.location.href}`;
     
@@ -301,10 +332,45 @@ async function shareSingleGroup(groupName, groupLink) {
     } else {
         try {
             await navigator.clipboard.writeText(shareText);
-            alert('Group link & Website details copied to clipboard!');
-        } catch(e) {
-            alert('Share text: ' + shareText);
-        }
+            showToast('Group details copied to clipboard!');
+        } catch(e) {}
+    }
+}
+
+// Like System Function (#2)
+async function toggleLike(id) {
+    const item = allApprovedGroups.find(g => g.id == id);
+    if (!item) return;
+
+    if (likedGroups.includes(id)) {
+        likedGroups = likedGroups.filter(lId => lId !== id);
+        item.likes = Math.max(0, (item.likes || 0) - 1);
+    } else {
+        likedGroups.push(id);
+        item.likes = (item.likes || 0) + 1;
+    }
+
+    localStorage.setItem('likedGroups', JSON.stringify(likedGroups));
+    renderGroups();
+
+    try {
+        await db.from('groups').update({ likes: item.likes }).eq('id', id);
+    } catch(e) {}
+}
+
+// Report Broken Link Function (#1) - Directly sends alert to Admin Chat
+async function reportGroup(groupName, id) {
+    const reportReason = prompt(`Report group "${groupName}":\nWrite problem (e.g. Group Full, Link Expired):`, "Group Full / Link Expired");
+    if (!reportReason) return;
+
+    try {
+        await db.from('messages').insert([{ 
+            sender_name: "⚠️ REPORT BOT", 
+            message: `REPORT: Group "${groupName}" (ID: ${id}) has issue: ${reportReason}` 
+        }]);
+        showToast('Report sent to admin panel!');
+    } catch(e) {
+        alert('Report send failed.');
     }
 }
 
@@ -344,7 +410,6 @@ function renderGroups() {
     const search = searchInput ? searchInput.value.toLowerCase() : '';
     const sortBy = sortSelect ? sortSelect.value : 'latest';
 
-    // Search and Category Filter + Favorites Filter
     let filtered = allApprovedGroups.filter(g => {
         const matchCategory = currentCategory === 'All' || g.category === currentCategory;
         const matchSearch = g.name.toLowerCase().includes(search);
@@ -352,7 +417,6 @@ function renderGroups() {
         return matchCategory && matchSearch && matchFav;
     });
 
-    // Sorting Logic (VIP Pinned groups automatically stay at the top)
     filtered.sort((a, b) => {
         if (a.is_pinned !== b.is_pinned) {
             return b.is_pinned ? 1 : -1;
@@ -378,6 +442,8 @@ function renderGroups() {
     grid.innerHTML = filtered.map(item => {
         const imgUrl = item.image_url ? item.image_url : defaultImg;
         const isFav = favorites.includes(item.id);
+        const isLiked = likedGroups.includes(item.id);
+        const isTrending = (item.clicks || 0) >= 15; // Dynamic Trending Badge Feature (#4)
 
         let formattedDate = "N/A";
         if (item.created_at) {
@@ -392,6 +458,7 @@ function renderGroups() {
                     <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${item.platform} • ${item.category}</span>
                     <div class="flex items-center gap-2">
                         ${item.is_pinned ? '<span class="text-[10px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-md font-bold">📌 VIP PINNED</span>' : ''}
+                        ${isTrending ? '<span class="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-md font-bold animate-pulse">🔥 TRENDING</span>' : ''}
                         
                         <button onclick="toggleFavorite('${item.id}')" title="Save Group" class="text-base transition-all active:scale-125">
                             <i class="${isFav ? 'fa-solid text-red-500' : 'fa-regular text-slate-500 hover:text-red-400'} fa-heart"></i>
@@ -410,10 +477,16 @@ function renderGroups() {
                                 <i class="fa-solid fa-eye text-emerald-400"></i>
                                 <span><b>${item.clicks || 0}</b> Joins</span>
                             </div>
-                            <div class="inline-flex items-center gap-1.5 text-[11px] text-slate-400 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg">
-                                <i class="fa-regular fa-calendar-days text-slate-400"></i>
-                                <span>${formattedDate}</span>
-                            </div>
+
+                            <button onclick="toggleLike('${item.id}')" class="inline-flex items-center gap-1.5 text-[11px] ${isLiked ? 'text-emerald-400 border-emerald-500/40' : 'text-slate-400'} bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg active:scale-95 transition-all">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <span><b>${item.likes || 0}</b></span>
+                            </button>
+
+                            <button onclick="reportGroup('${item.name.replace(/'/g, "\\'")}', '${item.id}')" title="Report Link" class="inline-flex items-center gap-1 text-[11px] text-red-400 hover:text-red-300 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg active:scale-95 transition-all">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>Report</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -441,14 +514,9 @@ async function trackClick(id) {
             
             renderGroups();
             
-            const { error } = await db.from('groups').update({ clicks: newClicks }).eq('id', id);
-            if (error) {
-                console.error("Supabase Update Error:", error.message);
-            }
+            await db.from('groups').update({ clicks: newClicks }).eq('id', id);
         }
-    } catch(e) {
-        console.error("Click Tracking Error:", e);
-    }
+    } catch(e) {}
 }
 
 function selectCategory(cat, btn) {
@@ -483,9 +551,7 @@ async function submitGroup(e) {
                 imageUrl = data.data.image.url;
             }
         }
-    } catch (err) {
-        console.log("DP Fetch Error:", err);
-    }
+    } catch (err) {}
 
     const { error } = await db.from('groups').insert([{
         name: document.getElementById('gName').value,
@@ -496,6 +562,7 @@ async function submitGroup(e) {
         image_url: imageUrl,
         status: 'approved',
         clicks: 0,
+        likes: 0,
         is_pinned: false
     }]);
 
@@ -505,7 +572,7 @@ async function submitGroup(e) {
     if (error) { 
         alert('Error: ' + error.message); 
     } else { 
-        alert('Group submitted successfully!'); 
+        showToast('Group submitted successfully!'); 
         document.getElementById('groupForm').reset();
         closeAddModal(); 
         fetchGroups(); 
@@ -576,7 +643,6 @@ function sendUserMessage(e) {
     });
 }
 
-// Initialize Site Settings and Groups
 fetchSiteSettings();
 fetchGroups();
 </script>
