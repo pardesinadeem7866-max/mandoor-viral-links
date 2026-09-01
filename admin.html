@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Mandoor Viral Links</title>
+    <title>MANDOOR ADMIN PANEL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-950 text-gray-100 font-sans min-h-screen">
 
-    <!-- Login Screen -->
     <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
             <div class="text-center space-y-1">
                 <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center text-emerald-400 mx-auto mb-2">
                     <i class="fa-solid fa-user-shield text-xl"></i>
                 </div>
-                <h2 class="text-lg font-bold text-white">Admin Login</h2>
+                <h2 class="text-lg font-bold text-white">MANDOOR ADMIN PANEL</h2>
                 <p class="text-xs text-gray-400">Enter Gmail & Password to access dashboard</p>
             </div>
             
@@ -46,36 +45,34 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
     <div id="adminPanel" class="hidden min-h-screen pb-12">
-        <!-- Header -->
         <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
             <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center relative">
                 <h1 class="font-bold text-base text-white flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-emerald-400"></i> Admin Panel
+                    <i class="fa-solid fa-shield-halved text-emerald-400"></i> MANDOOR ADMIN PANEL
                 </h1>
                 
                 <div class="flex items-center gap-2">
-                    <!-- 3-Line Mobile Hamburger Menu Button -->
-                    <button onclick="toggleNavMenu()" class="sm:hidden text-gray-300 hover:text-white p-2 text-xl focus:outline-none">
+                    <button onclick="toggleNavMenu()" class="text-gray-300 hover:text-white p-2 text-xl focus:outline-none border border-slate-800 rounded-xl bg-slate-950/50">
                         <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
-                    </button>
-                    
-                    <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold px-3 py-1.5 rounded-xl">
-                        Logout
                     </button>
                 </div>
 
-                <!-- Dropdown Menu for Mobile (3-Line Click) -->
-                <div id="mobileNavDropdown" class="hidden absolute top-full right-4 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 sm:hidden">
+                <div id="mobileNavDropdown" class="hidden absolute top-full right-4 mt-2 w-56 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50">
                     <button onclick="switchTab('groups'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
                         <i class="fa-solid fa-layer-group text-emerald-400"></i> Manage Groups
                     </button>
-                    <button onclick="switchTab('messages'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
+                    <button onclick="openMessagesModal(); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
                         <i class="fa-solid fa-comments text-purple-400"></i> User Messages
                     </button>
                     <button onclick="switchTab('settings'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
                         <i class="fa-solid fa-gear text-blue-400"></i> Site Settings
+                    </button>
+                    
+                    <div class="border-t border-slate-800 my-1"></div>
+                    
+                    <button onclick="logout()" class="w-full text-left px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </button>
                 </div>
             </div>
@@ -83,7 +80,6 @@
 
         <main class="max-w-5xl mx-auto px-4 pt-6 space-y-6">
             
-            <!-- Live Overview Stats Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
                     <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center justify-center text-xl shrink-0">
@@ -105,7 +101,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl">
+                <div onclick="openMessagesModal()" class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4 shadow-xl cursor-pointer hover:border-purple-500/50 transition-all">
                     <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-xl flex items-center justify-center text-xl shrink-0">
                         <i class="fa-solid fa-comments"></i>
                     </div>
@@ -116,12 +112,11 @@
                 </div>
             </div>
 
-            <!-- Tabs Navigation (Desktop Hidden on Mobile if using Hamburger) -->
             <div class="hidden sm:flex gap-2 border-b border-slate-800 pb-2">
                 <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0">
                     <i class="fa-solid fa-layer-group"></i> Manage Groups
                 </button>
-                <button onclick="switchTab('messages')" id="tabMessages" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
+                <button onclick="openMessagesModal()" id="tabMessages" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
                     <i class="fa-solid fa-comments"></i> User Messages
                 </button>
                 <button onclick="switchTab('settings')" id="tabSettings" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
@@ -129,7 +124,6 @@
                 </button>
             </div>
 
-            <!-- Groups Section -->
             <div id="sectionGroups" class="space-y-4">
                 <div class="flex justify-between items-center">
                     <h3 class="text-sm font-bold text-white">All Groups</h3>
@@ -142,23 +136,8 @@
                 </div>
             </div>
 
-            <!-- Messages Section -->
-            <div id="sectionMessages" class="hidden space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-white">User Support Messages</h3>
-                    <button onclick="refreshDashboard()" class="text-xs text-emerald-400 hover:underline flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-right"></i> Refresh Stats
-                    </button>
-                </div>
-                <div id="messagesList" class="space-y-3">
-                    <p class="text-center text-xs text-gray-500 py-8">Loading messages...</p>
-                </div>
-            </div>
-
-            <!-- Settings Section -->
             <div id="sectionSettings" class="hidden space-y-6">
 
-                <!-- CHANGE ADMIN PASSWORD CARD -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
                     <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
                         <i class="fa-solid fa-key"></i> Change Admin Password
@@ -180,7 +159,6 @@
                     </form>
                 </div>
 
-                <!-- WEBSITE CONTROL SETTINGS -->
                 <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
                     <div class="flex justify-between items-center">
                         <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -261,6 +239,23 @@
         </main>
     </div>
 
+    <div id="messagesModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-5 shadow-2xl space-y-4 relative max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3 shrink-0">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-purple-400"></i> User Support Messages
+                </h3>
+                <button onclick="closeMessagesModal()" class="w-8 h-8 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-full flex items-center justify-center text-sm transition-all">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div id="modalMessagesList" class="overflow-y-auto space-y-3 flex-1 pr-1">
+                <p class="text-center text-xs text-gray-500 py-8">Loading messages...</p>
+            </div>
+        </div>
+    </div>
+
 <script>
 const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
@@ -335,32 +330,34 @@ function logout() {
     document.getElementById('loginSection').classList.remove('hidden');
 }
 
+function openMessagesModal() {
+    document.getElementById('messagesModal').classList.remove('hidden');
+    fetchAdminMessages();
+}
+
+function closeMessagesModal() {
+    document.getElementById('messagesModal').classList.add('hidden');
+}
+
 function switchTab(tab) {
     const sectionGroups = document.getElementById('sectionGroups');
-    const sectionMessages = document.getElementById('sectionMessages');
     const sectionSettings = document.getElementById('sectionSettings');
 
     const tabGroups = document.getElementById('tabGroups');
-    const tabMessages = document.getElementById('tabMessages');
     const tabSettings = document.getElementById('tabSettings');
 
     const activeClass = "text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0";
     const inactiveClass = "text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0";
 
     sectionGroups.classList.add('hidden');
-    sectionMessages.classList.add('hidden');
     sectionSettings.classList.add('hidden');
 
     if(tabGroups) tabGroups.className = inactiveClass;
-    if(tabMessages) tabMessages.className = inactiveClass;
     if(tabSettings) tabSettings.className = inactiveClass;
 
     if(tab === 'groups') {
         sectionGroups.classList.remove('hidden');
         if(tabGroups) tabGroups.className = activeClass;
-    } else if(tab === 'messages') {
-        sectionMessages.classList.remove('hidden');
-        if(tabMessages) tabMessages.className = activeClass;
     } else if(tab === 'settings') {
         sectionSettings.classList.remove('hidden');
         if(tabSettings) tabSettings.className = activeClass;
@@ -438,7 +435,22 @@ async function fetchVisitorStats() {
     } catch(e){}
 }
 
-// UPDATED: Dynamic Group DP + Join Group Button + Action Buttons
+// Track/Increment Group Join View Count
+async function trackGroupClick(groupId, groupLink) {
+    try {
+        await db.rpc('increment_group_views', { group_id: groupId });
+    } catch(e) {
+        // Fallback update if RPC is not configured
+        try {
+            const { data } = await db.from('groups').select('views').eq('id', groupId).single();
+            const currentViews = (data && data.views) ? data.views : 0;
+            await db.from('groups').update({ views: currentViews + 1 }).eq('id', groupId);
+        } catch(err){}
+    }
+    window.open(groupLink, '_blank');
+}
+
+// UPDATED: Dynamic Group DP + Share Date + Join Eye Count
 async function fetchAdminGroups() {
     const box = document.getElementById('groupsList');
     const { data, error } = await db.from('groups').select('*').order('created_at', { ascending: false });
@@ -448,40 +460,47 @@ async function fetchAdminGroups() {
 
     const defaultDp = "https://cdn-icons-png.flaticon.com/512/3670/3670051.png";
 
-    box.innerHTML = data.map(g => `
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <!-- Group DP -->
-                <img src="${g.icon_url || g.dp || defaultDp}" 
-                     alt="Group DP" 
-                     onerror="this.onerror=null;this.src='${defaultDp}';" 
-                     class="w-12 h-12 rounded-full object-cover border border-slate-700 shrink-0 bg-slate-800">
-                
-                <div class="overflow-hidden">
-                    <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-medium inline-block">${g.category || 'General'}</span>
-                    <h4 class="font-bold text-white text-sm mt-0.5 truncate">${g.name}</h4>
-                    <a href="${g.link}" target="_blank" class="text-xs text-gray-400 hover:underline truncate block">${g.link}</a>
+    box.innerHTML = data.map(g => {
+        // Format creation date
+        const shareDate = g.created_at ? new Date(g.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A';
+        const joinCount = g.views || g.joins || 0;
+
+        return `
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <img src="${g.icon_url || g.dp || defaultDp}" 
+                         alt="Group DP" 
+                         onerror="this.onerror=null;this.src='${defaultDp}';" 
+                         class="w-12 h-12 rounded-full object-cover border border-slate-700 shrink-0 bg-slate-800">
+                    
+                    <div class="overflow-hidden">
+                        <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-medium inline-block">${g.category || 'General'}</span>
+                        <h4 class="font-bold text-white text-sm mt-0.5 truncate">${g.name}</h4>
+                        <a href="${g.link}" target="_blank" class="text-xs text-gray-400 hover:underline truncate block">${g.link}</a>
+                        
+                        <div class="flex items-center gap-3 mt-1.5 text-[11px] text-slate-400">
+                            <span class="flex items-center gap-1"><i class="fa-regular fa-calendar text-slate-500"></i> ${shareDate}</span>
+                            <span class="flex items-center gap-1 text-emerald-400/90 font-medium"><i class="fa-solid fa-eye text-emerald-400"></i> ${joinCount} joins</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 justify-end border-t border-slate-800/80 pt-3 sm:pt-0 sm:border-0">
+                    <button onclick="trackGroupClick('${g.id}', '${g.link}')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Join
+                    </button>
+                    
+                    <button onclick="togglePin('${g.id}', ${g.is_pinned})" class="text-xs ${g.is_pinned ? 'bg-amber-500 text-black' : 'bg-slate-800 text-amber-400'} px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-thumbtack"></i> ${g.is_pinned ? 'Pinned' : 'Pin'}
+                    </button>
+                    
+                    <button onclick="deleteGroup('${g.id}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-2 rounded-xl text-xs">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 </div>
             </div>
-
-            <div class="flex items-center gap-2 justify-end border-t border-slate-800/80 pt-3 sm:pt-0 sm:border-0">
-                <!-- Join Group Button -->
-                <a href="${g.link}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all">
-                    <i class="fa-brands fa-whatsapp text-sm"></i> Join
-                </a>
-                
-                <!-- Pin Button -->
-                <button onclick="togglePin('${g.id}', ${g.is_pinned})" class="text-xs ${g.is_pinned ? 'bg-amber-500 text-black' : 'bg-slate-800 text-amber-400'} px-3 py-1.5 rounded-xl font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-thumbtack"></i> ${g.is_pinned ? 'Pinned' : 'Pin'}
-                </button>
-                
-                <!-- Delete Button -->
-                <button onclick="deleteGroup('${g.id}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-2 rounded-xl text-xs">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 async function togglePin(id, current) {
@@ -497,30 +516,30 @@ async function deleteGroup(id) {
 }
 
 async function fetchAdminMessages() {
-    const box = document.getElementById('messagesList');
+    const box = document.getElementById('modalMessagesList');
     const { data } = await db.from('messages').select('*').order('created_at', { ascending: false });
     
     if(!data || data.length === 0) { 
         document.getElementById('totalMessagesCount').innerText = "0";
-        box.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">No messages found.</p>'; 
+        box.innerHTML = '<p class="text-xs text-gray-500 text-center py-8">No messages found.</p>'; 
         return; 
     }
     
     document.getElementById('totalMessagesCount').innerText = data.length;
 
     box.innerHTML = data.map(m => `
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 space-y-2.5">
             <div class="flex justify-between items-start">
                 <div>
-                    <b class="text-emerald-400 text-xs">${m.sender_name}</b>
-                    <p class="text-white text-xs mt-1">${m.message}</p>
+                    <b class="text-emerald-400 text-xs">${m.sender_name || 'Anonymous User'}</b>
+                    <p class="text-white text-xs mt-1 leading-relaxed">${m.message}</p>
                 </div>
-                <button onclick="deleteMessage('${m.id}')" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="deleteMessage('${m.id}')" class="text-red-400 text-xs p-1 hover:bg-red-500/10 rounded-lg"><i class="fa-solid fa-trash"></i></button>
             </div>
-            ${m.reply ? `<p class="text-xs text-gray-400 bg-slate-950 p-2 rounded-lg border border-slate-800"><b>Your Reply:</b> ${m.reply}</p>` : ''}
-            <div class="flex gap-2">
-                <input type="text" id="replyInput_${m.id}" placeholder="Type reply..." class="flex-1 bg-slate-950 border border-slate-800 text-xs text-white p-2 rounded-xl">
-                <button onclick="sendAdminReply('${m.id}')" class="bg-emerald-500 text-white text-xs font-bold px-4 rounded-xl">Reply</button>
+            ${m.reply ? `<p class="text-xs text-gray-300 bg-slate-900 p-2 rounded-lg border border-slate-800"><b>Your Reply:</b> ${m.reply}</p>` : ''}
+            <div class="flex gap-2 pt-1">
+                <input type="text" id="replyInput_${m.id}" placeholder="Type reply..." class="flex-1 bg-slate-900 border border-slate-800 text-xs text-white px-3 py-1.5 rounded-xl focus:outline-none focus:border-emerald-500">
+                <button onclick="sendAdminReply('${m.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-all">Reply</button>
             </div>
         </div>
     `).join('');
