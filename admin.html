@@ -841,7 +841,7 @@ async function bulkDeleteGroups() {
     const selected = Array.from(document.querySelectorAll('.group-select-checkbox:checked')).map(cb => cb.value);
     if (selected.length === 0) return;
 
-    if (confirm(`Kya aap waqai ${selected.length} selected groups ko delete karna chahte hain?`)) {
+    if (confirm(`Delete ${selected.length} groups?`)) {
         await db.from('groups').delete().in('id', selected);
         fetchAdminGroups();
         updateBulkToolbar();
@@ -856,6 +856,7 @@ async function bulkPinGroups(status) {
     fetchAdminGroups();
     updateBulkToolbar();
 }
+    
     
 </script>
 </body>
