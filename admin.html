@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-slate-950 text-gray-100 font-sans min-h-screen">
 
@@ -114,7 +115,16 @@
                     </div>
                 </div>
             </div>
-
+<!-- VISUAL GRAPH ANALYTICS -->
+<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl mb-6">
+    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics Overview
+    </h3>
+    <div class="relative h-48 w-full">
+        <canvas id="analyticsChart"></canvas>
+    </div>
+</div>
+        
             <!-- TABS -->
             <div class="hidden sm:flex gap-2 border-b border-slate-800 pb-2">
                 <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0">
@@ -148,6 +158,22 @@
                     </div>
                 </div>
 
+    <!-- BULK ACTION BAR -->
+<div id="bulkActionBar" class="hidden bg-slate-900 border border-emerald-500/30 p-3 rounded-2xl flex items-center justify-between gap-2 shadow-lg mb-3">
+    <div class="flex items-center gap-2 text-xs text-white font-medium">
+        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+        <span>Select All (<span id="selectedCount">0</span>)</span>
+    </div>
+    <div class="flex items-center gap-2">
+        <button onclick="bulkPinGroups(true)" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+            <i class="fa-solid fa-thumbtack"></i> Pin Selected
+        </button>
+        <button onclick="bulkDeleteGroups()" class="bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+            <i class="fa-solid fa-trash"></i> Delete Selected
+        </button>
+    </div>
+</div>
+                
                 <div id="groupsList" class="space-y-3">
                     <p class="text-center text-xs text-gray-500 py-8">Loading groups...</p>
                 </div>
@@ -750,7 +776,87 @@ async function deleteMessage(id) {
         await db.from('messages').delete().eq('id', id);
         fetchAdminMessages();
     }
+// ANALYTICS GRAPH LOGIC
+let analyticsChartInstance = null;
+
+function updateAnalyticsGraph() {
+    const ctx = document.getElementById('analyticsChart');
+    if (!ctx) return;
+
+    const totalVisitors = parseInt(document.getElementById('totalVisitors')?.innerText) || 0;
+    const totalGroups = parseInt(document.getElementById('totalGroupsCount')?.innerText) || 0;
+    const totalMessages = parseInt(document.getElementById('totalMessagesCount')?.innerText) || 0;
+
+    if (analyticsChartInstance) {
+        analyticsChartInstance.destroy();
+    }
+
+    analyticsChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Visitors', 'Groups', 'Messages'],
+            datasets: [{
+                data: [totalVisitors, totalGroups, totalMessages],
+                backgroundColor: ['rgba(16, 185, 129, 0.6)', 'rgba(59, 130, 246, 0.6)', 'rgba(168, 85, 247, 0.6)'],
+                borderColor: ['#10b981', '#3b82f6', '#a855f7'],
+                borderWidth: 1.5,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+                y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+            }
+        }
+    });
 }
+
+// BULK ACTIONS LOGIC
+function toggleSelectAll(master) {
+    const checkboxes = document.querySelectorAll('.group-select-checkbox');
+    checkboxes.forEach(cb => cb.checked = master.checked);
+    updateBulkToolbar();
+}
+
+function updateBulkToolbar() {
+    const checkboxes = document.querySelectorAll('.group-select-checkbox:checked');
+    const bar = document.getElementById('bulkActionBar');
+    const countLabel = document.getElementById('selectedCount');
+    
+    if (checkboxes.length > 0) {
+        bar?.classList.remove('hidden');
+        if (countLabel) countLabel.innerText = checkboxes.length;
+    } else {
+        bar?.classList.add('hidden');
+        const selectAll = document.getElementById('selectAllCheckbox');
+        if (selectAll) selectAll.checked = false;
+    }
+}
+
+async function bulkDeleteGroups() {
+    const selected = Array.from(document.querySelectorAll('.group-select-checkbox:checked')).map(cb => cb.value);
+    if (selected.length === 0) return;
+
+    if (confirm(`Kya aap waqai ${selected.length} selected groups ko delete karna chahte hain?`)) {
+        await db.from('groups').delete().in('id', selected);
+        fetchAdminGroups();
+        updateBulkToolbar();
+    }
+}
+
+async function bulkPinGroups(status) {
+    const selected = Array.from(document.querySelectorAll('.group-select-checkbox:checked')).map(cb => cb.value);
+    if (selected.length === 0) return;
+
+    await db.from('groups').update({ is_pinned: status }).in('id', selected);
+    fetchAdminGroups();
+    updateBulkToolbar();
+}
+    
 </script>
 </body>
 </html>
