@@ -449,13 +449,21 @@ function switchTab(tab) {
     }
 }
 
-async function refreshDashboard() {
-    fetchVisitorStats();
-    fetchAdminGroups();
-    fetchAdminMessages();
-    fetchSiteSettings();
-}
+async function refreshDashboard(btnElement) {
+    const icon = btnElement ? btnElement.querySelector('i') : document.querySelector('#sectionGroups i.fa-rotate-right');
+    if (icon) icon.classList.add('fa-spin');
 
+    await Promise.all([
+        fetchVisitorStats(),
+        fetchAdminGroups(),
+        fetchAdminMessages(),
+        fetchSiteSettings()
+    ]);
+
+    if (icon) {
+        setTimeout(() => icon.classList.remove('fa-spin'), 600);
+    }
+}
 async function fetchSiteSettings() {
     try {
         const { data, error } = await db.from('site_settings').select('*');
