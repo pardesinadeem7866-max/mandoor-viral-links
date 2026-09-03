@@ -19,12 +19,12 @@
                     <i class="fa-solid fa-user-shield text-xl"></i>
                 </div>
                 <h2 class="text-lg font-bold text-white">MANDOOR ADMIN PANEL</h2>
-                <p class="text-xs text-gray-400">Enter Gmail & Password to access dashboard</p>
+                <p class="text-xs text-gray-400">Enter Email & Password to access dashboard</p>
             </div>
             
             <form onsubmit="handleLogin(event)" class="space-y-3">
                 <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Gmail Address</label>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
                     <input type="email" id="adminEmail" placeholder="pardesinadeem7866@gmail.com" required 
                         class="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
                 </div>
@@ -56,6 +56,9 @@
                 </h1>
                 
                 <div class="flex items-center gap-2">
+                    <button onclick="exportGroupsCSV()" class="hidden sm:flex items-center gap-1 text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 px-3 py-2 rounded-xl border border-slate-700 font-bold transition-all">
+                        <i class="fa-solid fa-file-csv"></i> Backup CSV
+                    </button>
                     <button onclick="toggleNavMenu()" class="text-gray-300 hover:text-white p-2 text-xl focus:outline-none border border-slate-800 rounded-xl bg-slate-950/50">
                         <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
                     </button>
@@ -65,11 +68,17 @@
                     <button onclick="switchTab('groups'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
                         <i class="fa-solid fa-layer-group text-emerald-400"></i> Manage Groups
                     </button>
+                    <button onclick="switchTab('addGroup'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle text-blue-400"></i> Add New Group
+                    </button>
                     <button onclick="openMessagesModal(); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
                         <i class="fa-solid fa-comments text-purple-400"></i> User Messages
                     </button>
                     <button onclick="switchTab('settings'); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2">
-                        <i class="fa-solid fa-gear text-blue-400"></i> Site Settings
+                        <i class="fa-solid fa-gear text-amber-400"></i> Site Settings
+                    </button>
+                    <button onclick="exportGroupsCSV(); toggleNavMenu();" class="w-full text-left px-3 py-2 text-xs font-bold text-emerald-400 hover:bg-slate-800 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-file-csv"></i> Export CSV Backup
                     </button>
                     
                     <div class="border-t border-slate-800 my-1"></div>
@@ -115,20 +124,24 @@
                     </div>
                 </div>
             </div>
-<!-- VISUAL GRAPH ANALYTICS -->
-<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl mb-6">
-    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-        <i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics Overview
-    </h3>
-    <div class="relative h-48 w-full">
-        <canvas id="analyticsChart"></canvas>
-    </div>
-</div>
+
+            <!-- VISUAL GRAPH ANALYTICS -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics Overview
+                </h3>
+                <div class="relative h-48 w-full">
+                    <canvas id="analyticsChart"></canvas>
+                </div>
+            </div>
         
             <!-- TABS -->
             <div class="hidden sm:flex gap-2 border-b border-slate-800 pb-2">
                 <button onclick="switchTab('groups')" id="tabGroups" class="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0">
                     <i class="fa-solid fa-layer-group"></i> Manage Groups
+                </button>
+                <button onclick="switchTab('addGroup')" id="tabAddGroup" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
+                    <i class="fa-solid fa-plus-circle"></i> Add New Group
                 </button>
                 <button onclick="openMessagesModal()" id="tabMessages" class="text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0">
                     <i class="fa-solid fa-comments"></i> User Messages
@@ -145,37 +158,94 @@
                         <i class="fa-solid fa-list text-emerald-400"></i> All Groups (<span id="showingGroupsCount">0</span>)
                     </h3>
                     
-                    <!-- ID & Name Search Input -->
+                    <!-- Search Input & Refresh -->
                     <div class="flex items-center gap-2 flex-1 max-w-md">
                         <div class="relative flex-1">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-                            <input type="text" id="adminSearchInput" oninput="filterAdminGroups()" placeholder="Search Name or Group ID (e.g. 144)..." 
+                            <input type="text" id="adminSearchInput" oninput="filterAdminGroups()" placeholder="Search Name or Group ID..." 
                                 class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
                         </div>
-                        <button onclick="refreshDashboard()" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 rounded-xl flex items-center gap-1 shrink-0">
+                        <button onclick="refreshDashboard(this)" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold border border-emerald-500/20 bg-emerald-500/10 px-3 py-2 rounded-xl flex items-center gap-1 shrink-0">
                             <i class="fa-solid fa-rotate-right"></i> Refresh
                         </button>
                     </div>
                 </div>
 
-    <!-- BULK ACTION BAR -->
-<div id="bulkActionBar" class="hidden bg-slate-900 border border-emerald-500/30 p-3 rounded-2xl flex items-center justify-between gap-2 shadow-lg mb-3">
-    <div class="flex items-center gap-2 text-xs text-white font-medium">
-        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
-        <span>Select All (<span id="selectedCount">0</span>)</span>
-    </div>
-    <div class="flex items-center gap-2">
-        <button onclick="bulkPinGroups(true)" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
-            <i class="fa-solid fa-thumbtack"></i> Pin Selected
-        </button>
-        <button onclick="bulkDeleteGroups()" class="bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
-            <i class="fa-solid fa-trash"></i> Delete Selected
-        </button>
-    </div>
-</div>
+                <!-- BULK ACTION BAR -->
+                <div id="bulkActionBar" class="hidden bg-slate-900 border border-emerald-500/30 p-3 rounded-2xl flex items-center justify-between gap-2 shadow-lg mb-3">
+                    <div class="flex items-center gap-2 text-xs text-white font-medium">
+                        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                        <span>Select All (<span id="selectedCount">0</span>)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="bulkPinGroups(true)" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-thumbtack"></i> Pin Selected
+                        </button>
+                        <button onclick="bulkDeleteGroups()" class="bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2.5 py-1.5 rounded-xl font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-trash"></i> Delete Selected
+                        </button>
+                    </div>
+                </div>
                 
                 <div id="groupsList" class="space-y-3">
                     <p class="text-center text-xs text-gray-500 py-8">Loading groups...</p>
+                </div>
+            </div>
+
+            <!-- DIRECT ADD GROUP SECTION -->
+            <div id="sectionAddGroup" class="hidden space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl max-w-2xl mx-auto">
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-plus-circle text-emerald-400"></i> Post New WhatsApp / Telegram Group
+                    </h3>
+                    <form id="addGroupForm" onsubmit="addNewGroup(event)" class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Group Name *</label>
+                            <input type="text" id="add_group_name" required placeholder="e.g. Multani FF Viral Links" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Platform</label>
+                                <select id="add_group_platform" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                    <option value="WhatsApp">WhatsApp</option>
+                                    <option value="Telegram">Telegram</option>
+                                    <option value="Facebook">Facebook</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Category</label>
+                                <input type="text" id="add_group_category" placeholder="e.g. Gaming, Viral, Dramas" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Group Image URL (DP)</label>
+                            <input type="url" id="add_group_image_url" placeholder="https://..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Group Join Link *</label>
+                            <input type="url" id="add_group_link" required placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Description</label>
+                            <textarea id="add_group_description" rows="2" placeholder="Write a short detail..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
+                        </div>
+
+                        <div class="flex items-center gap-2 pt-1">
+                            <input type="checkbox" id="add_group_pinned" class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
+                            <label for="add_group_pinned" class="text-xs text-slate-300 font-medium cursor-pointer">Pin to Top (Featured Group)</label>
+                        </div>
+
+                        <div class="pt-3">
+                            <button type="submit" id="addGroupBtn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Add Group Now
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -222,7 +292,7 @@
                                 <input type="text" id="setting_site_title" placeholder="Mandoor Viral Links" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                             </div>
                             <div>
-                                <label class="text-xs text-gray-400 block mb-1 font-medium">Announcement Status</label>
+                                <label class="text-xs text-gray-400 block mb-1 font-medium">Live Announcement Status</label>
                                 <select id="setting_announcement_status" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                                     <option value="1">Show Banner (ON)</option>
                                     <option value="0">Hide Banner (OFF)</option>
@@ -230,20 +300,40 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-400 block mb-1 font-medium">Live Announcement Banner Text</label>
+                            <input type="text" id="setting_announcement_text" placeholder="🔥 Naye Whatsapp Groups Update Ho Gaye Hain! Abhi Join Karein..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+
+                        <!-- WELCOME POPUP SETTINGS -->
+                        <div class="border-t border-slate-800/80 pt-4 space-y-3">
+                            <h4 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-comment-dots"></i> Welcome Popup Control
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs text-gray-400 block mb-1 font-medium">Welcome Popup Status</label>
+                                    <select id="setting_welcome_popup_status" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                        <option value="1">Show Popup (ON)</option>
+                                        <option value="0">Hide Popup (OFF)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-400 block mb-1 font-medium">Welcome Message / Greeting</label>
+                                    <input type="text" id="setting_welcome_popup_text" placeholder="🔥 ☆𝐌r᭄🇳adeemᶠᶠⓋ ki trf se Mandoor Viral Links par Most Welcome! 🔥" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-800/80 pt-4">
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1 font-medium">Main Heading</label>
-                                <input type="text" id="setting_main_heading" placeholder="Welcome to..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                                <input type="text" id="setting_main_heading" placeholder="Welcome to Mandoor Links..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                             </div>
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1 font-medium">Main Subtext</label>
                                 <input type="text" id="setting_main_text" placeholder="Find the best viral links..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                             </div>
-                        </div>
-
-                        <div>
-                            <label class="text-xs text-gray-400 block mb-1 font-medium">Announcement Banner Text</label>
-                            <input type="text" id="setting_announcement_text" placeholder="Join our official groups..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -381,6 +471,7 @@ if (!localStorage.getItem('admin_pass')) {
 }
 
 let allAdminGroupsData = [];
+let analyticsChartInstance = null;
 
 function toggleNavMenu() {
     const dropdown = document.getElementById('mobileNavDropdown');
@@ -451,23 +542,30 @@ function closeMessagesModal() {
 
 function switchTab(tab) {
     const sectionGroups = document.getElementById('sectionGroups');
+    const sectionAddGroup = document.getElementById('sectionAddGroup');
     const sectionSettings = document.getElementById('sectionSettings');
 
     const tabGroups = document.getElementById('tabGroups');
+    const tabAddGroup = document.getElementById('tabAddGroup');
     const tabSettings = document.getElementById('tabSettings');
 
     const activeClass = "text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-white shrink-0";
     const inactiveClass = "text-xs font-bold px-4 py-2 rounded-xl bg-slate-900 text-gray-400 hover:text-white border border-slate-800 shrink-0";
 
     sectionGroups.classList.add('hidden');
+    if(sectionAddGroup) sectionAddGroup.classList.add('hidden');
     sectionSettings.classList.add('hidden');
 
     if(tabGroups) tabGroups.className = inactiveClass;
+    if(tabAddGroup) tabAddGroup.className = inactiveClass;
     if(tabSettings) tabSettings.className = inactiveClass;
 
     if(tab === 'groups') {
         sectionGroups.classList.remove('hidden');
         if(tabGroups) tabGroups.className = activeClass;
+    } else if(tab === 'addGroup') {
+        if(sectionAddGroup) sectionAddGroup.classList.remove('hidden');
+        if(tabAddGroup) tabAddGroup.className = activeClass;
     } else if(tab === 'settings') {
         sectionSettings.classList.remove('hidden');
         if(tabSettings) tabSettings.className = activeClass;
@@ -486,10 +584,13 @@ async function refreshDashboard(btnElement) {
         fetchSiteSettings()
     ]);
 
+    updateAnalyticsGraph();
+
     if (icon) {
         setTimeout(() => icon.classList.remove('fa-spin'), 600);
     }
 }
+
 async function fetchSiteSettings() {
     try {
         const { data, error } = await db.from('site_settings').select('*');
@@ -500,6 +601,12 @@ async function fetchSiteSettings() {
                     el.value = item.setting_value || '';
                 }
             });
+            
+            // Set default welcome text if empty
+            const popupEl = document.getElementById('setting_welcome_popup_text');
+            if(popupEl && !popupEl.value) {
+                popupEl.value = "🔥 ☆𝐌r᭄🇳adeemᶠᶠⓋ ki trf se Mandoor Viral Links par Most Welcome! 🔥 Aapko yahan sabse best aur meharbaan groups milenge.";
+            }
         }
     } catch(e){}
 }
@@ -518,6 +625,8 @@ async function saveSiteSettings(e) {
         'main_heading',
         'main_text',
         'announcement_text',
+        'welcome_popup_status',
+        'welcome_popup_text',
         'whatsapp_group_link',
         'telegram_group_link',
         'about_text',
@@ -553,17 +662,46 @@ async function fetchVisitorStats() {
     } catch(e){}
 }
 
-async function trackGroupClick(groupId, groupLink) {
+// DIRECT ADD GROUP FUNCTION
+async function addNewGroup(e) {
+    e.preventDefault();
+    const btn = document.getElementById('addGroupBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Adding...';
+
+    const name = document.getElementById('add_group_name').value.trim();
+    const platform = document.getElementById('add_group_platform').value;
+    const category = document.getElementById('add_group_category').value.trim();
+    const image_url = document.getElementById('add_group_image_url').value.trim();
+    const link = document.getElementById('add_group_link').value.trim();
+    const description = document.getElementById('add_group_description').value.trim();
+    const is_pinned = document.getElementById('add_group_pinned').checked;
+
     try {
-        await db.rpc('increment_group_views', { group_id: groupId });
-    } catch(e) {
-        try {
-            const { data } = await db.from('groups').select('views').eq('id', groupId).single();
-            const currentViews = (data && data.views) ? data.views : 0;
-            await db.from('groups').update({ views: currentViews + 1 }).eq('id', groupId);
-        } catch(err){}
+        const { error } = await db.from('groups').insert([{
+            name,
+            platform,
+            category,
+            image_url: image_url || null,
+            link,
+            description,
+            is_pinned
+        }]);
+
+        if (!error) {
+            alert('Group kamyabi se add ho gaya hai!');
+            document.getElementById('addGroupForm').reset();
+            switchTab('groups');
+            fetchAdminGroups();
+        } else {
+            alert('Error adding group: ' + error.message);
+        }
+    } catch(err) {
+        alert('Server error while adding group');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Group Now';
     }
-    window.open(groupLink, '_blank');
 }
 
 // FETCH GROUPS
@@ -617,9 +755,10 @@ function renderAdminGroupsList(list) {
 
         return `
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col space-y-3 shadow-xl">
-                <!-- Top Row: ID, Category & Badges -->
+                <!-- Top Row: Checkbox, ID, Category & Badges -->
                 <div class="flex items-center justify-between gap-2 border-b border-slate-800/60 pb-2">
-                    <div class="flex items-center gap-1.5 flex-wrap">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <input type="checkbox" value="${g.id}" class="group-select-checkbox w-4 h-4 accent-emerald-500 rounded cursor-pointer" onchange="updateBulkToolbar()">
                         <span class="text-[10px] bg-slate-800 text-slate-200 border border-slate-700 px-2 py-0.5 rounded-md font-bold">ID: #${g.id}</span>
                         <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">${g.platform || 'WhatsApp'} • ${g.category || 'General'}</span>
                     </div>
@@ -776,9 +915,9 @@ async function deleteMessage(id) {
         await db.from('messages').delete().eq('id', id);
         fetchAdminMessages();
     }
-// ANALYTICS GRAPH LOGIC
-let analyticsChartInstance = null;
+}
 
+// ANALYTICS GRAPH LOGIC
 function updateAnalyticsGraph() {
     const ctx = document.getElementById('analyticsChart');
     if (!ctx) return;
@@ -856,8 +995,37 @@ async function bulkPinGroups(status) {
     fetchAdminGroups();
     updateBulkToolbar();
 }
+
+// EXPORT CSV BACKUP
+function exportGroupsCSV() {
+    if(!allAdminGroupsData || allAdminGroupsData.length === 0) {
+        alert('Koi groups data nahi hai backup ke liye!');
+        return;
+    }
+    const headers = ["ID", "Name", "Platform", "Category", "Link", "Views", "Likes", "Pinned"];
+    const rows = allAdminGroupsData.map(g => [
+        g.id,
+        `"${(g.name || '').replace(/"/g, '""')}"`,
+        `"${(g.platform || '').replace(/"/g, '""')}"`,
+        `"${(g.category || '').replace(/"/g, '""')}"`,
+        `"${(g.link || '').replace(/"/g, '""')}"`,
+        g.views || g.clicks || 0,
+        g.likes || 0,
+        g.is_pinned ? "Yes" : "No"
+    ]);
     
-    
+    let csvContent = "data:text/csv;charset=utf-8," 
+        + headers.join(",") + "\n"
+        + rows.map(e => e.join(",")).join("\n");
+        
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `mandoor_groups_backup_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 </script>
 </body>
 </html>
