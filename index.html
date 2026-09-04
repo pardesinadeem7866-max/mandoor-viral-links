@@ -694,37 +694,46 @@ fetchGroups();
     </div>
 
     <!-- WELCOME SCREEN SCRIPT -->
-    <script>
-      let welcomeTimer;
+<script>
+  let welcomeTimer;
 
-      function continueToWebsite() {
-        if (welcomeTimer) clearTimeout(welcomeTimer);
-        
-        // Refresh karne par welcome dubara na aaye
-        localStorage.setItem("welcomeSeen", "true");
+  function continueToWebsite() {
+    if (welcomeTimer) clearTimeout(welcomeTimer);
+    
+    // Page reload par welcome popup na aaye
+    sessionStorage.setItem("welcomeSeen", "true");
 
-        const modal = document.getElementById('customWelcomeModal');
-        if (modal) {
-          modal.classList.add('hidden');
-          modal.style.display = 'none';
-        }
+    const modal = document.getElementById('customWelcomeModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.style.display = 'none';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById('customWelcomeModal');
+
+    if (sessionStorage.getItem("welcomeSeen") === "true") {
+      // Agar session mein pehle dekha hua hai toh hide rakhein
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+    } else {
+      // Pehli baar aane par popup dikhayein
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        if (localStorage.getItem("welcomeSeen") === "true") {
-          const modal = document.getElementById('customWelcomeModal');
-          if (modal) {
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
-          }
-        } else {
-          // 5 second timer
-          welcomeTimer = setTimeout(() => {
-            continueToWebsite();
-          }, 5000);
-        }
-      });
-    </script>
+      // 5 second timer
+      welcomeTimer = setTimeout(() => {
+        continueToWebsite();
+      }, 5000);
+    }
+  });
+</script>
+    
     
 </body>
 </html>
