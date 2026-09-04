@@ -49,6 +49,19 @@
         }
         .glowing-box { animation: glowingBoxAnim 1.6s infinite ease-in-out; }
 
+        /* VIRAL BADGE GLOWING ANIMATION */
+        @keyframes viralGlow {
+            0%, 100% {
+                box-shadow: 0 0 8px rgba(239, 68, 68, 0.9), 0 0 15px rgba(245, 158, 11, 0.8);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 18px rgba(239, 68, 68, 1), 0 0 25px rgba(245, 158, 11, 1);
+                transform: scale(1.06);
+            }
+        }
+        .viral-badge-glow { animation: viralGlow 1.2s infinite ease-in-out; }
+
         /* Custom Touch Scroll Fix for Android WebViews / Play Store Apps */
         .touch-scroll {
             -webkit-overflow-scrolling: touch;
@@ -217,18 +230,12 @@
 
     </main>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0f19]/95 backdrop-blur-md border-t border-slate-800/80 py-2 px-4">
-        <div class="max-w-md mx-auto flex items-center justify-between relative">
+    <!-- FIXED BOTTOM NAVIGATION BAR (UPDATED: REMOVED VIP ZONE & SAVED) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0f19]/95 backdrop-blur-md border-t border-slate-800/80 py-2.5 px-6">
+        <div class="max-w-md mx-auto flex items-center justify-around relative">
             <button onclick="showAllHomeGroups()" class="flex flex-col items-center gap-1 text-emerald-400 hover:scale-105 transition-all">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-bold">Home</span>
-            </button>
-
-            <button onclick="showVipZone()" class="flex flex-col items-center gap-1 text-amber-400 hover:text-amber-300 transition-all relative">
-                <i class="fa-solid fa-crown text-base"></i>
-                <span class="text-[10px] font-bold">VIP Zone</span>
-                <span class="absolute -top-1 -right-1 bg-amber-500 text-black text-[7px] font-black px-1 rounded-full uppercase">HOT</span>
             </button>
 
             <div class="relative -top-5">
@@ -236,11 +243,6 @@
                     <i class="fa-solid fa-plus text-slate-950 text-xl font-black"></i>
                 </button>
             </div>
-
-            <button onclick="filterByFavoritesNav()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-pink-400 transition-all">
-                <i class="fa-solid fa-heart text-base"></i>
-                <span class="text-[10px] font-medium">Saved</span>
-            </button>
 
             <button onclick="showMySubmittedGroups()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-400 transition-all">
                 <i class="fa-solid fa-user text-base"></i>
@@ -279,7 +281,6 @@
                     </div>
                     <div>
                         <label class="text-xs text-slate-400 block mb-1 font-medium">Category *</label>
-                        <!-- Dynamic Categories Populated via JS -->
                         <select id="user_group_category" required class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer touch-scroll">
                             <option value="" disabled selected>Select Category...</option>
                         </select>
@@ -315,7 +316,6 @@
                 </button>
             </div>
 
-            <!-- Scrollable list with touch-scroll fix for Android -->
             <div id="modalCategoryList" class="grid grid-cols-2 gap-2 overflow-y-auto touch-scroll pr-1 flex-1">
             </div>
         </div>
@@ -358,7 +358,7 @@ const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// MASTER CATEGORY LIST (Priority On Top & Emojis Included)
+// MASTER CATEGORY LIST
 const ALL_CATEGORIES = [
     "🕌 Islamic & Bayan",
     "🍿 Movies & Cinema",
@@ -509,7 +509,6 @@ async function fetchSiteSettings() {
     } catch(e){}
 }
 
-// POPULATE ADD GROUP CATEGORY DROPDOWN DYNAMICALLY
 function populateCategoryDropdown() {
     const selectEl = document.getElementById('user_group_category');
     if (!selectEl) return;
@@ -521,7 +520,6 @@ function populateCategoryDropdown() {
     selectEl.innerHTML = html;
 }
 
-// BUILD CATEGORY FILTER MODAL LIST DYNAMICALLY
 function buildCategoryModalList() {
     const listEl = document.getElementById('modalCategoryList');
     if (!listEl) return;
@@ -599,19 +597,6 @@ function showAllHomeGroups() {
     showToast('Home Loaded!');
 }
 
-function showVipZone() {
-    isMyGroupsOnly = false;
-    document.getElementById('sortSelect').value = 'popular';
-    renderGroups();
-    showToast('VIP Zone Loaded!');
-}
-
-function filterByFavoritesNav() {
-    isMyGroupsOnly = false;
-    document.getElementById('sortSelect').value = 'favorites';
-    renderGroups();
-}
-
 function showMySubmittedGroups() {
     isMyGroupsOnly = true;
     renderGroups();
@@ -635,7 +620,6 @@ function getSmartDPForGroup(group) {
     return DEFAULT_DP;
 }
 
-// Clean emoji helper for search filtering comparison
 function cleanStr(str) {
     return (str || '').replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').toLowerCase().trim();
 }
@@ -644,6 +628,13 @@ function renderGroups() {
     const container = document.getElementById('groupsContainer');
     const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
     const sortBy = document.getElementById('sortSelect')?.value || 'popular';
+
+    // Maximum clicks for calculating the most joined VIRAL group
+    let maxClicks = 0;
+    allGroupsData.forEach(g => {
+        const c = Number(g.clicks || g.views || 0);
+        if (c > maxClicks) maxClicks = c;
+    });
 
     let filtered = allGroupsData.filter(g => {
         if (isMyGroupsOnly) return mySubmittedGroupIds.includes(String(g.id));
@@ -690,6 +681,7 @@ function renderGroups() {
         const clicks = Number(g.clicks || g.views || 0);
         const likes = Number(g.likes || 0);
         const isFav = favoritesList.includes(String(g.id));
+        const isMostPopular = (clicks > 0 && clicks === maxClicks);
 
         return `
             <div class="bg-[#121824] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between relative group hover:border-emerald-500/50 transition-all">
@@ -697,6 +689,12 @@ function renderGroups() {
                     <img src="${dp}" alt="DP" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_DP}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#121824] via-transparent to-black/40"></div>
                     
+                    ${isMostPopular ? `
+                        <div class="absolute top-2 left-2 z-10 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md flex items-center gap-1 viral-badge-glow border border-amber-300">
+                            <i class="fa-solid fa-fire text-amber-200"></i> VIRAL
+                        </div>
+                    ` : ''}
+
                     <span class="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-md border border-slate-700 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-lg">
                         ${g.platform || 'WhatsApp'}
                     </span>
@@ -776,7 +774,6 @@ function shareGroup(name, link) {
 function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
 function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
 
-// AUTO DP FETCHING ON SUBMIT FUNCTION
 async function submitNewGroup(e) {
     e.preventDefault();
     const btn = document.getElementById('submitGroupBtn');
