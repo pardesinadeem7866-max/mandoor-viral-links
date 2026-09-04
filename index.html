@@ -38,7 +38,7 @@
         .floating-center-btn {
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
         }
-        /* GLOWING BOX ANIMATION */
+        /* GLOWING BOX ANIMATION FOR TOP GROUPS */
         @keyframes glowingBoxAnim {
             0%, 100% {
                 box-shadow: 0 0 6px rgba(16, 185, 129, 0.9), 0 0 10px rgba(245, 158, 11, 0.6);
@@ -144,7 +144,7 @@
 
     <main class="max-w-4xl mx-auto px-3 pt-3 space-y-4">
 
-        <!-- HERO FEATURED SECTION (UPDATED: Mandoor Featured, Larger Name, centered Multani FF) -->
+        <!-- HERO FEATURED SECTION -->
         <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#121824] shadow-2xl">
             <div class="relative h-52 sm:h-60 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');">
                 <div class="absolute inset-0 hero-gradient"></div>
@@ -160,7 +160,6 @@
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-lg shadow-lg border border-emerald-400/30">
                             <i class="fa-solid fa-crown text-amber-300"></i>
                         </div>
-                        <!-- LARGER COLORFUL NAME -->
                         <div class="font-black text-base sm:text-xl flex items-center gap-1">
                             <span class="text-indigo-400">☆Mr</span>
                             <span>💫</span>
@@ -168,7 +167,6 @@
                             <span class="text-emerald-400">Ⓥ</span>
                         </div>
                     </div>
-                    <!-- MULTANI FF CENTERED UNDERNAME -->
                     <p class="text-xs text-amber-400 font-extrabold tracking-wider mt-1 text-center">᭄MultaniᶠᶠⓋ</p>
                 </div>
             </div>
@@ -295,7 +293,7 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="text-xs text-slate-400 block mb-1 font-medium">Platform</label>
-                        <select id="user_group_platform" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <select id="user_group_platform" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
                             <option value="WhatsApp">WhatsApp</option>
                             <option value="Telegram">Telegram</option>
                             <option value="Facebook">Facebook</option>
@@ -303,8 +301,66 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-slate-400 block mb-1 font-medium">Category</label>
-                        <input type="text" id="user_group_category" placeholder="Gaming, Viral, Sub4Sub..." class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <label class="text-xs text-slate-400 block mb-1 font-medium">Category *</label>
+                        <select id="user_group_category" required class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
+                            <option value="" disabled selected>Select Category...</option>
+                            <option value="Islamic">🕌 Islamic & Religious</option>
+                            <option value="Movies">🍿 Movies & Cinema</option>
+                            <option value="18+ Content">🔞 18+ Content</option>
+                            <option value="Drama & Series">📺 Drama & TV Series</option>
+                            <option value="OTT & Web Series">🎬 OTT & Web Series</option>
+                            <option value="IPTV & Live TV">📺 IPTV & Live TV</option>
+                            <option value="News">📰 News & Updates</option>
+                            <option value="Sports">🏏 Sports & Live Matches</option>
+                            <option value="Gaming & Free Fire">🎮 Gaming & Free Fire</option>
+                            <option value="PUBG & BGMI">🔫 PUBG, BGMI & COD</option>
+                            <option value="Minecraft & Roblox">⛏️ Minecraft & Roblox</option>
+                            <option value="Esports">🏆 Esports & Tournaments</option>
+                            <option value="AI & Tech">🤖 AI & Technology</option>
+                            <option value="Coding & Tech">💻 Coding & Programming</option>
+                            <option value="Cybersecurity">🛡️ Cybersecurity & Tech</option>
+                            <option value="Cartoons & Anime">🎨 Cartoons & Anime</option>
+                            <option value="K-Pop & Fandoms">🇰🇷 K-Pop & Fandoms</option>
+                            <option value="Business">💼 Business & Startup</option>
+                            <option value="Online Earning">💰 Online Earning & Jobs</option>
+                            <option value="Freelancing">🎯 Freelancing & Remote Work</option>
+                            <option value="Crypto & Trading">📈 Crypto & Forex Trading</option>
+                            <option value="Stock Market">📊 Stock Market & Shares</option>
+                            <option value="Affiliate & Dropshipping">🛒 Affiliate & Dropshipping</option>
+                            <option value="Education">📚 Education & Study</option>
+                            <option value="Exams Prep">📝 Competitive Exams Preparation</option>
+                            <option value="Govt Jobs">🏛️ Government Jobs & Alerts</option>
+                            <option value="Travel">✈️ Travel & Tourism</option>
+                            <option value="Automobiles">🏎️ Automobiles & Vehicles</option>
+                            <option value="Fashion & Beauty">👗 Fashion & Beauty</option>
+                            <option value="Photography">📸 Photography & Editing</option>
+                            <option value="Video Editing">🎬 Video Editing & VFX</option>
+                            <option value="Real Estate">🏠 Real Estate & Property</option>
+                            <option value="Pets & Animals">🐶 Animals & Pets</option>
+                            <option value="Science & Space">🧪 Science & Space</option>
+                            <option value="Art & Design">🎨 Art & Design</option>
+                            <option value="DIY & Hacks">🛠️ DIY & Life Hacks</option>
+                            <option value="Fitness & Health">🧘 Fitness, Yoga & Health</option>
+                            <option value="Cooking & Recipes">🍳 Cooking & Recipes</option>
+                            <option value="Gardening">🌿 Gardening & Plants</option>
+                            <option value="Books">📖 Books & Literature</option>
+                            <option value="Dating & Relationships">🤝 Dating & Relationships</option>
+                            <option value="Matrimony">💍 Matrimony & Marriage</option>
+                            <option value="Motivation">💡 Motivation & Success</option>
+                            <option value="Podcasts">🎧 Podcasts & Audiobooks</option>
+                            <option value="Poetry & Quotes">✍️ Poetry & Quotes</option>
+                            <option value="Status & Reels">📱 Status & Viral Reels</option>
+                            <option value="Funny & Memes">😂 Funny & Memes</option>
+                            <option value="Apps & Software">📲 Apps & Software Mods</option>
+                            <option value="Shopping">🛍️ Buy & Sell / Shopping</option>
+                            <option value="Deals & Coupons">🎟️ Discounts, Coupons & Deals</option>
+                            <option value="Giveaways">🎁 Giveaways & Freebies</option>
+                            <option value="Sub4Sub">🌐 Sub4Sub & Promotion</option>
+                            <option value="Wallpapers">🖼️ Wallpapers & Graphics</option>
+                            <option value="Music">🎵 Music & Songs</option>
+                            <option value="Agriculture">🌾 Agriculture & Farming</option>
+                            <option value="Other">🌀 Other / General</option>
+                        </select>
                     </div>
                 </div>
 
@@ -613,7 +669,7 @@ function setFilterSub(type) {
     renderGroups();
 }
 
-// FIXED HOME BUTTON CLICK FUNCTIONALITY
+// HOME BUTTON CLICK FUNCTIONALITY
 function showAllHomeGroups() {
     isMyGroupsOnly = false;
     activeCategory = 'All';
@@ -652,7 +708,7 @@ function showMySubmittedGroups() {
     showToast('Showing Groups Added By You!');
 }
 
-// RENDER GROUPS LIST (WITH GLOWING BOX IN EACH GROUP BOX)
+// RENDER GROUPS LIST (DYNAMIC HOT BADGE LOGIC INCLUDED)
 function renderGroups() {
     const container = document.getElementById('groupsContainer');
     const searchInput = document.getElementById('searchInput');
@@ -677,6 +733,10 @@ function renderGroups() {
         return searchMatches && (g.category && g.category.toLowerCase().includes(activeCategory.toLowerCase()));
     });
 
+    // CALCULATE HIGHEST CLICKS AND LIKES FOR HOT BADGE
+    const maxClicks = Math.max(...allGroupsData.map(g => Number(g.clicks || g.views || 0)), 0);
+    const maxLikes = Math.max(...allGroupsData.map(g => Number(g.likes || 0)), 0);
+
     // SORTING LOGIC
     if (sortBy === 'popular') {
         filtered.sort((a, b) => ((b.clicks || b.views || 0) - (a.clicks || a.views || 0)));
@@ -699,12 +759,15 @@ function renderGroups() {
 
     container.innerHTML = filtered.map(g => {
         const isPinned = g.is_pinned;
-        const clicks = g.clicks || g.views || 0;
-        const likes = g.likes || 0;
+        const clicks = Number(g.clicks || g.views || 0);
+        const likes = Number(g.likes || 0);
         const dp = g.image_url || g.icon_url || g.dp || DEFAULT_DP;
         const isFav = favoritesList.includes(String(g.id));
         const isLiked = likedGroupsList.includes(String(g.id));
         const langTag = g.platform || 'WhatsApp';
+
+        // DYNAMIC HOT BADGE CONDITION: Only show HOT if group is most joined or most liked (and > 0)
+        const isHot = (clicks > 0 && clicks === maxClicks) || (likes > 0 && likes === maxLikes);
 
         return `
             <div class="bg-[#121824] border ${isPinned ? 'border-amber-500/50 shadow-amber-500/10' : 'border-slate-800/90'} rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between relative group hover:border-emerald-500/50 transition-all">
@@ -730,16 +793,17 @@ function renderGroups() {
                     </button>
                 </div>
 
-                <!-- CARD BODY INFO WITH SMALL GLOWING BOX -->
+                <!-- CARD BODY INFO -->
                 <div class="p-2.5 space-y-1.5 flex-1 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between gap-1 mb-1">
                             <h4 class="font-extrabold text-xs text-white line-clamp-1 group-hover:text-emerald-400 transition-colors">${g.name}</h4>
                             
-                            <!-- SMALL GLOWING BOX INSIDE GROUP BOX -->
+                            <!-- DYNAMIC GLOWING HOT BADGE (Shows only for top joined / most liked group) -->
+                            ${isHot ? `
                             <span class="glowing-box shrink-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded border border-emerald-300 uppercase flex items-center gap-0.5 shadow-md">
                                 <i class="fa-solid fa-bolt text-[7px] text-amber-950"></i> HOT
-                            </span>
+                            </span>` : ''}
                         </div>
                         <p class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
                             <i class="fa-solid fa-tag text-emerald-400 text-[9px]"></i> ${g.category || 'Viral Group'}
