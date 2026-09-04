@@ -310,14 +310,11 @@
                         <label class="text-xs text-slate-400 block mb-1 font-medium">Category *</label>
                         <select id="user_group_category" required class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
                             <option value="" disabled selected>Select Category...</option>
-                            
-                            <!-- ADDED NEW CATEGORIES HERE -->
                             <option value="Friendship">🤝 Friendship</option>
                             <option value="Love & Relationship">❤️ Love & Relationship</option>
                             <option value="Chatting">💬 Chatting & Talk</option>
                             <option value="Meetup">📍 Meetup & Friends</option>
                             <option value="Marriage">💒 Marriage & Matrimony</option>
-                            
                             <option value="Islamic">🕌 Islamic & Religious</option>
                             <option value="Movies">🍿 Movies & Cinema</option>
                             <option value="18+ Content">🔞 18+ Content</option>
@@ -470,8 +467,8 @@ const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// RELIABLE DEFAULT DP LOGO
-const DEFAULT_DP = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/512px-WhatsApp.svg.png";
+// 100% RELIABLE EMBEDDED SVG DEFAULT LOGO (NEVER BLOCKS / NEVER FAILS TO LOAD)
+const DEFAULT_DP = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23121824'/%3E%3Ccircle cx='256' cy='256' r='180' fill='%2310b981'/%3E%3Cpath fill='%23ffffff' d='M256 112c-79.5 0-144 64.5-144 144 0 28 8 54.1 21.8 76.2L112 400l69.8-21.3c21.2 12.3 45.8 19.3 72.2 19.3 79.5 0 144-64.5 144-144S335.5 112 256 112zm0 252c-21.7 0-42.3-6.1-60.1-17.2l-4.3-2.7-41.5 12.7 13-39.7-2.8-4.5c-12.8-20.1-19.6-43.3-19.6-67.3 0-66.2 53.8-120 120-120s120 53.8 120 120-53.8 120-120 120z'/%3E%3C/svg%3E";
 
 let allGroupsData = [];
 let activeCategory = 'All';
@@ -775,9 +772,12 @@ function renderGroups() {
         
         // ACCURATE DP CHECK (Support image_url, icon_url, dp, fallback)
         let dp = DEFAULT_DP;
-        if (g.image_url && g.image_url.trim() !== '') dp = g.image_url.trim();
-        else if (g.icon_url && g.icon_url.trim() !== '') dp = g.icon_url.trim();
-        else if (g.dp && g.dp.trim() !== '') dp = g.dp.trim();
+        const rawUrl = (g.image_url || g.icon_url || g.dp || '').trim();
+        
+        // Filter out broken Wikipedia URLs or empty links
+        if (rawUrl && !rawUrl.includes('wikimedia.org')) {
+            dp = rawUrl;
+        }
 
         const isFav = favoritesList.includes(String(g.id));
         const isLiked = likedGroupsList.includes(String(g.id));
@@ -788,7 +788,7 @@ function renderGroups() {
         return `
             <div class="bg-[#121824] border ${isPinned ? 'border-amber-500/50 shadow-amber-500/10' : 'border-slate-800/90'} rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between relative group hover:border-emerald-500/50 transition-all">
                 
-                <!-- TOP POSTER IMAGE CONTAINER (FIXED CROSS-ORIGIN HOTLINK DP ISSUE) -->
+                <!-- TOP POSTER IMAGE CONTAINER -->
                 <div class="relative w-full h-36 bg-slate-950 overflow-hidden">
                     <img src="${dp}" alt="DP" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_DP}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#121824] via-transparent to-black/40"></div>
@@ -931,7 +931,7 @@ async function submitNewGroup(e) {
     const link = document.getElementById('user_group_link').value.trim();
     const description = document.getElementById('user_group_desc').value.trim();
 
-    // Use user image or default logo
+    // Use user image or default SVG logo
     const finalImageUrl = userImg ? userImg : DEFAULT_DP;
 
     try {
