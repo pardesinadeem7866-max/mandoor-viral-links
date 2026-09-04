@@ -102,12 +102,12 @@
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
 
-                <!-- FIXED DARK MODE BUTTON -->
+                <!-- DARK MODE BUTTON -->
                 <button onclick="toggleTheme()" id="themeBtn" title="Toggle Theme" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-amber-400 hover:scale-105 active:scale-95 transition-all text-xs">
                     <i class="fa-solid fa-sun"></i>
                 </button>
 
-                <!-- FIXED MENU BUTTON -->
+                <!-- MENU BUTTON -->
                 <div class="relative">
                     <button id="menuBtn" onclick="toggleUserMenu()" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-slate-200 hover:text-emerald-400 hover:bg-slate-700 active:scale-95 transition-all text-sm">
                         <i class="fa-solid fa-bars"></i>
@@ -216,11 +216,17 @@
             <button onclick="setFilterSub('Telegram')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
                 Telegram
             </button>
+            <button onclick="setFilterSub('Friendship')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                🤝 Friendship
+            </button>
+            <button onclick="setFilterSub('Love & Relationship')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                ❤️ Love & Relationship
+            </button>
+            <button onclick="setFilterSub('Chatting')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                💬 Chatting
+            </button>
             <button onclick="setFilterSub('Gaming')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
                 Gaming / Free Fire
-            </button>
-            <button onclick="setFilterSub('Viral')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
-                Viral Links
             </button>
         </div>
 
@@ -304,6 +310,14 @@
                         <label class="text-xs text-slate-400 block mb-1 font-medium">Category *</label>
                         <select id="user_group_category" required class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
                             <option value="" disabled selected>Select Category...</option>
+                            
+                            <!-- ADDED NEW CATEGORIES HERE -->
+                            <option value="Friendship">🤝 Friendship</option>
+                            <option value="Love & Relationship">❤️ Love & Relationship</option>
+                            <option value="Chatting">💬 Chatting & Talk</option>
+                            <option value="Meetup">📍 Meetup & Friends</option>
+                            <option value="Marriage">💒 Marriage & Matrimony</option>
+                            
                             <option value="Islamic">🕌 Islamic & Religious</option>
                             <option value="Movies">🍿 Movies & Cinema</option>
                             <option value="18+ Content">🔞 18+ Content</option>
@@ -345,7 +359,6 @@
                             <option value="Gardening">🌿 Gardening & Plants</option>
                             <option value="Books">📖 Books & Literature</option>
                             <option value="Dating & Relationships">🤝 Dating & Relationships</option>
-                            <option value="Matrimony">💍 Matrimony & Marriage</option>
                             <option value="Motivation">💡 Motivation & Success</option>
                             <option value="Podcasts">🎧 Podcasts & Audiobooks</option>
                             <option value="Poetry & Quotes">✍️ Poetry & Quotes</option>
@@ -365,8 +378,9 @@
                 </div>
 
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1 font-medium">Group DP Image URL (Optional)</label>
-                    <input type="url" id="user_group_image" placeholder="https://..." class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <label class="text-xs text-slate-400 block mb-1 font-medium">Group DP Image Direct Link (Optional)</label>
+                    <input type="url" id="user_group_image" placeholder="https://i.imgur.com/... or Image Link" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <p class="text-[10px] text-slate-500 mt-1">* اگر DP کا لنک خالی چھوڑیں گے تو ڈیفالٹ لوگو خود بخود لگ جائے گا۔</p>
                 </div>
 
                 <div>
@@ -456,7 +470,8 @@ const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const DEFAULT_DP = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg";
+// RELIABLE DEFAULT DP LOGO
+const DEFAULT_DP = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/512px-WhatsApp.svg.png";
 
 let allGroupsData = [];
 let activeCategory = 'All';
@@ -473,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchGroups();
 });
 
-// FIXED THEME SYSTEM
+// THEME SYSTEM
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
@@ -610,7 +625,7 @@ async function fetchGroups() {
 function buildCategoryTabs() {
     const container = document.getElementById('categoryTabs');
     const modalContainer = document.getElementById('modalCategoryList');
-    const categories = ['🤼 FightZone', '🔥 Trending', '🎬 Movie', '📺 TV', 'WhatsApp', 'Telegram', 'Gaming'];
+    const categories = ['🤼 FightZone', '🔥 Trending', '🤝 Friendship', '❤️ Love & Relationship', '💬 Chatting', '📍 Meetup', '💒 Marriage', '🎬 Movie', '📺 TV', 'WhatsApp', 'Telegram', 'Gaming'];
 
     allGroupsData.forEach(g => {
         if (g.category && !categories.includes(g.category)) {
@@ -674,11 +689,9 @@ function showAllHomeGroups() {
     isMyGroupsOnly = false;
     activeCategory = 'All';
     
-    // Clear search input
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.value = '';
     
-    // Set sort dropdown to Most Popular automatically on Home click
     const sortSelect = document.getElementById('sortSelect');
     if (sortSelect) sortSelect.value = 'popular';
 
@@ -708,7 +721,7 @@ function showMySubmittedGroups() {
     showToast('Showing Groups Added By You!');
 }
 
-// RENDER GROUPS LIST (DYNAMIC HOT BADGE LOGIC INCLUDED)
+// RENDER GROUPS LIST
 function renderGroups() {
     const container = document.getElementById('groupsContainer');
     const searchInput = document.getElementById('searchInput');
@@ -733,11 +746,9 @@ function renderGroups() {
         return searchMatches && (g.category && g.category.toLowerCase().includes(activeCategory.toLowerCase()));
     });
 
-    // CALCULATE HIGHEST CLICKS AND LIKES FOR HOT BADGE
     const maxClicks = Math.max(...allGroupsData.map(g => Number(g.clicks || g.views || 0)), 0);
     const maxLikes = Math.max(...allGroupsData.map(g => Number(g.likes || 0)), 0);
 
-    // SORTING LOGIC
     if (sortBy === 'popular') {
         filtered.sort((a, b) => ((b.clicks || b.views || 0) - (a.clicks || a.views || 0)));
     } else if (sortBy === 'favorites') {
@@ -761,20 +772,25 @@ function renderGroups() {
         const isPinned = g.is_pinned;
         const clicks = Number(g.clicks || g.views || 0);
         const likes = Number(g.likes || 0);
-        const dp = g.image_url || g.icon_url || g.dp || DEFAULT_DP;
+        
+        // ACCURATE DP CHECK (Support image_url, icon_url, dp, fallback)
+        let dp = DEFAULT_DP;
+        if (g.image_url && g.image_url.trim() !== '') dp = g.image_url.trim();
+        else if (g.icon_url && g.icon_url.trim() !== '') dp = g.icon_url.trim();
+        else if (g.dp && g.dp.trim() !== '') dp = g.dp.trim();
+
         const isFav = favoritesList.includes(String(g.id));
         const isLiked = likedGroupsList.includes(String(g.id));
         const langTag = g.platform || 'WhatsApp';
 
-        // DYNAMIC HOT BADGE CONDITION: Only show HOT if group is most joined or most liked (and > 0)
         const isHot = (clicks > 0 && clicks === maxClicks) || (likes > 0 && likes === maxLikes);
 
         return `
             <div class="bg-[#121824] border ${isPinned ? 'border-amber-500/50 shadow-amber-500/10' : 'border-slate-800/90'} rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between relative group hover:border-emerald-500/50 transition-all">
                 
-                <!-- TOP POSTER IMAGE CONTAINER -->
+                <!-- TOP POSTER IMAGE CONTAINER (FIXED CROSS-ORIGIN HOTLINK DP ISSUE) -->
                 <div class="relative w-full h-36 bg-slate-950 overflow-hidden">
-                    <img src="${dp}" alt="DP" onerror="this.onerror=null;this.src='${DEFAULT_DP}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="${dp}" alt="DP" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_DP}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#121824] via-transparent to-black/40"></div>
                     
                     <div class="absolute top-2 left-2 flex items-center gap-1">
@@ -799,7 +815,6 @@ function renderGroups() {
                         <div class="flex items-center justify-between gap-1 mb-1">
                             <h4 class="font-extrabold text-xs text-white line-clamp-1 group-hover:text-emerald-400 transition-colors">${g.name}</h4>
                             
-                            <!-- DYNAMIC GLOWING HOT BADGE (Shows only for top joined / most liked group) -->
                             ${isHot ? `
                             <span class="glowing-box shrink-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded border border-emerald-300 uppercase flex items-center gap-0.5 shadow-md">
                                 <i class="fa-solid fa-bolt text-[7px] text-amber-950"></i> HOT
@@ -912,16 +927,20 @@ async function submitNewGroup(e) {
     const name = document.getElementById('user_group_name').value.trim();
     const platform = document.getElementById('user_group_platform').value;
     const category = document.getElementById('user_group_category').value.trim() || 'General';
-    const image_url = document.getElementById('user_group_image').value.trim();
+    const userImg = document.getElementById('user_group_image').value.trim();
     const link = document.getElementById('user_group_link').value.trim();
     const description = document.getElementById('user_group_desc').value.trim();
+
+    // Use user image or default logo
+    const finalImageUrl = userImg ? userImg : DEFAULT_DP;
 
     try {
         const { data, error } = await db.from('groups').insert([{
             name,
             platform,
             category,
-            image_url: image_url || null,
+            image_url: finalImageUrl,
+            icon_url: finalImageUrl,
             link,
             description,
             clicks: 0,
