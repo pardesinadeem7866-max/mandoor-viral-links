@@ -38,6 +38,22 @@
         .floating-center-btn {
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
         }
+        /* GLOWING BOX ANIMATION */
+        @keyframes glowingBoxAnim {
+            0%, 100% {
+                box-shadow: 0 0 6px rgba(16, 185, 129, 0.9), 0 0 10px rgba(245, 158, 11, 0.6);
+                border-color: #10b981;
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 12px rgba(239, 68, 68, 0.9), 0 0 16px rgba(245, 158, 11, 0.8);
+                border-color: #f59e0b;
+                transform: scale(1.03);
+            }
+        }
+        .glowing-box {
+            animation: glowingBoxAnim 1.6s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-[#080c14] text-gray-100 font-sans min-h-screen pb-24 selection:bg-emerald-500 selection:text-black">
@@ -68,7 +84,7 @@
                 </div>
             </div>
 
-            <!-- Top Search Input Bar (FIXED) -->
+            <!-- Top Search Input Bar -->
             <div class="flex-1 max-w-xs relative flex items-center">
                 <div class="w-full bg-[#161f2e] border border-slate-700/60 rounded-xl flex items-center px-2.5 py-1.5 focus-within:border-emerald-500 transition-all">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs mr-2"></i>
@@ -91,7 +107,7 @@
                     <i class="fa-solid fa-sun"></i>
                 </button>
 
-                <!-- FIXED MENU BUTTON (3 LINES ICON) -->
+                <!-- FIXED MENU BUTTON -->
                 <div class="relative">
                     <button id="menuBtn" onclick="toggleUserMenu()" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-slate-200 hover:text-emerald-400 hover:bg-slate-700 active:scale-95 transition-all text-sm">
                         <i class="fa-solid fa-bars"></i>
@@ -128,39 +144,37 @@
 
     <main class="max-w-4xl mx-auto px-3 pt-3 space-y-4">
 
-        <!-- HERO FEATURED SECTION WITH COLORFUL NAME & MULTANI FF -->
+        <!-- HERO FEATURED SECTION (UPDATED: Mandoor Featured, Larger Name, centered Multani FF) -->
         <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#121824] shadow-2xl">
             <div class="relative h-52 sm:h-60 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');">
                 <div class="absolute inset-0 hero-gradient"></div>
-                <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
-                    🤼 FightZone Featured
+                
+                <!-- TOP BADGE -->
+                <div class="absolute top-3 left-3 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
+                    🔥 Mandoor Featured
                 </div>
                 
-                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-3.5 rounded-2xl">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-xl shadow-lg border border-emerald-400/30">
+                <!-- PROFILE INFORMATION CARD -->
+                <div class="absolute bottom-3 left-3 right-3 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-3 rounded-2xl text-center shadow-xl">
+                    <div class="flex items-center justify-center gap-2.5">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-lg shadow-lg border border-emerald-400/30">
                             <i class="fa-solid fa-crown text-amber-300"></i>
                         </div>
-                        <div class="min-w-0">
-                            <!-- COLORFUL NAME AT TOP -->
-                            <div class="font-black text-sm flex items-center gap-1 truncate">
-                                <span class="text-indigo-400">☆Mr</span>
-                                <span>💫</span>
-                                <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeemff</span>
-                                <span class="text-emerald-400">Ⓥ</span>
-                            </div>
-                            <!-- MULTANI FF UNDERNEATH NAME -->
-                            <p class="text-xs text-amber-400 font-extrabold tracking-wide mt-0.5">ملتانی ایف ایف</p>
+                        <!-- LARGER COLORFUL NAME -->
+                        <div class="font-black text-base sm:text-xl flex items-center gap-1">
+                            <span class="text-indigo-400">☆Mr</span>
+                            <span>💫</span>
+                            <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeemff</span>
+                            <span class="text-emerald-400">Ⓥ</span>
                         </div>
                     </div>
-                    <button onclick="openAddModal()" class="w-10 h-10 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 rounded-full flex items-center justify-center shadow-lg transition-all shrink-0">
-                        <i class="fa-solid fa-plus text-base font-black"></i>
-                    </button>
+                    <!-- MULTANI FF CENTERED UNDERNAME -->
+                    <p class="text-xs text-amber-400 font-extrabold tracking-wider mt-1 text-center">᭄MultaniᶠᶠⓋ</p>
                 </div>
             </div>
         </div>
 
-        <!-- DOWNLOAD OFFICIAL APP SECTION (REPLACED PREMIUM BOX) -->
+        <!-- DOWNLOAD OFFICIAL APP SECTION -->
         <div class="rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-[#0f2027] via-[#112d32] to-[#203a43] p-4 shadow-xl flex items-center justify-between gap-3 relative overflow-hidden green-glow">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-gradient-to-tr from-emerald-500 to-teal-300 rounded-2xl flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shrink-0">
@@ -186,8 +200,8 @@
             
             <div class="relative">
                 <select id="sortSelect" onchange="renderGroups()" class="bg-[#121824] border border-slate-700/70 text-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 cursor-pointer font-bold">
-                    <option value="latest">🆕 Latest First</option>
                     <option value="popular">🔥 Most Popular</option>
+                    <option value="latest">🆕 Latest First</option>
                     <option value="favorites">❤️ Saved Favorites</option>
                 </select>
             </div>
@@ -222,36 +236,36 @@
 
     </main>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR WITH ADD GROUP PLUS BUTTON -->
+    <!-- FIXED BOTTOM NAVIGATION BAR -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0f19]/95 backdrop-blur-md border-t border-slate-800/80 py-2 px-4">
         <div class="max-w-md mx-auto flex items-center justify-between relative">
             
-            <button onclick="showAllHomeGroups()" class="flex flex-col items-center gap-1 text-emerald-400 transition-all">
+            <button onclick="showAllHomeGroups()" class="flex flex-col items-center gap-1 text-emerald-400 hover:scale-105 transition-all">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-bold">Home</span>
             </button>
 
-            <!-- REPLACED NOVEL HUB WITH VIP ZONE -->
+            <!-- VIP ZONE -->
             <button onclick="showVipZone()" class="flex flex-col items-center gap-1 text-amber-400 hover:text-amber-300 transition-all relative">
                 <i class="fa-solid fa-crown text-base"></i>
                 <span class="text-[10px] font-bold">VIP Zone</span>
                 <span class="absolute -top-1 -right-1 bg-amber-500 text-black text-[7px] font-black px-1 rounded-full uppercase">HOT</span>
             </button>
 
-            <!-- FLOATING ADD GROUP BUTTON (PLUS SIGN) -->
+            <!-- FLOATING ADD GROUP BUTTON -->
             <div class="relative -top-5">
-                <button onclick="openAddModal()" title="Add Group" class="w-13 h-13 w-12 h-12 bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 rounded-full flex items-center justify-center text-slate-950 text-xl floating-center-btn border-2 border-slate-900 shadow-2xl hover:scale-110 active:scale-95 transition-all">
+                <button onclick="openAddModal()" title="Add Group" class="w-12 h-12 bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 rounded-full flex items-center justify-center text-slate-950 text-xl floating-center-btn border-2 border-slate-900 shadow-2xl hover:scale-110 active:scale-95 transition-all">
                     <i class="fa-solid fa-plus text-slate-950 text-xl font-black"></i>
                 </button>
             </div>
 
-            <!-- REPLACED DOWNLOADS WITH SAVED / FAVORITES -->
+            <!-- SAVED / FAVORITES -->
             <button onclick="filterByFavoritesNav()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-pink-400 transition-all">
                 <i class="fa-solid fa-heart text-base"></i>
                 <span class="text-[10px] font-medium">Saved</span>
             </button>
 
-            <!-- ME BUTTON SHOWS USER SUBMITTED GROUPS -->
+            <!-- ME BUTTON -->
             <button onclick="showMySubmittedGroups()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-400 transition-all">
                 <i class="fa-solid fa-user text-base"></i>
                 <span class="text-[10px] font-medium">Me</span>
@@ -599,12 +613,23 @@ function setFilterSub(type) {
     renderGroups();
 }
 
+// FIXED HOME BUTTON CLICK FUNCTIONALITY
 function showAllHomeGroups() {
     isMyGroupsOnly = false;
     activeCategory = 'All';
+    
+    // Clear search input
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = '';
+    
+    // Set sort dropdown to Most Popular automatically on Home click
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) sortSelect.value = 'popular';
+
     window.scrollTo({top: 0, behavior: 'smooth'});
     buildCategoryTabs();
     renderGroups();
+    showToast('Home: Top Joined Groups Loaded!');
 }
 
 function showVipZone() {
@@ -627,12 +652,13 @@ function showMySubmittedGroups() {
     showToast('Showing Groups Added By You!');
 }
 
-// RENDER GROUPS LIST (WITH REPORT EXPIRATION LINK BUTTON)
+// RENDER GROUPS LIST (WITH GLOWING BOX IN EACH GROUP BOX)
 function renderGroups() {
     const container = document.getElementById('groupsContainer');
     const searchInput = document.getElementById('searchInput');
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
-    const sortBy = document.getElementById('sortSelect').value;
+    const sortSelect = document.getElementById('sortSelect');
+    const sortBy = sortSelect ? sortSelect.value : 'popular';
 
     let filtered = allGroupsData.filter(g => {
         if (isMyGroupsOnly) {
@@ -651,7 +677,7 @@ function renderGroups() {
         return searchMatches && (g.category && g.category.toLowerCase().includes(activeCategory.toLowerCase()));
     });
 
-    // SORTING
+    // SORTING LOGIC
     if (sortBy === 'popular') {
         filtered.sort((a, b) => ((b.clicks || b.views || 0) - (a.clicks || a.views || 0)));
     } else if (sortBy === 'favorites') {
@@ -704,10 +730,17 @@ function renderGroups() {
                     </button>
                 </div>
 
-                <!-- CARD BODY INFO -->
+                <!-- CARD BODY INFO WITH SMALL GLOWING BOX -->
                 <div class="p-2.5 space-y-1.5 flex-1 flex flex-col justify-between">
                     <div>
-                        <h4 class="font-extrabold text-xs text-white line-clamp-1 group-hover:text-emerald-400 transition-colors">${g.name}</h4>
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <h4 class="font-extrabold text-xs text-white line-clamp-1 group-hover:text-emerald-400 transition-colors">${g.name}</h4>
+                            
+                            <!-- SMALL GLOWING BOX INSIDE GROUP BOX -->
+                            <span class="glowing-box shrink-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.5 rounded border border-emerald-300 uppercase flex items-center gap-0.5 shadow-md">
+                                <i class="fa-solid fa-bolt text-[7px] text-amber-950"></i> HOT
+                            </span>
+                        </div>
                         <p class="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
                             <i class="fa-solid fa-tag text-emerald-400 text-[9px]"></i> ${g.category || 'Viral Group'}
                         </p>
@@ -730,7 +763,7 @@ function renderGroups() {
                             </a>
                         </div>
 
-                        <!-- REPORT LINK BUTTON BELOW GROUP BOX -->
+                        <!-- REPORT LINK BUTTON -->
                         <button onclick="openReportModal('${g.id}')" class="w-full text-[9px] font-bold text-red-400 hover:text-red-300 border border-red-500/30 hover:bg-red-500/10 py-1 rounded-lg transition-all flex items-center justify-center gap-1">
                             <i class="fa-solid fa-triangle-exclamation"></i> رپورٹ (Report Expired)
                         </button>
