@@ -32,14 +32,11 @@
         .hero-gradient {
             background: linear-gradient(180deg, rgba(8,12,20,0.2) 0%, rgba(8,12,20,0.85) 70%, #080c14 100%);
         }
-        .gold-glow {
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
-        }
         .green-glow {
             box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
         }
         .floating-center-btn {
-            box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
         }
     </style>
 </head>
@@ -47,7 +44,7 @@
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-emerald-500 text-slate-950 font-extrabold text-xs px-5 py-3 rounded-2xl shadow-2xl z-50 hidden transition-all duration-300 flex items-center gap-2 border border-emerald-300">
-        <i class="fa-solid fa-circle-check text-sm"></i> <span id="toastMsg">Link Copied!</span>
+        <i class="fa-solid fa-circle-check text-sm"></i> <span id="toastMsg">Notification Message</span>
     </div>
 
     <!-- ANNOUNCEMENT BANNER -->
@@ -71,13 +68,13 @@
                 </div>
             </div>
 
-            <!-- Top Search Input Bar -->
+            <!-- Top Search Input Bar (FIXED) -->
             <div class="flex-1 max-w-xs relative flex items-center">
-                <div class="w-full bg-[#161f2e] border border-slate-700/60 rounded-xl flex items-center px-3 py-1.5 focus-within:border-emerald-500 transition-all">
+                <div class="w-full bg-[#161f2e] border border-slate-700/60 rounded-xl flex items-center px-2.5 py-1.5 focus-within:border-emerald-500 transition-all">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs mr-2"></i>
-                    <input type="text" id="searchInput" oninput="renderGroups()" placeholder="House Keeping / Search..." 
+                    <input type="text" id="searchInput" onkeyup="renderGroups()" placeholder="Search Groups..." 
                         class="w-full bg-transparent text-xs text-white placeholder-slate-400 focus:outline-none">
-                    <button onclick="renderGroups()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-lg ml-1 transition-all">
+                    <button onclick="renderGroups()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-lg ml-1 transition-all shrink-0">
                         Search
                     </button>
                 </div>
@@ -88,14 +85,22 @@
                 <button onclick="shareWebsite()" title="Share Website" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-emerald-400 hover:bg-emerald-500/20 active:scale-95 transition-all text-xs">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
+
+                <!-- FIXED DARK MODE BUTTON -->
                 <button onclick="toggleTheme()" id="themeBtn" title="Toggle Theme" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-amber-400 hover:scale-105 active:scale-95 transition-all text-xs">
                     <i class="fa-solid fa-sun"></i>
                 </button>
+
+                <!-- FIXED MENU BUTTON (3 LINES ICON) -->
                 <div class="relative">
-                    <button id="menuBtn" onclick="toggleUserMenu()" class="w-8 h-8 bg-red-500/20 border border-red-500/40 rounded-full flex items-center justify-center text-red-400 hover:bg-red-500/30 active:scale-95 transition-all text-xs">
-                        <i class="fa-solid fa-arrow-up text-[10px]"></i>
+                    <button id="menuBtn" onclick="toggleUserMenu()" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-slate-200 hover:text-emerald-400 hover:bg-slate-700 active:scale-95 transition-all text-sm">
+                        <i class="fa-solid fa-bars"></i>
                     </button>
+                    
                     <div id="userDropdownMenu" class="hidden absolute top-full right-0 mt-2 w-56 bg-[#121824] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50">
+                        <button onclick="openCategoryModal()" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
+                            <i class="fa-solid fa-layer-group text-amber-400 text-base"></i> Categories Search
+                        </button>
                         <a href="https://whatsapp.com/channel/0029VbCBDNEHrDZZgvbtLD2z" target="_blank" class="w-full text-left px-3 py-2.5 text-xs font-bold text-white hover:bg-slate-800 rounded-xl flex items-center gap-2.5 transition-all">
                             <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> WhatsApp Channel
                         </a>
@@ -123,104 +128,88 @@
 
     <main class="max-w-4xl mx-auto px-3 pt-3 space-y-4">
 
-        <!-- HERO FEATURED SECTION -->
+        <!-- HERO FEATURED SECTION WITH COLORFUL NAME & MULTANI FF -->
         <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#121824] shadow-2xl">
-            <div class="relative h-56 sm:h-64 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');">
+            <div class="relative h-52 sm:h-60 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');">
                 <div class="absolute inset-0 hero-gradient"></div>
                 <div class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
                     🤼 FightZone Featured
                 </div>
                 
-                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-slate-950/80 backdrop-blur-md border border-slate-800/80 p-3 rounded-2xl">
+                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-3.5 rounded-2xl">
                     <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-black text-white shrink-0 text-xl shadow-lg border border-indigo-400/30">
-                            <i class="fa-solid fa-fire text-amber-400"></i>
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-xl shadow-lg border border-emerald-400/30">
+                            <i class="fa-solid fa-crown text-amber-300"></i>
                         </div>
                         <div class="min-w-0">
-                            <h2 id="mainHeading" class="font-black text-sm text-white truncate">Reacher [Hindi] / Multani FF Official</h2>
-                            <p id="mainSubtext" class="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
-                                <span class="bg-slate-800 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/30 text-[10px] font-bold">📺 2026</span>
-                                <span class="text-slate-400">Action • Gaming • Links</span>
-                            </p>
+                            <!-- COLORFUL NAME AT TOP -->
+                            <div class="font-black text-sm flex items-center gap-1 truncate">
+                                <span class="text-indigo-400">☆Mr</span>
+                                <span>💫</span>
+                                <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeemff</span>
+                                <span class="text-emerald-400">Ⓥ</span>
+                            </div>
+                            <!-- MULTANI FF UNDERNEATH NAME -->
+                            <p class="text-xs text-amber-400 font-extrabold tracking-wide mt-0.5">ملتانی ایف ایف</p>
                         </div>
                     </div>
                     <button onclick="openAddModal()" class="w-10 h-10 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 rounded-full flex items-center justify-center shadow-lg transition-all shrink-0">
-                        <i class="fa-solid fa-play text-sm ml-0.5"></i>
+                        <i class="fa-solid fa-plus text-base font-black"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- UNLOCK PREMIUM / OFFICIAL APP BANNER -->
-        <div class="rounded-3xl border border-amber-500/40 bg-gradient-to-b from-[#1a1405] via-[#121824] to-[#0d131f] p-3.5 space-y-3 gold-glow relative overflow-hidden">
-            <div class="bg-gradient-to-r from-emerald-800 via-emerald-600 to-emerald-800 text-amber-200 text-xs font-bold text-center py-1.5 px-3 rounded-xl border border-emerald-400/40 shadow-inner">
-                فون جیتنے کے لیے پریمیم پر کلک کریں
-            </div>
-
-            <div class="flex items-center justify-between gap-3 pt-1">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-gradient-to-tr from-amber-500 to-yellow-300 rounded-2xl flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shrink-0">
-                        <i class="fa-solid fa-crown"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-extrabold text-sm text-amber-300">Unlock Premium Benefits</h3>
-                        <p class="text-[11px] text-slate-400 font-medium mt-0.5">No ads • HD • Premium Contents</p>
-                    </div>
+        <!-- DOWNLOAD OFFICIAL APP SECTION (REPLACED PREMIUM BOX) -->
+        <div class="rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-[#0f2027] via-[#112d32] to-[#203a43] p-4 shadow-xl flex items-center justify-between gap-3 relative overflow-hidden green-glow">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-tr from-emerald-500 to-teal-300 rounded-2xl flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shrink-0">
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
                 </div>
-
-                <a href="https://www.mediafire.com/file/4m2yw4ub1sni5k5/Mandoor+viral+link+%281%29.apk/file" target="_blank" 
-                   class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl shadow-lg active:scale-95 transition-all shrink-0 border border-amber-200 flex items-center gap-1.5">
-                    Unlock <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                </a>
-            </div>
-        </div>
-
-        <!-- COLORFUL NAME BADGE -->
-        <div class="w-full py-2.5 px-4 rounded-2xl bg-[#121824] border border-emerald-500/40 green-glow flex items-center justify-center gap-2 text-lg font-black">
-            <span class="text-indigo-400">☆Mr</span>
-            <span>💫</span>
-            <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeemff</span>
-            <span class="text-emerald-400">Ⓥ</span>
-        </div>
-
-        <!-- ADD GROUP BUTTON -->
-        <button onclick="openAddModal()" class="w-full bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-black py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg green-glow transition-all text-xs tracking-wider uppercase">
-            <i class="fa-solid fa-plus text-sm"></i> Add Group
-        </button>
-
-        <!-- TRENDING SECTION HEADER & SUB-TABS -->
-        <div class="space-y-2 pt-1">
-            <div class="flex items-center justify-between">
-                <h3 class="font-black text-sm text-white flex items-center gap-2">
-                    Trending Movies / Groups <span class="text-emerald-400 text-xs font-normal">All &gt;</span>
-                </h3>
-                <div class="relative">
-                    <select id="sortSelect" onchange="renderGroups()" class="bg-[#121824] border border-slate-700/70 text-slate-300 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-emerald-500 cursor-pointer font-bold">
-                        <option value="latest">🆕 Latest First</option>
-                        <option value="popular">🔥 Most Popular</option>
-                        <option value="favorites">❤️ Saved Favorites</option>
-                    </select>
+                <div>
+                    <h3 class="font-black text-sm text-white">ڈاؤن لوڈ آفیشل ایپ</h3>
+                    <p class="text-[11px] text-emerald-300 font-bold mt-0.5">Download Official App (APK)</p>
                 </div>
             </div>
 
-            <!-- SUB-CATEGORY FILTER TAB BAR -->
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-                <button onclick="setFilterSub('ALL')" class="subtab-btn bg-emerald-500 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap shadow-sm">
-                    TOP Movies / All
-                </button>
-                <button onclick="setFilterSub('WhatsApp')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
-                    WhatsApp
-                </button>
-                <button onclick="setFilterSub('Telegram')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
-                    Telegram
-                </button>
-                <button onclick="setFilterSub('Gaming')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
-                    Gaming / Bollywood
-                </button>
-                <button onclick="setFilterSub('Viral')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
-                    Viral / Punjabi
-                </button>
+            <a href="https://www.mediafire.com/file/4m2yw4ub1sni5k5/Mandoor+viral+link+%281%29.apk/file" target="_blank" 
+               class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl shadow-lg active:scale-95 transition-all shrink-0 flex items-center gap-1.5 border border-emerald-300">
+                <i class="fa-solid fa-download"></i> Download
+            </a>
+        </div>
+
+        <!-- CATEGORY SEARCH & FILTER ROW -->
+        <div class="flex items-center justify-between gap-2 pt-1">
+            <button onclick="openCategoryModal()" class="bg-[#121824] border border-emerald-500/50 hover:bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-layer-group"></i> کیٹگری سرچ (Categories)
+            </button>
+            
+            <div class="relative">
+                <select id="sortSelect" onchange="renderGroups()" class="bg-[#121824] border border-slate-700/70 text-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-500 cursor-pointer font-bold">
+                    <option value="latest">🆕 Latest First</option>
+                    <option value="popular">🔥 Most Popular</option>
+                    <option value="favorites">❤️ Saved Favorites</option>
+                </select>
             </div>
+        </div>
+
+        <!-- SUB-CATEGORY FILTER TAB BAR -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+            <button onclick="setFilterSub('ALL')" class="subtab-btn bg-emerald-500 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap shadow-sm">
+                TOP Movies / All
+            </button>
+            <button onclick="setFilterSub('WhatsApp')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                WhatsApp
+            </button>
+            <button onclick="setFilterSub('Telegram')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                Telegram
+            </button>
+            <button onclick="setFilterSub('Gaming')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                Gaming / Free Fire
+            </button>
+            <button onclick="setFilterSub('Viral')" class="subtab-btn bg-[#121824] border border-slate-800 text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">
+                Viral Links
+            </button>
         </div>
 
         <!-- GROUPS CONTAINER -->
@@ -233,34 +222,37 @@
 
     </main>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR -->
+    <!-- FIXED BOTTOM NAVIGATION BAR WITH ADD GROUP PLUS BUTTON -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0f19]/95 backdrop-blur-md border-t border-slate-800/80 py-2 px-4">
         <div class="max-w-md mx-auto flex items-center justify-between relative">
             
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); setCategory('All');" class="flex flex-col items-center gap-1 text-emerald-400 transition-all">
+            <button onclick="showAllHomeGroups()" class="flex flex-col items-center gap-1 text-emerald-400 transition-all">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-bold">Home</span>
             </button>
 
-            <button onclick="filterByFavoritesNav()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-pink-400 transition-all relative">
-                <i class="fa-solid fa-book-open text-base"></i>
-                <span class="text-[10px] font-medium">NovelHub</span>
-                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-black px-1 rounded-full uppercase">HOT</span>
+            <!-- REPLACED NOVEL HUB WITH VIP ZONE -->
+            <button onclick="showVipZone()" class="flex flex-col items-center gap-1 text-amber-400 hover:text-amber-300 transition-all relative">
+                <i class="fa-solid fa-crown text-base"></i>
+                <span class="text-[10px] font-bold">VIP Zone</span>
+                <span class="absolute -top-1 -right-1 bg-amber-500 text-black text-[7px] font-black px-1 rounded-full uppercase">HOT</span>
             </button>
 
-            <!-- Floating Center Buzz Box Button -->
+            <!-- FLOATING ADD GROUP BUTTON (PLUS SIGN) -->
             <div class="relative -top-5">
-                <button onclick="openAddModal()" class="w-12 h-12 bg-gradient-to-tr from-pink-600 via-rose-500 to-amber-400 rounded-full flex items-center justify-center text-white text-xl floating-center-btn border-2 border-slate-900 shadow-2xl hover:scale-110 active:scale-95 transition-all">
-                    <i class="fa-solid fa-heart text-white text-lg"></i>
+                <button onclick="openAddModal()" title="Add Group" class="w-13 h-13 w-12 h-12 bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 rounded-full flex items-center justify-center text-slate-950 text-xl floating-center-btn border-2 border-slate-900 shadow-2xl hover:scale-110 active:scale-95 transition-all">
+                    <i class="fa-solid fa-plus text-slate-950 text-xl font-black"></i>
                 </button>
             </div>
 
-            <a href="https://www.mediafire.com/file/4m2yw4ub1sni5k5/Mandoor+viral+link+%281%29.apk/file" target="_blank" class="flex flex-col items-center gap-1 text-slate-400 hover:text-emerald-400 transition-all">
-                <i class="fa-solid fa-download text-base"></i>
-                <span class="text-[10px] font-medium">Downloads</span>
-            </a>
+            <!-- REPLACED DOWNLOADS WITH SAVED / FAVORITES -->
+            <button onclick="filterByFavoritesNav()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-pink-400 transition-all">
+                <i class="fa-solid fa-heart text-base"></i>
+                <span class="text-[10px] font-medium">Saved</span>
+            </button>
 
-            <button onclick="openReportModal()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-400 transition-all">
+            <!-- ME BUTTON SHOWS USER SUBMITTED GROUPS -->
+            <button onclick="showMySubmittedGroups()" class="flex flex-col items-center gap-1 text-slate-400 hover:text-indigo-400 transition-all">
                 <i class="fa-solid fa-user text-base"></i>
                 <span class="text-[10px] font-medium">Me</span>
             </button>
@@ -283,7 +275,7 @@
             <form onsubmit="submitNewGroup(event)" class="space-y-3">
                 <div>
                     <label class="text-xs text-slate-400 block mb-1 font-medium">Group Name *</label>
-                    <input type="text" id="user_group_name" required placeholder="e.g. Free Fire Gaming Squad" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="user_group_name" required placeholder="e.g. Multani FF Official Squad" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
@@ -324,12 +316,30 @@
         </div>
     </div>
 
-    <!-- REPORT BOT / SUPPORT MODAL -->
+    <!-- CATEGORY SELECTION MODAL -->
+    <div id="categoryModal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-[#121824] border border-slate-800 rounded-3xl w-full max-w-md p-5 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> اپنی کیٹگری منتخب کریں
+                </h3>
+                <button onclick="closeCategoryModal()" class="w-8 h-8 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center text-xs hover:text-white">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div id="modalCategoryList" class="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto no-scrollbar">
+                <!-- Categories loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- REPORT LINK MODAL -->
     <div id="reportModal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="bg-[#121824] border border-slate-800 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-triangle-exclamation text-pink-500"></i> Report Link or Contact
+                    <i class="fa-solid fa-triangle-exclamation text-red-500"></i> Report Expired Link or Issue
                 </h3>
                 <button onclick="closeReportModal()" class="w-8 h-8 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center text-xs hover:text-white">
                     <i class="fa-solid fa-xmark text-sm"></i>
@@ -341,16 +351,16 @@
                 
                 <div>
                     <label class="text-xs text-slate-400 block mb-1 font-medium">Your Name / Contact</label>
-                    <input type="text" id="report_sender" placeholder="Optional (e.g. Ali)" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="report_sender" placeholder="Optional" class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500">
                 </div>
 
                 <div>
-                    <label class="text-xs text-slate-400 block mb-1 font-medium">Message / Issue Details *</label>
-                    <textarea id="report_text" required rows="3" placeholder="Describe the issue or broken link details..." class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
+                    <label class="text-xs text-slate-400 block mb-1 font-medium">Expired Link Details / Reason *</label>
+                    <textarea id="report_text" required rows="3" placeholder="تیر والا یا گروپس کا لنک کام نہیں کر رہا تو یہاں تفصیل لکھیں..." class="w-full bg-[#080c14] border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
                 </div>
 
-                <button type="submit" id="submitReportBtn" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-black text-xs py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i> Send Message
+                <button type="submit" id="submitReportBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-black text-xs py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Report
                 </button>
             </form>
         </div>
@@ -382,6 +392,8 @@ let allGroupsData = [];
 let activeCategory = 'All';
 let favoritesList = JSON.parse(localStorage.getItem('mandoor_favs') || '[]');
 let likedGroupsList = JSON.parse(localStorage.getItem('mandoor_likes') || '[]');
+let mySubmittedGroupIds = JSON.parse(localStorage.getItem('mandoor_my_groups') || '[]');
+let isMyGroupsOnly = false;
 
 // INITIALIZATION ON LOAD
 document.addEventListener('DOMContentLoaded', () => {
@@ -391,14 +403,16 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchGroups();
 });
 
-// THEME SYSTEM
+// FIXED THEME SYSTEM
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
         document.documentElement.classList.remove('dark');
+        document.body.style.backgroundColor = "#f1f5f9";
         updateThemeIcon(false);
     } else {
         document.documentElement.classList.add('dark');
+        document.body.style.backgroundColor = "#080c14";
         updateThemeIcon(true);
     }
 }
@@ -406,6 +420,7 @@ function initTheme() {
 function toggleTheme() {
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    document.body.style.backgroundColor = isDark ? "#080c14" : "#f1f5f9";
     updateThemeIcon(isDark);
 }
 
@@ -521,10 +536,11 @@ async function fetchGroups() {
     }
 }
 
-// BUILD CATEGORY TABS
+// BUILD CATEGORY TABS & MODAL LIST
 function buildCategoryTabs() {
     const container = document.getElementById('categoryTabs');
-    const categories = ['🤼 FightZone', '🔥 Trending', '🎬 Movie', '📺 TV', '📡 TV Channels', 'WhatsApp', 'Telegram'];
+    const modalContainer = document.getElementById('modalCategoryList');
+    const categories = ['🤼 FightZone', '🔥 Trending', '🎬 Movie', '📺 TV', 'WhatsApp', 'Telegram', 'Gaming'];
 
     allGroupsData.forEach(g => {
         if (g.category && !categories.includes(g.category)) {
@@ -532,6 +548,7 @@ function buildCategoryTabs() {
         }
     });
 
+    // Header tabs
     container.innerHTML = categories.map(cat => {
         const cleanName = cat.replace(/[^a-zA-Z0-9 ]/g, '').trim() || cat;
         const isActive = activeCategory === cat || activeCategory === cleanName;
@@ -545,34 +562,83 @@ function buildCategoryTabs() {
             </button>
         `;
     }).join('');
+
+    // Modal categories button list
+    if (modalContainer) {
+        modalContainer.innerHTML = categories.map(cat => {
+            const cleanName = cat.replace(/[^a-zA-Z0-9 ]/g, '').trim() || cat;
+            return `
+                <button onclick="setCategory('${cleanName}'); closeCategoryModal();" class="bg-[#080c14] border border-slate-800 hover:border-emerald-500 text-slate-200 text-xs font-bold p-3 rounded-xl text-center transition-all">
+                    ${cat}
+                </button>
+            `;
+        }).join('');
+    }
+}
+
+function openCategoryModal() {
+    document.getElementById('categoryModal').classList.remove('hidden');
+}
+
+function closeCategoryModal() {
+    document.getElementById('categoryModal').classList.add('hidden');
 }
 
 function setCategory(cat) {
+    isMyGroupsOnly = false;
     activeCategory = cat;
     buildCategoryTabs();
     renderGroups();
 }
 
 function setFilterSub(type) {
+    isMyGroupsOnly = false;
     if (type === 'ALL') activeCategory = 'All';
     else activeCategory = type;
     buildCategoryTabs();
     renderGroups();
 }
 
+function showAllHomeGroups() {
+    isMyGroupsOnly = false;
+    activeCategory = 'All';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    buildCategoryTabs();
+    renderGroups();
+}
+
+function showVipZone() {
+    isMyGroupsOnly = false;
+    document.getElementById('sortSelect').value = 'popular';
+    showToast('Welcome to VIP Zone!');
+    renderGroups();
+}
+
 function filterByFavoritesNav() {
+    isMyGroupsOnly = false;
     document.getElementById('sortSelect').value = 'favorites';
     renderGroups();
     showToast('Showing Saved Favorites!');
 }
 
-// RENDER GROUPS LIST
+function showMySubmittedGroups() {
+    isMyGroupsOnly = true;
+    renderGroups();
+    showToast('Showing Groups Added By You!');
+}
+
+// RENDER GROUPS LIST (WITH REPORT EXPIRATION LINK BUTTON)
 function renderGroups() {
     const container = document.getElementById('groupsContainer');
-    const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+    const searchInput = document.getElementById('searchInput');
+    const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const sortBy = document.getElementById('sortSelect').value;
 
     let filtered = allGroupsData.filter(g => {
+        if (isMyGroupsOnly) {
+            return mySubmittedGroupIds.includes(String(g.id));
+        }
+
         const nameMatch = (g.name || '').toLowerCase().includes(query);
         const catMatch = (g.category || '').toLowerCase().includes(query);
         const platformMatch = (g.platform || '').toLowerCase().includes(query);
@@ -597,7 +663,7 @@ function renderGroups() {
     if (filtered.length === 0) {
         container.innerHTML = `
             <div class="col-span-full bg-[#121824] border border-slate-800 rounded-3xl p-8 text-center space-y-2 shadow-sm">
-                <i class="fa-solid fa-film text-3xl text-slate-700"></i>
+                <i class="fa-solid fa-folder-open text-3xl text-slate-700"></i>
                 <p class="text-xs font-bold text-slate-400">No groups found in this section</p>
                 <button onclick="openAddModal()" class="text-xs text-emerald-400 font-black hover:underline">+ Submit a new group</button>
             </div>
@@ -612,7 +678,7 @@ function renderGroups() {
         const dp = g.image_url || g.icon_url || g.dp || DEFAULT_DP;
         const isFav = favoritesList.includes(String(g.id));
         const isLiked = likedGroupsList.includes(String(g.id));
-        const langTag = g.platform || 'Hindi';
+        const langTag = g.platform || 'WhatsApp';
 
         return `
             <div class="bg-[#121824] border ${isPinned ? 'border-amber-500/50 shadow-amber-500/10' : 'border-slate-800/90'} rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between relative group hover:border-emerald-500/50 transition-all">
@@ -654,13 +720,20 @@ function renderGroups() {
                         </button>
                     </div>
 
-                    <div class="pt-1 flex items-center gap-1">
-                        <button onclick="shareGroup('${g.name}', '${g.link}')" title="Share Group" class="w-7 h-7 bg-slate-800 text-slate-300 rounded-lg flex items-center justify-center text-[10px] hover:bg-emerald-500 hover:text-black transition-all">
-                            <i class="fa-solid fa-share-nodes"></i>
+                    <div class="pt-1 space-y-1">
+                        <div class="flex items-center gap-1">
+                            <button onclick="shareGroup('${g.name}', '${g.link}')" title="Share Group" class="w-7 h-7 bg-slate-800 text-slate-300 rounded-lg flex items-center justify-center text-[10px] hover:bg-emerald-500 hover:text-black transition-all">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                            <a href="${g.link}" target="_blank" onclick="trackGroupJoin('${g.id}')" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[11px] py-1.5 rounded-lg shadow-md transition-all text-center flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-right-to-bracket text-[10px]"></i> JOIN
+                            </a>
+                        </div>
+
+                        <!-- REPORT LINK BUTTON BELOW GROUP BOX -->
+                        <button onclick="openReportModal('${g.id}')" class="w-full text-[9px] font-bold text-red-400 hover:text-red-300 border border-red-500/30 hover:bg-red-500/10 py-1 rounded-lg transition-all flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> رپورٹ (Report Expired)
                         </button>
-                        <a href="${g.link}" target="_blank" onclick="trackGroupJoin('${g.id}')" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[11px] py-1.5 rounded-lg shadow-md transition-all text-center flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-right-to-bracket text-[10px]"></i> JOIN
-                        </a>
                     </div>
                 </div>
 
@@ -747,7 +820,7 @@ async function submitNewGroup(e) {
     const description = document.getElementById('user_group_desc').value.trim();
 
     try {
-        const { error } = await db.from('groups').insert([{
+        const { data, error } = await db.from('groups').insert([{
             name,
             platform,
             category,
@@ -757,9 +830,15 @@ async function submitNewGroup(e) {
             clicks: 0,
             likes: 0,
             is_pinned: false
-        }]);
+        }]).select();
 
-        if (!error) {
+        if (!error && data && data.length > 0) {
+            mySubmittedGroupIds.push(String(data[0].id));
+            localStorage.setItem('mandoor_my_groups', JSON.stringify(mySubmittedGroupIds));
+            showToast('Group submitted successfully!');
+            closeAddModal();
+            fetchGroups();
+        } else if (!error) {
             showToast('Group submitted successfully!');
             closeAddModal();
             fetchGroups();
@@ -795,27 +874,27 @@ async function submitReportMessage(e) {
     const text = document.getElementById('report_text').value.trim();
 
     const formattedMessage = groupId 
-        ? `[REPORT BOT] Expired/Broken Link for (ID: ${groupId}) - Details: ${text}`
+        ? `[EXPIRED LINK REPORT] Group ID: ${groupId} - Issue: ${text}`
         : text;
 
     try {
         const { error } = await db.from('messages').insert([{
-            sender_name: groupId ? 'REPORT BOT' : sender,
+            sender_name: groupId ? 'EXPIRED LINK REPORT' : sender,
             message: formattedMessage
         }]);
 
         if (!error) {
-            showToast('Message sent to Admin!');
+            showToast('Report sent to Admin!');
             closeReportModal();
             document.getElementById('report_text').value = '';
         } else {
-            alert('Failed to send message: ' + error.message);
+            alert('Failed to send report: ' + error.message);
         }
     } catch(err) {
         alert('Server error!');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Report';
     }
 }
 </script>
