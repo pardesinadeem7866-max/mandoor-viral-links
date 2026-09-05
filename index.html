@@ -49,7 +49,6 @@
         }
         .glowing-box { animation: glowingBoxAnim 1.6s infinite ease-in-out; }
 
-        /* VIRAL BADGE GLOWING ANIMATION */
         @keyframes viralGlow {
             0%, 100% {
                 box-shadow: 0 0 8px rgba(239, 68, 68, 0.9), 0 0 15px rgba(245, 158, 11, 0.8);
@@ -62,7 +61,6 @@
         }
         .viral-badge-glow { animation: viralGlow 1.2s infinite ease-in-out; }
 
-        /* Custom Touch Scroll Fix for Android WebViews / Play Store Apps */
         .touch-scroll {
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
@@ -97,7 +95,7 @@
                 </div>
             </div>
 
-            <!-- Top Search Input Bar (LIVE SEARCH WORKING) -->
+            <!-- Top Search Input Bar -->
             <div class="flex-1 max-w-[170px] sm:max-w-xs relative flex items-center">
                 <div class="w-full bg-[#161f2e] border border-slate-700/80 rounded-lg flex items-center px-2 py-1 focus-within:border-emerald-500 transition-all">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-[10px] mr-1.5"></i>
@@ -145,34 +143,32 @@
 
     <main class="max-w-4xl mx-auto px-3 pt-3 space-y-3">
 
-        <!-- HERO FEATURED SECTION (WITH PERMANENT GAMING DP AVATAR) -->
-        <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#121824] shadow-2xl">
-            <div class="relative h-48 sm:h-56 w-full bg-cover bg-center" style="background-image: url('https://files.catbox.moe/mxy5za.jpg');">
-                <div class="absolute inset-0 hero-gradient"></div>
+        <!-- HERO FEATURED SECTION WITH RELIABLE GAMING BANNER DP BEHIND YOUR NAME -->
+        <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-emerald-500/40 bg-[#121824] shadow-2xl">
+            <div class="relative min-h-[210px] w-full bg-cover bg-center flex flex-col justify-between p-3" style="background-image: linear-gradient(180deg, rgba(8,12,20,0.2) 0%, rgba(8,12,20,0.95) 100%), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop');">
                 
-                <div class="absolute top-2.5 left-2.5 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md flex items-center gap-1 shadow-md">
-                    🔥 Mandoor Featured
+                <div class="flex items-center justify-between">
+                    <div class="bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-md flex items-center gap-1 shadow-md">
+                        🔥 Mandoor Featured
+                    </div>
                 </div>
-                
-                <div class="absolute bottom-2 left-2 right-2 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-2 rounded-xl text-center shadow-lg">
-                    <div class="flex items-center justify-center gap-2">
-                        <!-- PERMANENT GAMING DP AVATAR -->
-                        <div class="relative w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-amber-400 via-emerald-400 to-teal-400 shrink-0 overflow-hidden shadow-md">
-                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=200&auto=format&fit=crop" alt="Gaming DP" class="w-full h-full object-cover rounded-full">
-                            <div class="absolute -bottom-0.5 -right-0.5 bg-amber-500 text-slate-950 text-[7px] w-3 h-3 rounded-full flex items-center justify-center font-black">
-                                <i class="fa-solid fa-crown"></i>
-                            </div>
-                        </div>
 
-                        <div class="font-black text-xs sm:text-sm flex items-center gap-0.5">
-                            <span class="text-indigo-400">☆Mr</span>
-                            <span>💫</span>
-                            <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeem.ff</span>
-                            <span class="text-emerald-400">Ⓥ</span>
+                <div class="bg-slate-950/85 backdrop-blur-md border border-emerald-500/30 p-3 rounded-2xl text-center shadow-2xl flex flex-col items-center justify-center gap-1">
+                    <div class="relative w-11 h-11 rounded-full p-[2px] bg-gradient-to-tr from-amber-400 via-emerald-400 to-teal-400 shrink-0 overflow-hidden shadow-lg mb-0.5">
+                        <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=300&auto=format&fit=crop" alt="Profile Avatar" class="w-full h-full object-cover rounded-full">
+                        <div class="absolute -bottom-0.5 -right-0.5 bg-amber-500 text-slate-950 text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-black">
+                            <i class="fa-solid fa-crown"></i>
                         </div>
                     </div>
-                    <p class="text-[11px] text-amber-300 font-extrabold tracking-wider mt-0.5 text-center animate-pulse" style="text-shadow: 0 0 8px #f59e0b, 0 0 16px #f59e0b;">꧁Multani.ᶠᶠⓋ</p>
-                    <p class="text-[10px] text-slate-300 font-medium text-center mt-0.5">Free Fire UID: 3239454397</p>
+
+                    <div class="font-black text-xs sm:text-sm flex items-center justify-center gap-1">
+                        <span class="text-indigo-400">☆Mr</span>
+                        <span>💫</span>
+                        <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeem.ff</span>
+                        <span class="text-emerald-400">Ⓥ</span>
+                    </div>
+                    <p class="text-xs text-amber-300 font-extrabold tracking-wider animate-pulse" style="text-shadow: 0 0 8px #f59e0b;">꧁Multani.ᶠᶠⓋ</p>
+                    <p class="text-[10px] text-slate-300 font-medium">Free Fire UID: 3239454397</p>
                 </div>
             </div>
         </div>
@@ -361,64 +357,24 @@ const SUPABASE_URL = "https://vnneunihydltvsyxheeg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_bZMBGeoDYDLI9zTYz4yqLw_Pwfa02DY";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// MASTER CATEGORY LIST
 const ALL_CATEGORIES = [
-    "🕌 Islamic & Bayan",
-    "🍿 Movies & Cinema",
-    "🏏 Cricket & Sports",
-    "🔞 18+ Adult / XXX",
-    "🎮 Free Fire & Gaming",
-    "⛩️ Anime & Cartoons",
-    "📖 Urdu Novels",
-    "✍️ Poetry & Shayari",
-    "🎥 WhatsApp Status",
-    "🎯 PUBG & Esports",
-    "💰 Online Earning",
-    "📈 Crypto & Forex",
-    "💼 Govt & Private Jobs",
-    "📺 Pakistani Dramas",
-    "🎬 South Movies",
-    "🎓 Education & Notes",
-    "📱 Tech & Mod Apps",
-    "✂️ Video & Photo Editing",
-    "🚀 YouTube Growth",
-    "🎵 TikTok & Reels",
-    "😂 Funny Memes & Jokes",
-    "📰 Daily News",
-    "🏋️‍♂️ Fitness & Health",
-    "🍲 Cooking & Recipes",
-    "👗 Fashion & Clothes",
-    "💄 Beauty & Care",
-    "🛒 Online Shopping & Deals",
-    "🤝 Buy & Sell",
-    "🏠 Real Estate",
-    "🏍️ Cars & Bikes",
-    "💻 Mobiles & Laptops",
-    "💬 Chatting & Friends",
-    "❤️ Love & Relationships",
-    "💔 Sad Poetry",
-    "🔥 Motivation & Quotes",
-    "📸 Photography",
-    "🎶 Music & Songs",
-    "🎧 Naat & Hamd",
-    "✈️ Visa & Foreign Study",
-    "🔤 English Learning",
-    "⚡ Coding & Software",
-    "👨‍💻 Freelancing",
-    "🌐 Blogging & SEO",
-    "🤖 AI Tools & Prompts",
-    "👥 Sub 4 Sub / Social",
-    "🎁 Giveaways & Contests",
-    "🏛️ History & Facts",
-    "💡 Business & Ideas",
-    "🎉 Event & Wishes",
-    "🗺️ Travel & Tourism",
-    "🌀 Other / General"
+    "🕌 Islamic & Bayan", "🍿 Movies & Cinema", "🏏 Cricket & Sports", "🔞 18+ Adult / XXX",
+    "🎮 Free Fire & Gaming", "⛩️ Anime & Cartoons", "📖 Urdu Novels", "✍️ Poetry & Shayari",
+    "🎥 WhatsApp Status", "🎯 PUBG & Esports", "💰 Online Earning", "📈 Crypto & Forex",
+    "💼 Govt & Private Jobs", "📺 Pakistani Dramas", "🎬 South Movies", "🎓 Education & Notes",
+    "📱 Tech & Mod Apps", "✂️ Video & Photo Editing", "🚀 YouTube Growth", "🎵 TikTok & Reels",
+    "😂 Funny Memes & Jokes", "📰 Daily News", "🏋️‍♂️ Fitness & Health", "🍲 Cooking & Recipes",
+    "👗 Fashion & Clothes", "💄 Beauty & Care", "🛒 Online Shopping & Deals", "🤝 Buy & Sell",
+    "🏠 Real Estate", "🏍️ Cars & Bikes", "💻 Mobiles & Laptops", "💬 Chatting & Friends",
+    "❤️ Love & Relationships", "💔 Sad Poetry", "🔥 Motivation & Quotes", "📸 Photography",
+    "🎶 Music & Songs", "🎧 Naat & Hamd", "✈️ Visa & Foreign Study", "🔤 English Learning",
+    "⚡ Coding & Software", "👨‍💻 Freelancing", "🌐 Blogging & SEO", "🤖 AI Tools & Prompts",
+    "👥 Sub 4 Sub / Social", "🎁 Giveaways & Contests", "🏛️ History & Facts", "💡 Business & Ideas",
+    "🎉 Event & Wishes", "🗺️ Travel & Tourism", "🌀 Other / General"
 ];
 
 const DEFAULT_DP = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23121824'/%3E%3Ccircle cx='256' cy='256' r='180' fill='%2310b981'/%3E%3Cpath fill='%23ffffff' d='M256 112c-79.5 0-144 64.5-144 144 0 28 8 54.1 21.8 76.2L112 400l69.8-21.3c21.2 12.3 45.8 19.3 72.2 19.3 79.5 0 144-64.5 144-144S335.5 112 256 112zm0 252c-21.7 0-42.3-6.1-60.1-17.2l-4.3-2.7-41.5 12.7 13-39.7-2.8-4.5c-12.8-20.1-19.6-43.3-19.6-67.3 0-66.2 53.8-120 120-120s120 53.8 120 120-53.8 120-120 120z'/%3E%3C/svg%3E";
 
-// CATEGORY & NAME BASED SMART DP FALLBACK MAP
 const CATEGORY_SMART_IMAGES = {
     'free fire': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop',
     'gaming': 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop',
@@ -430,13 +386,7 @@ const CATEGORY_SMART_IMAGES = {
     'novel': 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop',
     'education': 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600&auto=format&fit=crop',
     'movies': 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop',
-    'chatting': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop',
-    'friend': 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600&auto=format&fit=crop',
-    'love': 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop',
-    'earning': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=600&auto=format&fit=crop',
-    'crypto': 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&auto=format&fit=crop',
-    'cricket': 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=600&auto=format&fit=crop',
-    'islamic': 'https://images.unsplash.com/photo-1564121211835-e88c852648ab?q=80&w=600&auto=format&fit=crop'
+    'chatting': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop'
 };
 
 let allGroupsData = [];
@@ -454,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
     buildCategoryModalList();
     fetchGroups();
 
-    // LIVE SEARCH EVENT BINDING
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', renderGroups);
@@ -531,24 +480,19 @@ async function fetchSiteSettings() {
 function populateCategoryDropdown() {
     const selectEl = document.getElementById('user_group_category');
     if (!selectEl) return;
-    
     let html = `<option value="" disabled selected>Select Category...</option>`;
-    ALL_CATEGORIES.forEach(cat => {
-        html += `<option value="${cat}">${cat}</option>`;
-    });
+    ALL_CATEGORIES.forEach(cat => { html += `<option value="${cat}">${cat}</option>`; });
     selectEl.innerHTML = html;
 }
 
 function buildCategoryModalList() {
     const listEl = document.getElementById('modalCategoryList');
     if (!listEl) return;
-    
     let html = `
         <button onclick="selectCategoryFromModal('All')" class="bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-xs font-black p-3 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 col-span-2">
             🌟 All Categories
         </button>
     `;
-
     ALL_CATEGORIES.forEach(cat => {
         html += `
             <button onclick="selectCategoryFromModal('${cat}')" class="bg-[#080c14] border border-slate-800 hover:border-emerald-500 text-slate-200 hover:text-emerald-400 text-[11px] font-bold p-2.5 rounded-xl text-left transition-all flex items-center gap-1.5 truncate">
@@ -556,14 +500,10 @@ function buildCategoryModalList() {
             </button>
         `;
     });
-
     listEl.innerHTML = html;
 }
 
-function openCategoryModal() { 
-    buildCategoryModalList();
-    document.getElementById('categoryModal').classList.remove('hidden'); 
-}
+function openCategoryModal() { buildCategoryModalList(); document.getElementById('categoryModal').classList.remove('hidden'); }
 function closeCategoryModal() { document.getElementById('categoryModal').classList.add('hidden'); }
 
 function selectCategoryFromModal(cat) {
@@ -601,7 +541,6 @@ async function fetchGroups() {
             document.getElementById('groupsContainer').innerHTML = `<div class="col-span-full text-center py-10 text-xs text-red-400 font-bold">Error loading groups!</div>`;
             return;
         }
-
         allGroupsData = data;
         renderGroups();
     } catch(err) { console.error(err); }
@@ -622,7 +561,6 @@ function showMySubmittedGroups() {
     showToast('Showing Your Added Groups!');
 }
 
-// SMART DP FALLBACK LOGIC
 function getFallbackDP(category = '', name = '') {
     const combined = (name + ' ' + category).toLowerCase();
     for (let key in CATEGORY_SMART_IMAGES) {
@@ -642,7 +580,7 @@ function getSmartDPForGroup(group) {
 }
 
 function cleanStr(str) {
-    return (str || '').replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').toLowerCase().trim();
+    return (str || '').replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').toLowerCase().trim();
 }
 
 function renderGroups() {
@@ -817,9 +755,7 @@ async function submitNewGroup(e) {
         if (json.status === 'success' && (json.data.image?.url || json.data.logo?.url)) {
             autoFetchedImg = json.data.image?.url || json.data.logo?.url;
         }
-    } catch(err) {
-        console.log('Auto fetch error:', err);
-    }
+    } catch(err) {}
 
     try {
         const { data, error } = await db.from('groups').insert([{
