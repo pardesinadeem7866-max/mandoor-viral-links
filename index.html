@@ -83,44 +83,41 @@
     </div>
 
     <!-- APP HEADER & TOP SEARCH BAR -->
-    <header class="sticky top-0 z-40 bg-[#080c14]/95 backdrop-blur-md border-b border-slate-800/80 px-3 py-2.5">
-        <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+    <header class="sticky top-0 z-40 bg-[#080c14]/95 backdrop-blur-md border-b border-slate-800/80 px-3 py-2">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-1.5">
             <!-- App Logo -->
-            <div class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg text-white font-black text-lg">
+            <div class="flex items-center gap-1.5 shrink-0">
+                <div class="w-8 h-8 bg-gradient-to-tr from-emerald-600 via-teal-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg text-white font-black text-base">
                     <i class="fa-solid fa-cloud-arrow-down"></i>
                 </div>
                 <div>
-                    <h1 id="siteTitle" class="font-black text-sm tracking-wide text-white flex items-center gap-1">
+                    <h1 id="siteTitle" class="font-black text-xs sm:text-sm tracking-wide text-white flex items-center gap-1">
                         Mandoor <span class="text-emerald-400">Viral</span>
                     </h1>
                 </div>
             </div>
 
-            <!-- Top Search Input Bar -->
-            <div class="flex-1 max-w-xs relative flex items-center">
-                <div class="w-full bg-[#161f2e] border border-slate-700/60 rounded-xl flex items-center px-2.5 py-1.5 focus-within:border-emerald-500 transition-all">
-                    <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs mr-2"></i>
-                    <input type="text" id="searchInput" oninput="renderGroups()" onkeydown="if(event.key==='Enter') renderGroups()" placeholder="Search Groups..." 
-                        class="w-full bg-transparent text-xs text-white placeholder-slate-400 focus:outline-none">
-                    <button onclick="renderGroups()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-lg ml-1 transition-all shrink-0">
-                        Search
-                    </button>
+            <!-- Top Search Input Bar (COMPACT & WORKING) -->
+            <div class="flex-1 max-w-[170px] sm:max-w-xs relative flex items-center">
+                <div class="w-full bg-[#161f2e] border border-slate-700/80 rounded-lg flex items-center px-2 py-1 focus-within:border-emerald-500 transition-all">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 text-[10px] mr-1.5"></i>
+                    <input type="text" id="searchInput" oninput="renderGroups()" onkeydown="if(event.key==='Enter') renderGroups()" placeholder="Search..." 
+                        class="w-full bg-transparent text-[11px] text-white placeholder-slate-400 focus:outline-none">
                 </div>
             </div>
 
             <!-- Top Right Icons -->
-            <div class="flex items-center gap-1.5">
-                <button onclick="shareWebsite()" title="Share Website" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-emerald-400 hover:bg-emerald-500/20 active:scale-95 transition-all text-xs">
+            <div class="flex items-center gap-1 shrink-0">
+                <button onclick="shareWebsite()" title="Share Website" class="w-7 h-7 bg-slate-800/80 border border-slate-700/60 rounded-lg flex items-center justify-center text-emerald-400 hover:bg-emerald-500/20 active:scale-95 transition-all text-xs">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
 
-                <button onclick="toggleTheme()" id="themeBtn" title="Toggle Theme" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-amber-400 hover:scale-105 active:scale-95 transition-all text-xs">
+                <button onclick="toggleTheme()" id="themeBtn" title="Toggle Theme" class="w-7 h-7 bg-slate-800/80 border border-slate-700/60 rounded-lg flex items-center justify-center text-amber-400 hover:scale-105 active:scale-95 transition-all text-xs">
                     <i class="fa-solid fa-sun"></i>
                 </button>
 
                 <div class="relative">
-                    <button id="menuBtn" onclick="toggleUserMenu()" class="w-8 h-8 bg-slate-800/80 border border-slate-700/60 rounded-xl flex items-center justify-center text-slate-200 hover:text-emerald-400 hover:bg-slate-700 active:scale-95 transition-all text-sm">
+                    <button id="menuBtn" onclick="toggleUserMenu()" class="w-7 h-7 bg-slate-800/80 border border-slate-700/60 rounded-lg flex items-center justify-center text-slate-200 hover:text-emerald-400 hover:bg-slate-700 active:scale-95 transition-all text-xs">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     
@@ -146,51 +143,49 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-3 pt-3 space-y-4">
+    <main class="max-w-4xl mx-auto px-3 pt-3 space-y-3">
 
-        <!-- HERO FEATURED SECTION -->
+        <!-- HERO FEATURED SECTION (COMPACT PROFILE BOX) -->
         <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#121824] shadow-2xl">
-            <div class="relative h-52 sm:h-60 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');">
+            <div class="relative h-48 sm:h-56 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop');">
                 <div class="absolute inset-0 hero-gradient"></div>
                 
-                <div class="absolute top-3 left-3 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-md">
+                <div class="absolute top-2.5 left-2.5 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-md flex items-center gap-1 shadow-md">
                     🔥 Mandoor Featured
                 </div>
                 
-                <div class="absolute bottom-3 left-3 right-3 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-3 rounded-2xl text-center shadow-xl">
-                    <div class="flex items-center justify-center gap-2.5">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-lg shadow-lg border border-emerald-400/30">
+                <div class="absolute bottom-2 left-2 right-2 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-2 rounded-xl text-center shadow-lg">
+                    <div class="flex items-center justify-center gap-1.5">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-sm shadow-md border border-emerald-400/30">
                             <i class="fa-solid fa-crown text-amber-300"></i>
                         </div>
-                        <div class="font-black text-base sm:text-xl flex items-center gap-1">
+                        <div class="font-black text-xs sm:text-sm flex items-center gap-0.5">
                             <span class="text-indigo-400">☆Mr</span>
                             <span>💫</span>
                             <span class="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Nadeem.ff</span>
                             <span class="text-emerald-400">Ⓥ</span>
                         </div>
                     </div>
-                    <p class="text-xs text-amber-300 font-extrabold tracking-wider mt-1 text-center animate-pulse" style="text-shadow: 0 0 8px #f59e0b, 0 0 16px #f59e0b, 0 0 24px #fbbf24;">꧁Multani.ᶠᶠⓋ</p>
-                    
+                    <p class="text-[11px] text-amber-300 font-extrabold tracking-wider mt-0.5 text-center animate-pulse" style="text-shadow: 0 0 8px #f59e0b, 0 0 16px #f59e0b, 0 0 24px #fbbf24;">꧁Multani.ᶠᶠⓋ</p>
                     <p class="text-[10px] text-slate-300 font-medium text-center mt-0.5">Free Fire UID: 3239454397</p>
-
                 </div>
             </div>
         </div>
 
-        <!-- DOWNLOAD OFFICIAL APP SECTION -->
-        <div class="rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-[#0f2027] via-[#112d32] to-[#203a43] p-4 shadow-xl flex items-center justify-between gap-3 relative overflow-hidden green-glow">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gradient-to-tr from-emerald-500 to-teal-300 rounded-2xl flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shrink-0">
+        <!-- DOWNLOAD OFFICIAL APP SECTION (COMPACT) -->
+        <div class="rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-[#0f2027] via-[#112d32] to-[#203a43] p-2.5 shadow-xl flex items-center justify-between gap-2 relative overflow-hidden green-glow">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-tr from-emerald-500 to-teal-300 rounded-lg flex items-center justify-center text-slate-950 font-black text-xs shadow-md shrink-0">
                     <i class="fa-solid fa-cloud-arrow-down"></i>
                 </div>
                 <div>
-                    <h3 class="font-black text-sm text-white">ڈاؤن لوڈ آفیشل ایپ</h3>
-                    <p class="text-[11px] text-emerald-300 font-bold mt-0.5">Download Official App (APK)</p>
+                    <h3 class="font-black text-xs text-white">ڈاؤن لوڈ آفیشل ایپ</h3>
+                    <p class="text-[9px] text-emerald-300 font-bold">Download Official App (APK)</p>
                 </div>
             </div>
 
             <a href="https://www.mediafire.com/file/4m2yw4ub1sni5k5/Mandoor+viral+link+%281%29.apk/file" target="_blank" 
-               class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl shadow-lg active:scale-95 transition-all shrink-0 flex items-center gap-1.5 border border-emerald-300">
+               class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-[10px] px-3 py-1.5 rounded-lg shadow-md active:scale-95 transition-all shrink-0 flex items-center gap-1 border border-emerald-300">
                 <i class="fa-solid fa-download"></i> Download
             </a>
         </div>
@@ -233,7 +228,7 @@
 
     </main>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR (UPDATED: REMOVED VIP ZONE & SAVED) -->
+    <!-- FIXED BOTTOM NAVIGATION BAR -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0a0f19]/95 backdrop-blur-md border-t border-slate-800/80 py-2.5 px-6">
         <div class="max-w-md mx-auto flex items-center justify-around relative">
             <button onclick="showAllHomeGroups()" class="flex flex-col items-center gap-1 text-emerald-400 hover:scale-105 transition-all">
