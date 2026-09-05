@@ -97,11 +97,11 @@
                 </div>
             </div>
 
-            <!-- Top Search Input Bar (COMPACT & WORKING) -->
+            <!-- Top Search Input Bar (LIVE SEARCH WORKING) -->
             <div class="flex-1 max-w-[170px] sm:max-w-xs relative flex items-center">
                 <div class="w-full bg-[#161f2e] border border-slate-700/80 rounded-lg flex items-center px-2 py-1 focus-within:border-emerald-500 transition-all">
                     <i class="fa-solid fa-magnifying-glass text-slate-400 text-[10px] mr-1.5"></i>
-                    <input type="text" id="searchInput" oninput="renderGroups()" onkeydown="if(event.key==='Enter') renderGroups()" placeholder="Search..." 
+                    <input type="text" id="searchInput" oninput="renderGroups()" onkeyup="renderGroups()" placeholder="Search..." 
                         class="w-full bg-transparent text-[11px] text-white placeholder-slate-400 focus:outline-none">
                 </div>
             </div>
@@ -145,7 +145,7 @@
 
     <main class="max-w-4xl mx-auto px-3 pt-3 space-y-3">
 
-        <!-- HERO FEATURED SECTION (UPDATED WITH YOUR PHOTO) -->
+        <!-- HERO FEATURED SECTION (WITH PERMANENT GAMING DP AVATAR) -->
         <div id="heroSection" class="relative rounded-3xl overflow-hidden border border-slate-800 bg-[#121824] shadow-2xl">
             <div class="relative h-48 sm:h-56 w-full bg-cover bg-center" style="background-image: url('https://files.catbox.moe/mxy5za.jpg');">
                 <div class="absolute inset-0 hero-gradient"></div>
@@ -155,10 +155,15 @@
                 </div>
                 
                 <div class="absolute bottom-2 left-2 right-2 flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-md border border-slate-800/80 p-2 rounded-xl text-center shadow-lg">
-                    <div class="flex items-center justify-center gap-1.5">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center font-black text-white shrink-0 text-sm shadow-md border border-emerald-400/30">
-                            <i class="fa-solid fa-crown text-amber-300"></i>
+                    <div class="flex items-center justify-center gap-2">
+                        <!-- PERMANENT GAMING DP AVATAR -->
+                        <div class="relative w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-amber-400 via-emerald-400 to-teal-400 shrink-0 overflow-hidden shadow-md">
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=200&auto=format&fit=crop" alt="Gaming DP" class="w-full h-full object-cover rounded-full">
+                            <div class="absolute -bottom-0.5 -right-0.5 bg-amber-500 text-slate-950 text-[7px] w-3 h-3 rounded-full flex items-center justify-center font-black">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
                         </div>
+
                         <div class="font-black text-xs sm:text-sm flex items-center gap-0.5">
                             <span class="text-indigo-400">☆Mr</span>
                             <span>💫</span>
@@ -166,13 +171,13 @@
                             <span class="text-emerald-400">Ⓥ</span>
                         </div>
                     </div>
-                    <p class="text-[11px] text-amber-300 font-extrabold tracking-wider mt-0.5 text-center animate-pulse" style="text-shadow: 0 0 8px #f59e0b, 0 0 16px #f59e0b, 0 0 24px #fbbf24;">꧁Multani.ᶠᶠⓋ</p>
+                    <p class="text-[11px] text-amber-300 font-extrabold tracking-wider mt-0.5 text-center animate-pulse" style="text-shadow: 0 0 8px #f59e0b, 0 0 16px #f59e0b;">꧁Multani.ᶠᶠⓋ</p>
                     <p class="text-[10px] text-slate-300 font-medium text-center mt-0.5">Free Fire UID: 3239454397</p>
                 </div>
             </div>
         </div>
 
-        <!-- DOWNLOAD OFFICIAL APP SECTION (COMPACT) -->
+        <!-- DOWNLOAD OFFICIAL APP SECTION -->
         <div class="rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-[#0f2027] via-[#112d32] to-[#203a43] p-2.5 shadow-xl flex items-center justify-between gap-2 relative overflow-hidden green-glow">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-gradient-to-tr from-emerald-500 to-teal-300 rounded-lg flex items-center justify-center text-slate-950 font-black text-xs shadow-md shrink-0">
@@ -205,7 +210,7 @@
             </div>
         </div>
 
-        <!-- SUB-CATEGORY FILTER TAB BAR (ONLY ALL, WHATSAPP, TELEGRAM) -->
+        <!-- SUB-CATEGORY FILTER TAB BAR -->
         <div id="subFilterTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
             <button onclick="setFilterSub('ALL')" id="subtab-ALL" class="subtab-btn bg-emerald-500 text-slate-950 px-4 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap shadow-sm transition-all">
                 All
@@ -413,16 +418,25 @@ const ALL_CATEGORIES = [
 
 const DEFAULT_DP = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23121824'/%3E%3Ccircle cx='256' cy='256' r='180' fill='%2310b981'/%3E%3Cpath fill='%23ffffff' d='M256 112c-79.5 0-144 64.5-144 144 0 28 8 54.1 21.8 76.2L112 400l69.8-21.3c21.2 12.3 45.8 19.3 72.2 19.3 79.5 0 144-64.5 144-144S335.5 112 256 112zm0 252c-21.7 0-42.3-6.1-60.1-17.2l-4.3-2.7-41.5 12.7 13-39.7-2.8-4.5c-12.8-20.1-19.6-43.3-19.6-67.3 0-66.2 53.8-120 120-120s120 53.8 120 120-53.8 120-120 120z'/%3E%3C/svg%3E";
 
+// CATEGORY & NAME BASED SMART DP FALLBACK MAP
 const CATEGORY_SMART_IMAGES = {
+    'free fire': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop',
+    'gaming': 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop',
+    'pubg': 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop',
+    '18+': 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
+    'adult': 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
+    'viral': 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
     'urdu story': 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=600&auto=format&fit=crop',
-    'novels': 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop',
+    'novel': 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop',
     'education': 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600&auto=format&fit=crop',
     'movies': 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop',
-    'gaming': 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop',
-    'free fire': 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop',
-    'friendship': 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600&auto=format&fit=crop',
+    'chatting': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop',
+    'friend': 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600&auto=format&fit=crop',
     'love': 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop',
-    'chatting': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop'
+    'earning': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=600&auto=format&fit=crop',
+    'crypto': 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&auto=format&fit=crop',
+    'cricket': 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=600&auto=format&fit=crop',
+    'islamic': 'https://images.unsplash.com/photo-1564121211835-e88c852648ab?q=80&w=600&auto=format&fit=crop'
 };
 
 let allGroupsData = [];
@@ -439,6 +453,13 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCategoryDropdown();
     buildCategoryModalList();
     fetchGroups();
+
+    // LIVE SEARCH EVENT BINDING
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', renderGroups);
+        searchInput.addEventListener('keyup', renderGroups);
+    }
 });
 
 function initTheme() {
@@ -601,21 +622,23 @@ function showMySubmittedGroups() {
     showToast('Showing Your Added Groups!');
 }
 
-function getSmartDPForGroup(group) {
-    const rawUrl = (group.image_url || group.icon_url || group.dp || '').trim();
-    if (rawUrl && !rawUrl.includes('wikimedia.org') && rawUrl !== 'DEFAULT_DP') {
-        return rawUrl;
-    }
-
-    const nameStr = (group.name || '').toLowerCase();
-    const catStr = (group.category || '').toLowerCase();
-
+// SMART DP FALLBACK LOGIC
+function getFallbackDP(category = '', name = '') {
+    const combined = (name + ' ' + category).toLowerCase();
     for (let key in CATEGORY_SMART_IMAGES) {
-        if (nameStr.includes(key) || catStr.includes(key)) {
+        if (combined.includes(key)) {
             return CATEGORY_SMART_IMAGES[key];
         }
     }
     return DEFAULT_DP;
+}
+
+function getSmartDPForGroup(group) {
+    const rawUrl = (group.image_url || group.icon_url || group.dp || '').trim();
+    if (rawUrl && rawUrl !== '' && rawUrl !== 'DEFAULT_DP' && !rawUrl.includes('wikimedia.org')) {
+        return rawUrl;
+    }
+    return getFallbackDP(group.category, group.name);
 }
 
 function cleanStr(str) {
@@ -627,7 +650,6 @@ function renderGroups() {
     const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
     const sortBy = document.getElementById('sortSelect')?.value || 'popular';
 
-    // Maximum clicks for calculating the most joined VIRAL group
     let maxClicks = 0;
     allGroupsData.forEach(g => {
         const c = Number(g.clicks || g.views || 0);
@@ -641,7 +663,8 @@ function renderGroups() {
         const catMatch = (g.category || '').toLowerCase().includes(query);
         const descMatch = (g.description || '').toLowerCase().includes(query);
         const platformMatch = (g.platform || '').toLowerCase().includes(query);
-        const searchMatches = query === '' || nameMatch || catMatch || descMatch || platformMatch;
+        
+        const searchMatches = (query === '') || nameMatch || catMatch || descMatch || platformMatch;
 
         if (activeCategory === 'All' || activeCategory === 'ALL') {
             return searchMatches;
@@ -684,7 +707,7 @@ function renderGroups() {
         return `
             <div class="bg-[#121824] border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between relative group hover:border-emerald-500/50 transition-all">
                 <div class="relative w-full h-36 bg-slate-950 overflow-hidden">
-                    <img src="${dp}" alt="DP" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${DEFAULT_DP}';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="${dp}" alt="DP" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src=getFallbackDP('${(g.category||'').replace(/'/g, "\\'")}', '${(g.name||'').replace(/'/g, "\\'")}');" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#121824] via-transparent to-black/40"></div>
                     
                     ${isMostPopular ? `
